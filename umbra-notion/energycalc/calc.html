@@ -1,0 +1,132 @@
+<div id="automated-blinds-calculator" style="font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 600px; margin: 0 auto;">
+    <h2>Automated Blinds Energy Savings Calculator</h2>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <label for="floorArea" style="flex: 0 0 60%; padding-right: 10px;">Total Floor Area (m²):</label>
+        <input type="number" id="floorArea" required style="flex: 0 0 35%; padding: 5px; width: 35%; box-sizing: border-box;">
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <label for="windowArea" style="flex: 0 0 60%; padding-right: 10px;">Total Window Area (m²):</label>
+        <input type="number" id="windowArea" required style="flex: 0 0 35%; padding: 5px; width: 35%; box-sizing: border-box;">
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <label for="orientation" style="flex: 0 0 60%; padding-right: 10px;">Predominant Window Orientation:</label>
+        <select id="orientation" style="flex: 0 0 35%; padding: 5px; width: 35%; box-sizing: border-box;">
+            <option value="north">North</option>
+            <option value="south">South</option>
+            <option value="east">East</option>
+            <option value="west">West</option>
+        </select>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <label for="latitude" style="flex: 0 0 60%; padding-right: 10px;">Latitude (degrees):</label>
+        <input type="number" id="latitude" required style="flex: 0 0 35%; padding: 5px; width: 35%; box-sizing: border-box;">
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <label for="blindRValue" style="flex: 0 0 60%; padding-right: 10px;">Blind R-Value:</label>
+        <input type="number" id="blindRValue" step="0.1" required style="flex: 0 0 35%; padding: 5px; width: 35%; box-sizing: border-box;">
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <label for="blindSHGC" style="flex: 0 0 60%; padding-right: 10px;">Blind Solar Heat Gain Coefficient:</label>
+        <input type="number" id="blindSHGC" step="0.01" required style="flex: 0 0 35%; padding: 5px; width: 35%; box-sizing: border-box;">
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <label for="energyConsumption" style="flex: 0 0 60%; padding-right: 10px;">Annual Energy Consumption (kWh/m²):</label>
+        <input type="number" id="energyConsumption" value="200" required style="flex: 0 0 35%; padding: 5px; width: 35%; box-sizing: border-box;">
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <label for="electricityCost" style="flex: 0 0 60%; padding-right: 10px;">Electricity Cost (pence per kWh):</label>
+        <input type="number" id="electricityCost" step="0.1" value="15" required style="flex: 0 0 35%; padding: 5px; width: 35%; box-sizing: border-box;">
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <label for="usageEffectiveness" style="flex: 0 0 60%; padding-right: 10px;">Blind Usage Effectiveness:</label>
+        <select id="usageEffectiveness" style="flex: 0 0 35%; padding: 5px; width: 35%; box-sizing: border-box;">
+            <option value="0.1">10%</option>
+            <option value="0.2">20%</option>
+            <option value="0.3">30%</option>
+            <option value="0.4">40%</option>
+            <option value="0.5">50%</option>
+            <option value="0.6">60%</option>
+            <option value="0.7" selected>70%</option>
+            <option value="0.8">80%</option>
+            <option value="0.9">90%</option>
+            <option value="1.0">100%</option>
+        </select>
+    </div>
+    <button onclick="calculateEnergySavings()" style="display: block; width: 100%; padding: 10px 20px; background-color: black; color: white; border: none; cursor: pointer; margin-top: 20px;">Calculate Savings</button>
+    <div style="margin-top: 20px;">
+        <p>Estimated Annual Energy Savings: <span id="energySavings"></span> kWh</p>
+        <p>Estimated Annual Cost Savings: £<span id="costSavings"></span></p>
+    </div>
+</div>
+
+<script>
+function calculateEnergySavings() {
+    // Get input values
+    const floorArea = parseFloat(document.getElementById('floorArea').value);
+    const windowArea = parseFloat(document.getElementById('windowArea').value);
+    const orientation = document.getElementById('orientation').value;
+    const latitude = parseFloat(document.getElementById('latitude').value);
+    const blindRValue = parseFloat(document.getElementById('blindRValue').value);
+    const blindSHGC = parseFloat(document.getElementById('blindSHGC').value);
+    const energyConsumption = parseFloat(document.getElementById('energyConsumption').value);
+    const electricityCost = parseFloat(document.getElementById('electricityCost').value);
+    const usageEffectiveness = parseFloat(document.getElementById('usageEffectiveness').value);
+
+    // Constants and assumptions
+    const SOLAR_HEAT_GAIN_FACTOR = {
+        'north': 0.4,
+        'south': 1.2,
+        'east': 0.8,
+        'west': 0.8
+    };
+    const WINDOW_IMPACT_FACTOR = 0.4; // Increased from 0.3 to 0.4
+
+    // Climate zones based on latitude
+    const CLIMATE_ZONES = [
+        { maxLat: 23.5, name: 'Tropical', coolingDays: 330, heatingDays: 0, avgTemp: 28, solarIntensity: 1.2 },
+        { maxLat: 35, name: 'Subtropical', coolingDays: 240, heatingDays: 60, avgTemp: 22, solarIntensity: 1.1 },
+        { maxLat: 50, name: 'Temperate', coolingDays: 120, heatingDays: 180, avgTemp: 15, solarIntensity: 1.0 },
+        { maxLat: 66.5, name: 'Cold', coolingDays: 60, heatingDays: 270, avgTemp: 8, solarIntensity: 0.9 },
+        { maxLat: 90, name: 'Polar', coolingDays: 0, heatingDays: 365, avgTemp: 0, solarIntensity: 0.8 }
+    ];
+
+    // Determine climate zone
+    const climateZone = CLIMATE_ZONES.find(zone => Math.abs(latitude) <= zone.maxLat);
+
+    // Calculate baseline energy consumption
+    const baselineEnergy = floorArea * energyConsumption;
+
+    // Calculate potential savings
+    const windowFactor = windowArea / floorArea;
+    const orientationFactor = SOLAR_HEAT_GAIN_FACTOR[orientation];
+    const latitudeFactor = 1 - (Math.abs(latitude) / 90) * 0.5; // Reduced impact of latitude
+    const blindFactor = (1 - blindSHGC) * (blindRValue / 3); // Increased impact of blind properties
+
+    // Adjust savings based on climate zone
+    const coolingFactor = climateZone.coolingDays / 365;
+    const heatingFactor = climateZone.heatingDays / 365;
+    const temperatureDelta = Math.abs(climateZone.avgTemp - 22); // Assume 22°C as ideal indoor temperature
+
+    const coolingSavings = baselineEnergy * WINDOW_IMPACT_FACTOR * windowFactor * 
+                           orientationFactor * latitudeFactor * blindFactor * coolingFactor * usageEffectiveness * climateZone.solarIntensity;
+    
+    const heatingSavings = baselineEnergy * WINDOW_IMPACT_FACTOR * windowFactor * 
+                           blindFactor * heatingFactor * usageEffectiveness;
+
+    // Adjust savings based on temperature difference
+    const temperatureAdjustment = 1 + (temperatureDelta / 8);
+
+    // Additional factors
+    const automationBonus = 1.2; // 20% bonus for automation
+    const peakDemandReduction = 1.15; // 15% bonus for reducing peak demand
+
+    const totalEnergySavings = (coolingSavings + heatingSavings) * temperatureAdjustment * automationBonus * peakDemandReduction;
+
+    // Calculate cost savings
+    const costSavings = (totalEnergySavings * electricityCost) / 100; // Convert pence to pounds
+
+    // Display results
+    document.getElementById('energySavings').textContent = totalEnergySavings.toFixed(2);
+    document.getElementById('costSavings').textContent = costSavings.toFixed(2);
+}
+</script>
