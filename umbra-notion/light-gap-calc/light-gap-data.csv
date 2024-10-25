@@ -1,0 +1,1474 @@
+Blind System,Tube Size,Control Type,Cassette Type,Bearing Deduction,Control Deduction
+Evolve,44,Chain,Cassette,25,25
+Evolve,44,Chain,Fascia,25,25
+Evolve,44,Chain,None,25,25
+Evolve,44,Chain,Separate cassette,23,23
+Evolve,44,Chain,Separate fascia,25,25
+Evolve,52,Chain,Cassette,25,25
+Evolve,52,Chain,Fascia,25,25
+Evolve,52,Chain,None,25,25
+Evolve,52,Chain,Separate cassette,23,23
+Evolve,52,Chain,Separate fascia,25,25
+Evolve,65,Chain,Cassette,26,27
+Evolve,65,Chain,Fascia,26,27
+Evolve,65,Chain,None,26,27
+Evolve,65,Chain,Separate cassette,24,25
+Evolve,65,Chain,Separate fascia,26,27
+Evolve,75,Chain,Cassette,26,27
+Evolve,75,Chain,Fascia,26,27
+Evolve,75,Chain,None,26,27
+Evolve,75,Chain,Separate cassette,24,25
+Evolve,75,Chain,Separate fascia,26,27
+Helios,38,Chain,Fascia,18,25
+Helios,38,Chain,None,18,20
+Helios,43,Chain,Fascia,18,25
+Helios,43,Chain,None,18,20
+Helios,52,Chain,Fascia,18,25
+Helios,52,Chain,None,18,20
+Helios,65,Chain,Fascia,21,28
+Helios,65,Chain,None,21,23
+Helios,75,Chain,Fascia,21,28
+Helios,75,Chain,None,21,23
+Sirios,38,Chain,Fascia,19,22
+Sirios,38,Chain,None,15,17
+Sirios,43,Chain,Fascia,19,22
+Sirios,43,Chain,None,15,17
+Solaris,32,Chain,None,20,17
+Solaris,40,Chain,None,20,17
+Solaris,45,Chain,None,20,17
+College,63,Crank,None,27,46
+Evolve,44,Crank,Cassette,25,39
+Evolve,44,Crank,Fascia,25,39
+Evolve,44,Crank,None,25,39
+Evolve,44,Crank,Separate cassette,23,37
+Evolve,44,Crank,Separate fascia,25,39
+Evolve,52,Crank,Cassette,25,39
+Evolve,52,Crank,Fascia,25,39
+Evolve,52,Crank,None,25,39
+Evolve,52,Crank,Separate cassette,23,37
+Evolve,52,Crank,Separate fascia,25,39
+Evolve,65,Crank,Cassette,26,41
+Evolve,65,Crank,Fascia,26,41
+Evolve,65,Crank,None,26,41
+Evolve,65,Crank,Separate cassette,24,39
+Evolve,65,Crank,Separate fascia,26,41
+Evolve,75,Crank,Cassette,26,41
+Evolve,75,Crank,Fascia,26,41
+Evolve,75,Crank,None,26,41
+Evolve,75,Crank,Separate cassette,24,39
+Evolve,75,Crank,Separate fascia,26,41
+Helios,38,Crank,Fascia,18,37
+Helios,38,Crank,None,18,31
+Helios,43,Crank,Fascia,18,37
+Helios,43,Crank,None,18,31
+Helios,52,Crank,Fascia,18,37
+Helios,52,Crank,None,18,31
+Helios,65,Crank,Fascia,21,40
+Helios,65,Crank,None,21,34
+Helios,75,Crank,Fascia,21,40
+Helios,75,Crank,None,21,34
+Helios RL,65,Crank,Fascia,21,34
+Kampus,48,Crank,None,28,13
+Sirios,38,Crank,Fascia,19,33
+Sirios,38,Crank,None,15,33
+Sirios,43,Crank,Fascia,19,33
+Sirios,43,Crank,None,15,33
+Evolve,44,Nice Era Action,Cassette,25,25
+Evolve,44,Nice Era Action,Fascia,25,25
+Evolve,44,Nice Era Action,None,25,25
+Evolve,44,Nice Era Action,Separate cassette,23,23
+Evolve,44,Nice Era Action,Separate fascia,25,25
+Evolve,52,Nice Era Action,Cassette,25,25
+Evolve,52,Nice Era Action,Fascia,25,25
+Evolve,52,Nice Era Action,None,25,25
+Evolve,52,Nice Era Action,Separate cassette,23,23
+Evolve,52,Nice Era Action,Separate fascia,25,25
+Evolve,65,Nice Era Action,Cassette,25,25
+Evolve,65,Nice Era Action,Fascia,25,25
+Evolve,65,Nice Era Action,None,25,25
+Evolve,65,Nice Era Action,Separate cassette,23,23
+Evolve,65,Nice Era Action,Separate fascia,25,25
+Evolve,75,Nice Era Action,Cassette,25,25
+Evolve,75,Nice Era Action,Fascia,25,25
+Evolve,75,Nice Era Action,None,25,25
+Evolve,75,Nice Era Action,Separate cassette,23,23
+Evolve,75,Nice Era Action,Separate fascia,25,25
+Evolve Zero,44,Nice Era Action,Cassette,19,25
+Evolve Zero,44,Nice Era Action,Fascia,19,25
+Evolve Zero,44,Nice Era Action,None,19,25
+Evolve Zero,44,Nice Era Action,Separate cassette,17,23
+Evolve Zero,44,Nice Era Action,Separate fascia,19,25
+Evolve Zero,52,Nice Era Action,Cassette,19,25
+Evolve Zero,52,Nice Era Action,Fascia,19,25
+Evolve Zero,52,Nice Era Action,None,19,25
+Evolve Zero,52,Nice Era Action,Separate cassette,17,23
+Evolve Zero,52,Nice Era Action,Separate fascia,19,25
+Helios,52,Nice Era Action,Fascia,18,23
+Helios,52,Nice Era Action,None,18,23
+Helios,65,Nice Era Action,Fascia,21,25
+Helios,65,Nice Era Action,None,21,25
+Helios,75,Nice Era Action,Fascia,21,25
+Helios,75,Nice Era Action,None,21,25
+Helios RL,65,Nice Era Action,Fascia,21,25
+Sirios,44,Nice Era Action,Fascia,21,26
+Sirios,44,Nice Era Action,None,17,22
+Solaris,44,Nice Era Action,None,20,22
+Evolve,44,Nice Era Edge,Cassette,25,25
+Evolve,44,Nice Era Edge,Fascia,25,25
+Evolve,44,Nice Era Edge,None,25,25
+Evolve,44,Nice Era Edge,Separate cassette,23,23
+Evolve,44,Nice Era Edge,Separate fascia,25,25
+Evolve,52,Nice Era Edge,Cassette,25,25
+Evolve,52,Nice Era Edge,Fascia,25,25
+Evolve,52,Nice Era Edge,None,25,25
+Evolve,52,Nice Era Edge,Separate cassette,23,23
+Evolve,52,Nice Era Edge,Separate fascia,25,25
+Evolve,65,Nice Era Edge,Cassette,25,25
+Evolve,65,Nice Era Edge,Fascia,25,25
+Evolve,65,Nice Era Edge,None,25,25
+Evolve,65,Nice Era Edge,Separate cassette,23,23
+Evolve,65,Nice Era Edge,Separate fascia,25,25
+Evolve,75,Nice Era Edge,Cassette,25,25
+Evolve,75,Nice Era Edge,Fascia,25,25
+Evolve,75,Nice Era Edge,None,25,25
+Evolve,75,Nice Era Edge,Separate cassette,23,23
+Evolve,75,Nice Era Edge,Separate fascia,25,25
+Evolve Zero,44,Nice Era Edge,Cassette,19,25
+Evolve Zero,44,Nice Era Edge,Fascia,19,25
+Evolve Zero,44,Nice Era Edge,None,19,25
+Evolve Zero,44,Nice Era Edge,Separate cassette,17,23
+Evolve Zero,44,Nice Era Edge,Separate fascia,19,25
+Evolve Zero,52,Nice Era Edge,Cassette,19,25
+Evolve Zero,52,Nice Era Edge,Fascia,19,25
+Evolve Zero,52,Nice Era Edge,None,19,25
+Evolve Zero,52,Nice Era Edge,Separate cassette,17,23
+Evolve Zero,52,Nice Era Edge,Separate fascia,19,25
+Helios,52,Nice Era Edge,Fascia,18,23
+Helios,52,Nice Era Edge,None,18,23
+Helios,65,Nice Era Edge,Fascia,21,25
+Helios,65,Nice Era Edge,None,21,25
+Helios,75,Nice Era Edge,Fascia,21,25
+Helios,75,Nice Era Edge,None,21,25
+Helios RL,65,Nice Era Edge,Fascia,21,25
+Sirios,44,Nice Era Edge,Fascia,21,26
+Sirios,44,Nice Era Edge,None,17,22
+Solaris,44,Nice Era Edge,None,20,22
+Evolve,44,Nice Era Mat ST,Cassette,25,25
+Evolve,44,Nice Era Mat ST,Fascia,25,25
+Evolve,44,Nice Era Mat ST,None,25,25
+Evolve,44,Nice Era Mat ST,Separate cassette,23,23
+Evolve,44,Nice Era Mat ST,Separate fascia,25,25
+Evolve,52,Nice Era Mat ST,Cassette,25,25
+Evolve,52,Nice Era Mat ST,Fascia,25,25
+Evolve,52,Nice Era Mat ST,None,25,25
+Evolve,52,Nice Era Mat ST,Separate cassette,23,23
+Evolve,52,Nice Era Mat ST,Separate fascia,25,25
+Evolve,65,Nice Era Mat ST,Cassette,25,25
+Evolve,65,Nice Era Mat ST,Fascia,25,25
+Evolve,65,Nice Era Mat ST,None,25,25
+Evolve,65,Nice Era Mat ST,Separate cassette,23,23
+Evolve,65,Nice Era Mat ST,Separate fascia,25,25
+Evolve,75,Nice Era Mat ST,Cassette,25,25
+Evolve,75,Nice Era Mat ST,Fascia,25,25
+Evolve,75,Nice Era Mat ST,None,25,25
+Evolve,75,Nice Era Mat ST,Separate cassette,23,23
+Evolve,75,Nice Era Mat ST,Separate fascia,25,25
+Evolve Zero,44,Nice Era Mat ST,Cassette,19,25
+Evolve Zero,44,Nice Era Mat ST,Fascia,19,25
+Evolve Zero,44,Nice Era Mat ST,None,19,25
+Evolve Zero,44,Nice Era Mat ST,Separate cassette,17,23
+Evolve Zero,44,Nice Era Mat ST,Separate fascia,19,25
+Evolve Zero,52,Nice Era Mat ST,Cassette,19,25
+Evolve Zero,52,Nice Era Mat ST,Fascia,19,25
+Evolve Zero,52,Nice Era Mat ST,None,19,25
+Evolve Zero,52,Nice Era Mat ST,Separate cassette,17,23
+Evolve Zero,52,Nice Era Mat ST,Separate fascia,19,25
+Helios,52,Nice Era Mat ST,Fascia,18,23
+Helios,52,Nice Era Mat ST,None,18,23
+Helios,65,Nice Era Mat ST,Fascia,21,25
+Helios,65,Nice Era Mat ST,None,21,25
+Helios,75,Nice Era Mat ST,Fascia,21,25
+Helios,75,Nice Era Mat ST,None,21,25
+Helios RL,65,Nice Era Mat ST,Fascia,21,25
+Sirios,44,Nice Era Mat ST,Fascia,21,26
+Sirios,44,Nice Era Mat ST,None,17,22
+Solaris,44,Nice Era Mat ST,None,20,22
+Evolve,44,Nice Era S,Cassette,25,25
+Evolve,44,Nice Era S,Fascia,25,25
+Evolve,44,Nice Era S,None,25,25
+Evolve,44,Nice Era S,Separate cassette,23,23
+Evolve,44,Nice Era S,Separate fascia,25,25
+Evolve,52,Nice Era S,Cassette,25,25
+Evolve,52,Nice Era S,Fascia,25,25
+Evolve,52,Nice Era S,None,25,25
+Evolve,52,Nice Era S,Separate cassette,23,23
+Evolve,52,Nice Era S,Separate fascia,25,25
+Evolve,65,Nice Era S,Cassette,25,25
+Evolve,65,Nice Era S,Fascia,25,25
+Evolve,65,Nice Era S,None,25,25
+Evolve,65,Nice Era S,Separate cassette,23,23
+Evolve,65,Nice Era S,Separate fascia,25,25
+Evolve,75,Nice Era S,Cassette,25,25
+Evolve,75,Nice Era S,Fascia,25,25
+Evolve,75,Nice Era S,None,25,25
+Evolve,75,Nice Era S,Separate cassette,23,23
+Evolve,75,Nice Era S,Separate fascia,25,25
+Evolve Zero,44,Nice Era S,Cassette,19,25
+Evolve Zero,44,Nice Era S,Fascia,19,25
+Evolve Zero,44,Nice Era S,None,19,25
+Evolve Zero,44,Nice Era S,Separate cassette,17,23
+Evolve Zero,44,Nice Era S,Separate fascia,19,25
+Evolve Zero,52,Nice Era S,Cassette,19,25
+Evolve Zero,52,Nice Era S,Fascia,19,25
+Evolve Zero,52,Nice Era S,None,19,25
+Evolve Zero,52,Nice Era S,Separate cassette,17,23
+Evolve Zero,52,Nice Era S,Separate fascia,19,25
+Helios,52,Nice Era S,Fascia,18,23
+Helios,52,Nice Era S,None,18,23
+Helios,65,Nice Era S,Fascia,21,25
+Helios,65,Nice Era S,None,21,25
+Helios,75,Nice Era S,Fascia,21,25
+Helios,75,Nice Era S,None,21,25
+Helios RL,65,Nice Era S,Fascia,21,25
+Sirios,44,Nice Era S,Fascia,21,26
+Sirios,44,Nice Era S,None,17,22
+Solaris,44,Nice Era S,None,20,22
+Evolve,44,Nice Era Smart,Cassette,25,25
+Evolve,44,Nice Era Smart,Fascia,25,25
+Evolve,44,Nice Era Smart,None,25,25
+Evolve,44,Nice Era Smart,Separate cassette,23,23
+Evolve,44,Nice Era Smart,Separate fascia,25,25
+Evolve,52,Nice Era Smart,Cassette,25,25
+Evolve,52,Nice Era Smart,Fascia,25,25
+Evolve,52,Nice Era Smart,None,25,25
+Evolve,52,Nice Era Smart,Separate cassette,23,23
+Evolve,52,Nice Era Smart,Separate fascia,25,25
+Evolve,65,Nice Era Smart,Cassette,25,25
+Evolve,65,Nice Era Smart,Fascia,25,25
+Evolve,65,Nice Era Smart,None,25,25
+Evolve,65,Nice Era Smart,Separate cassette,23,23
+Evolve,65,Nice Era Smart,Separate fascia,25,25
+Evolve,75,Nice Era Smart,Cassette,25,25
+Evolve,75,Nice Era Smart,Fascia,25,25
+Evolve,75,Nice Era Smart,None,25,25
+Evolve,75,Nice Era Smart,Separate cassette,23,23
+Evolve,75,Nice Era Smart,Separate fascia,25,25
+Evolve Zero,44,Nice Era Smart,Cassette,19,25
+Evolve Zero,44,Nice Era Smart,Fascia,19,25
+Evolve Zero,44,Nice Era Smart,None,19,25
+Evolve Zero,44,Nice Era Smart,Separate cassette,17,23
+Evolve Zero,44,Nice Era Smart,Separate fascia,19,25
+Evolve Zero,52,Nice Era Smart,Cassette,19,25
+Evolve Zero,52,Nice Era Smart,Fascia,19,25
+Evolve Zero,52,Nice Era Smart,None,19,25
+Evolve Zero,52,Nice Era Smart,Separate cassette,17,23
+Evolve Zero,52,Nice Era Smart,Separate fascia,19,25
+Helios,52,Nice Era Smart,Fascia,18,23
+Helios,52,Nice Era Smart,None,18,23
+Helios,65,Nice Era Smart,Fascia,21,25
+Helios,65,Nice Era Smart,None,21,25
+Helios,75,Nice Era Smart,Fascia,21,25
+Helios,75,Nice Era Smart,None,21,25
+Helios RL,65,Nice Era Smart,Fascia,21,25
+Sirios,44,Nice Era Smart,Fascia,21,26
+Sirios,44,Nice Era Smart,None,17,22
+Solaris,44,Nice Era Smart,None,20,22
+Evolve,44,Nice Era Star ST,Cassette,25,25
+Evolve,44,Nice Era Star ST,Fascia,25,25
+Evolve,44,Nice Era Star ST,None,25,25
+Evolve,44,Nice Era Star ST,Separate cassette,23,23
+Evolve,44,Nice Era Star ST,Separate fascia,25,25
+Evolve,52,Nice Era Star ST,Cassette,25,25
+Evolve,52,Nice Era Star ST,Fascia,25,25
+Evolve,52,Nice Era Star ST,None,25,25
+Evolve,52,Nice Era Star ST,Separate cassette,23,23
+Evolve,52,Nice Era Star ST,Separate fascia,25,25
+Evolve,65,Nice Era Star ST,Cassette,25,25
+Evolve,65,Nice Era Star ST,Fascia,25,25
+Evolve,65,Nice Era Star ST,None,25,25
+Evolve,65,Nice Era Star ST,Separate cassette,23,23
+Evolve,65,Nice Era Star ST,Separate fascia,25,25
+Evolve,75,Nice Era Star ST,Cassette,25,25
+Evolve,75,Nice Era Star ST,Fascia,25,25
+Evolve,75,Nice Era Star ST,None,25,25
+Evolve,75,Nice Era Star ST,Separate cassette,23,23
+Evolve,75,Nice Era Star ST,Separate fascia,25,25
+Evolve Zero,44,Nice Era Star ST,Cassette,19,25
+Evolve Zero,44,Nice Era Star ST,Fascia,19,25
+Evolve Zero,44,Nice Era Star ST,None,19,25
+Evolve Zero,44,Nice Era Star ST,Separate cassette,17,23
+Evolve Zero,44,Nice Era Star ST,Separate fascia,19,25
+Evolve Zero,52,Nice Era Star ST,Cassette,19,25
+Evolve Zero,52,Nice Era Star ST,Fascia,19,25
+Evolve Zero,52,Nice Era Star ST,None,19,25
+Evolve Zero,52,Nice Era Star ST,Separate cassette,17,23
+Evolve Zero,52,Nice Era Star ST,Separate fascia,19,25
+Helios,52,Nice Era Star ST,Fascia,18,23
+Helios,52,Nice Era Star ST,None,18,23
+Helios,65,Nice Era Star ST,Fascia,21,25
+Helios,65,Nice Era Star ST,None,21,25
+Helios,75,Nice Era Star ST,Fascia,21,25
+Helios,75,Nice Era Star ST,None,21,25
+Helios RL,65,Nice Era Star ST,Fascia,21,25
+Sirios,44,Nice Era Star ST,Fascia,21,26
+Sirios,44,Nice Era Star ST,None,17,22
+Solaris,44,Nice Era Star ST,None,20,22
+Evolve,44,Somfy LS40 WT,Cassette,25,25
+Evolve,44,Somfy LS40 WT,Fascia,25,25
+Evolve,44,Somfy LS40 WT,None,25,25
+Evolve,44,Somfy LS40 WT,Separate cassette,23,23
+Evolve,44,Somfy LS40 WT,Separate fascia,25,25
+Evolve,52,Somfy LS40 WT,Cassette,25,25
+Evolve,52,Somfy LS40 WT,Fascia,25,25
+Evolve,52,Somfy LS40 WT,None,25,25
+Evolve,52,Somfy LS40 WT,Separate cassette,23,23
+Evolve,52,Somfy LS40 WT,Separate fascia,25,25
+Evolve,65,Somfy LS40 WT,Cassette,26,27
+Evolve,65,Somfy LS40 WT,Fascia,26,27
+Evolve,65,Somfy LS40 WT,None,26,27
+Evolve,65,Somfy LS40 WT,Separate cassette,24,25
+Evolve,65,Somfy LS40 WT,Separate fascia,26,27
+Evolve,75,Somfy LS40 WT,Cassette,26,27
+Evolve,75,Somfy LS40 WT,Fascia,26,27
+Evolve,75,Somfy LS40 WT,None,26,27
+Evolve,75,Somfy LS40 WT,Separate cassette,24,25
+Evolve,75,Somfy LS40 WT,Separate fascia,26,27
+Evolve Zero,44,Somfy LS40 WT,Cassette,19,25
+Evolve Zero,44,Somfy LS40 WT,Fascia,19,25
+Evolve Zero,44,Somfy LS40 WT,None,19,25
+Evolve Zero,44,Somfy LS40 WT,Separate cassette,17,23
+Evolve Zero,44,Somfy LS40 WT,Separate fascia,19,25
+Evolve Zero,52,Somfy LS40 WT,Cassette,19,25
+Evolve Zero,52,Somfy LS40 WT,Fascia,19,25
+Evolve Zero,52,Somfy LS40 WT,None,19,25
+Evolve Zero,52,Somfy LS40 WT,Separate cassette,17,23
+Evolve Zero,52,Somfy LS40 WT,Separate fascia,19,25
+Helios,52,Somfy LS40 WT,Fascia,18,23
+Helios,52,Somfy LS40 WT,None,18,23
+Helios,65,Somfy LS40 WT,Fascia,21,25
+Helios,65,Somfy LS40 WT,None,21,25
+Helios,75,Somfy LS40 WT,Fascia,21,25
+Helios,75,Somfy LS40 WT,None,21,25
+Helios RL,65,Somfy LS40 WT,Fascia,21,25
+Sirios,44,Somfy LS40 WT,Fascia,21,26
+Sirios,44,Somfy LS40 WT,None,17,22
+Solaris,44,Somfy LS40 WT,None,20,22
+Evolve,44,Somfy Sonesse 28 RTS WF,Cassette,22,22
+Evolve,44,Somfy Sonesse 28 RTS WF,Fascia,22,22
+Evolve,44,Somfy Sonesse 28 RTS WF,None,22,22
+Evolve,44,Somfy Sonesse 28 RTS WF,Separate cassette,20,20
+Evolve,44,Somfy Sonesse 28 RTS WF,Separate fascia,22,22
+Evolve,52,Somfy Sonesse 28 RTS WF,Cassette,22,22
+Evolve,52,Somfy Sonesse 28 RTS WF,Fascia,22,22
+Evolve,52,Somfy Sonesse 28 RTS WF,None,22,22
+Evolve,52,Somfy Sonesse 28 RTS WF,Separate cassette,20,20
+Evolve,52,Somfy Sonesse 28 RTS WF,Separate fascia,22,22
+Evolve,65,Somfy Sonesse 28 RTS WF,Cassette,25,25
+Evolve,65,Somfy Sonesse 28 RTS WF,Fascia,25,25
+Evolve,65,Somfy Sonesse 28 RTS WF,None,25,25
+Evolve,65,Somfy Sonesse 28 RTS WF,Separate cassette,23,23
+Evolve,65,Somfy Sonesse 28 RTS WF,Separate fascia,25,25
+Evolve,75,Somfy Sonesse 28 RTS WF,Cassette,25,25
+Evolve,75,Somfy Sonesse 28 RTS WF,Fascia,25,25
+Evolve,75,Somfy Sonesse 28 RTS WF,None,25,25
+Evolve,75,Somfy Sonesse 28 RTS WF,Separate cassette,23,23
+Evolve,75,Somfy Sonesse 28 RTS WF,Separate fascia,25,25
+Helios,38,Somfy Sonesse 28 RTS WF,Fascia,18,23
+Helios,38,Somfy Sonesse 28 RTS WF,None,18,23
+Helios,43,Somfy Sonesse 28 RTS WF,Fascia,18,23
+Helios,43,Somfy Sonesse 28 RTS WF,None,18,23
+Helios,52,Somfy Sonesse 28 RTS WF,Fascia,18,23
+Helios,52,Somfy Sonesse 28 RTS WF,None,18,23
+Helios,65,Somfy Sonesse 28 RTS WF,Fascia,21,27
+Helios,65,Somfy Sonesse 28 RTS WF,None,21,27
+Helios,75,Somfy Sonesse 28 RTS WF,Fascia,21,27
+Helios,75,Somfy Sonesse 28 RTS WF,None,21,27
+Sirios,38,Somfy Sonesse 28 RTS WF,Fascia,21,19
+Sirios,38,Somfy Sonesse 28 RTS WF,None,17,15
+Sirios,43,Somfy Sonesse 28 RTS WF,Fascia,21,19
+Sirios,43,Somfy Sonesse 28 RTS WF,None,17,15
+Evolve,44,Somfy Sonesse 28 Zigbee WF,Cassette,22,22
+Evolve,44,Somfy Sonesse 28 Zigbee WF,Fascia,22,22
+Evolve,44,Somfy Sonesse 28 Zigbee WF,None,22,22
+Evolve,44,Somfy Sonesse 28 Zigbee WF,Separate cassette,20,20
+Evolve,44,Somfy Sonesse 28 Zigbee WF,Separate fascia,22,22
+Evolve,52,Somfy Sonesse 28 Zigbee WF,Cassette,22,22
+Evolve,52,Somfy Sonesse 28 Zigbee WF,Fascia,22,22
+Evolve,52,Somfy Sonesse 28 Zigbee WF,None,22,22
+Evolve,52,Somfy Sonesse 28 Zigbee WF,Separate cassette,20,20
+Evolve,52,Somfy Sonesse 28 Zigbee WF,Separate fascia,22,22
+Evolve,65,Somfy Sonesse 28 Zigbee WF,Cassette,25,25
+Evolve,65,Somfy Sonesse 28 Zigbee WF,Fascia,25,25
+Evolve,65,Somfy Sonesse 28 Zigbee WF,None,25,25
+Evolve,65,Somfy Sonesse 28 Zigbee WF,Separate cassette,23,23
+Evolve,65,Somfy Sonesse 28 Zigbee WF,Separate fascia,25,25
+Evolve,75,Somfy Sonesse 28 Zigbee WF,Cassette,25,25
+Evolve,75,Somfy Sonesse 28 Zigbee WF,Fascia,25,25
+Evolve,75,Somfy Sonesse 28 Zigbee WF,None,25,25
+Evolve,75,Somfy Sonesse 28 Zigbee WF,Separate cassette,23,23
+Evolve,75,Somfy Sonesse 28 Zigbee WF,Separate fascia,25,25
+Helios,38,Somfy Sonesse 28 Zigbee WF,Fascia,18,23
+Helios,38,Somfy Sonesse 28 Zigbee WF,None,18,23
+Helios,43,Somfy Sonesse 28 Zigbee WF,Fascia,18,23
+Helios,43,Somfy Sonesse 28 Zigbee WF,None,18,23
+Helios,52,Somfy Sonesse 28 Zigbee WF,Fascia,18,23
+Helios,52,Somfy Sonesse 28 Zigbee WF,None,18,23
+Helios,65,Somfy Sonesse 28 Zigbee WF,Fascia,21,27
+Helios,65,Somfy Sonesse 28 Zigbee WF,None,21,27
+Helios,75,Somfy Sonesse 28 Zigbee WF,Fascia,21,27
+Helios,75,Somfy Sonesse 28 Zigbee WF,None,21,27
+Sirios,38,Somfy Sonesse 28 Zigbee WF,Fascia,21,19
+Sirios,38,Somfy Sonesse 28 Zigbee WF,None,17,15
+Sirios,43,Somfy Sonesse 28 Zigbee WF,Fascia,21,19
+Sirios,43,Somfy Sonesse 28 Zigbee WF,None,17,15
+Evolve,44,Somfy Sonesse 30 DCT,Cassette,22,22
+Evolve,44,Somfy Sonesse 30 DCT,Fascia,22,22
+Evolve,44,Somfy Sonesse 30 DCT,None,22,22
+Evolve,44,Somfy Sonesse 30 DCT,Separate cassette,20,20
+Evolve,44,Somfy Sonesse 30 DCT,Separate fascia,22,22
+Evolve,52,Somfy Sonesse 30 DCT,Cassette,22,22
+Evolve,52,Somfy Sonesse 30 DCT,Fascia,22,22
+Evolve,52,Somfy Sonesse 30 DCT,None,22,22
+Evolve,52,Somfy Sonesse 30 DCT,Separate cassette,20,20
+Evolve,52,Somfy Sonesse 30 DCT,Separate fascia,22,22
+Evolve,65,Somfy Sonesse 30 DCT,Cassette,25,25
+Evolve,65,Somfy Sonesse 30 DCT,Fascia,25,25
+Evolve,65,Somfy Sonesse 30 DCT,None,25,25
+Evolve,65,Somfy Sonesse 30 DCT,Separate cassette,23,23
+Evolve,65,Somfy Sonesse 30 DCT,Separate fascia,25,25
+Evolve,75,Somfy Sonesse 30 DCT,Cassette,25,25
+Evolve,75,Somfy Sonesse 30 DCT,Fascia,25,25
+Evolve,75,Somfy Sonesse 30 DCT,None,25,25
+Evolve,75,Somfy Sonesse 30 DCT,Separate cassette,23,23
+Evolve,75,Somfy Sonesse 30 DCT,Separate fascia,25,25
+Evolve Zero,44,Somfy Sonesse 30 DCT,Cassette,19,23
+Evolve Zero,44,Somfy Sonesse 30 DCT,Fascia,19,23
+Evolve Zero,44,Somfy Sonesse 30 DCT,None,19,23
+Evolve Zero,44,Somfy Sonesse 30 DCT,Separate cassette,17,21
+Evolve Zero,44,Somfy Sonesse 30 DCT,Separate fascia,19,23
+Evolve Zero,52,Somfy Sonesse 30 DCT,Cassette,19,23
+Evolve Zero,52,Somfy Sonesse 30 DCT,Fascia,19,23
+Evolve Zero,52,Somfy Sonesse 30 DCT,None,19,23
+Evolve Zero,52,Somfy Sonesse 30 DCT,Separate cassette,17,21
+Evolve Zero,52,Somfy Sonesse 30 DCT,Separate fascia,19,23
+Helios,38,Somfy Sonesse 30 DCT,Fascia,18,23
+Helios,38,Somfy Sonesse 30 DCT,None,18,23
+Helios,43,Somfy Sonesse 30 DCT,Fascia,18,23
+Helios,43,Somfy Sonesse 30 DCT,None,18,23
+Helios,52,Somfy Sonesse 30 DCT,Fascia,18,23
+Helios,52,Somfy Sonesse 30 DCT,None,18,23
+Helios,65,Somfy Sonesse 30 DCT,Fascia,21,27
+Helios,65,Somfy Sonesse 30 DCT,None,21,27
+Helios,75,Somfy Sonesse 30 DCT,Fascia,21,27
+Helios,75,Somfy Sonesse 30 DCT,None,21,27
+Sirios,38,Somfy Sonesse 30 DCT,Fascia,21,19
+Sirios,38,Somfy Sonesse 30 DCT,None,17,15
+Sirios,43,Somfy Sonesse 30 DCT,Fascia,21,19
+Sirios,43,Somfy Sonesse 30 DCT,None,17,15
+Evolve,44,Somfy Sonesse 30 RS485,Cassette,22,22
+Evolve,44,Somfy Sonesse 30 RS485,Fascia,22,22
+Evolve,44,Somfy Sonesse 30 RS485,None,22,22
+Evolve,44,Somfy Sonesse 30 RS485,Separate cassette,20,20
+Evolve,44,Somfy Sonesse 30 RS485,Separate fascia,22,22
+Evolve,52,Somfy Sonesse 30 RS485,Cassette,22,22
+Evolve,52,Somfy Sonesse 30 RS485,Fascia,22,22
+Evolve,52,Somfy Sonesse 30 RS485,None,22,22
+Evolve,52,Somfy Sonesse 30 RS485,Separate cassette,20,20
+Evolve,52,Somfy Sonesse 30 RS485,Separate fascia,22,22
+Evolve,65,Somfy Sonesse 30 RS485,Cassette,25,25
+Evolve,65,Somfy Sonesse 30 RS485,Fascia,25,25
+Evolve,65,Somfy Sonesse 30 RS485,None,25,25
+Evolve,65,Somfy Sonesse 30 RS485,Separate cassette,23,23
+Evolve,65,Somfy Sonesse 30 RS485,Separate fascia,25,25
+Evolve,75,Somfy Sonesse 30 RS485,Cassette,25,25
+Evolve,75,Somfy Sonesse 30 RS485,Fascia,25,25
+Evolve,75,Somfy Sonesse 30 RS485,None,25,25
+Evolve,75,Somfy Sonesse 30 RS485,Separate cassette,23,23
+Evolve,75,Somfy Sonesse 30 RS485,Separate fascia,25,25
+Evolve Zero,44,Somfy Sonesse 30 RS485,Cassette,19,23
+Evolve Zero,44,Somfy Sonesse 30 RS485,Fascia,19,23
+Evolve Zero,44,Somfy Sonesse 30 RS485,None,19,23
+Evolve Zero,44,Somfy Sonesse 30 RS485,Separate cassette,17,21
+Evolve Zero,44,Somfy Sonesse 30 RS485,Separate fascia,19,23
+Evolve Zero,52,Somfy Sonesse 30 RS485,Cassette,19,23
+Evolve Zero,52,Somfy Sonesse 30 RS485,Fascia,19,23
+Evolve Zero,52,Somfy Sonesse 30 RS485,None,19,23
+Evolve Zero,52,Somfy Sonesse 30 RS485,Separate cassette,17,21
+Evolve Zero,52,Somfy Sonesse 30 RS485,Separate fascia,19,23
+Helios,38,Somfy Sonesse 30 RS485,Fascia,18,23
+Helios,38,Somfy Sonesse 30 RS485,None,18,23
+Helios,43,Somfy Sonesse 30 RS485,Fascia,18,23
+Helios,43,Somfy Sonesse 30 RS485,None,18,23
+Helios,52,Somfy Sonesse 30 RS485,Fascia,18,23
+Helios,52,Somfy Sonesse 30 RS485,None,18,23
+Helios,65,Somfy Sonesse 30 RS485,Fascia,21,27
+Helios,65,Somfy Sonesse 30 RS485,None,21,27
+Helios,75,Somfy Sonesse 30 RS485,Fascia,21,27
+Helios,75,Somfy Sonesse 30 RS485,None,21,27
+Sirios,38,Somfy Sonesse 30 RS485,Fascia,21,19
+Sirios,38,Somfy Sonesse 30 RS485,None,17,15
+Sirios,43,Somfy Sonesse 30 RS485,Fascia,21,19
+Sirios,43,Somfy Sonesse 30 RS485,None,17,15
+Evolve,44,Somfy Sonesse 30 RTS,Cassette,22,22
+Evolve,44,Somfy Sonesse 30 RTS,Fascia,22,22
+Evolve,44,Somfy Sonesse 30 RTS,None,22,22
+Evolve,44,Somfy Sonesse 30 RTS,Separate cassette,20,20
+Evolve,44,Somfy Sonesse 30 RTS,Separate fascia,22,22
+Evolve,52,Somfy Sonesse 30 RTS,Cassette,22,22
+Evolve,52,Somfy Sonesse 30 RTS,Fascia,22,22
+Evolve,52,Somfy Sonesse 30 RTS,None,22,22
+Evolve,52,Somfy Sonesse 30 RTS,Separate cassette,20,20
+Evolve,52,Somfy Sonesse 30 RTS,Separate fascia,22,22
+Evolve,65,Somfy Sonesse 30 RTS,Cassette,25,25
+Evolve,65,Somfy Sonesse 30 RTS,Fascia,25,25
+Evolve,65,Somfy Sonesse 30 RTS,None,25,25
+Evolve,65,Somfy Sonesse 30 RTS,Separate cassette,23,23
+Evolve,65,Somfy Sonesse 30 RTS,Separate fascia,25,25
+Evolve,75,Somfy Sonesse 30 RTS,Cassette,25,25
+Evolve,75,Somfy Sonesse 30 RTS,Fascia,25,25
+Evolve,75,Somfy Sonesse 30 RTS,None,25,25
+Evolve,75,Somfy Sonesse 30 RTS,Separate cassette,23,23
+Evolve,75,Somfy Sonesse 30 RTS,Separate fascia,25,25
+Evolve Zero,44,Somfy Sonesse 30 RTS,Cassette,19,23
+Evolve Zero,44,Somfy Sonesse 30 RTS,Fascia,19,23
+Evolve Zero,44,Somfy Sonesse 30 RTS,None,19,23
+Evolve Zero,44,Somfy Sonesse 30 RTS,Separate cassette,17,21
+Evolve Zero,44,Somfy Sonesse 30 RTS,Separate fascia,19,23
+Evolve Zero,52,Somfy Sonesse 30 RTS,Cassette,19,23
+Evolve Zero,52,Somfy Sonesse 30 RTS,Fascia,19,23
+Evolve Zero,52,Somfy Sonesse 30 RTS,None,19,23
+Evolve Zero,52,Somfy Sonesse 30 RTS,Separate cassette,17,21
+Evolve Zero,52,Somfy Sonesse 30 RTS,Separate fascia,19,23
+Helios,38,Somfy Sonesse 30 RTS,Fascia,18,23
+Helios,38,Somfy Sonesse 30 RTS,None,18,23
+Helios,43,Somfy Sonesse 30 RTS,Fascia,18,23
+Helios,43,Somfy Sonesse 30 RTS,None,18,23
+Helios,52,Somfy Sonesse 30 RTS,Fascia,18,23
+Helios,52,Somfy Sonesse 30 RTS,None,18,23
+Helios,65,Somfy Sonesse 30 RTS,Fascia,21,27
+Helios,65,Somfy Sonesse 30 RTS,None,21,27
+Helios,75,Somfy Sonesse 30 RTS,Fascia,21,27
+Helios,75,Somfy Sonesse 30 RTS,None,21,27
+Sirios,38,Somfy Sonesse 30 RTS,Fascia,21,19
+Sirios,38,Somfy Sonesse 30 RTS,None,17,15
+Sirios,43,Somfy Sonesse 30 RTS,Fascia,21,19
+Sirios,43,Somfy Sonesse 30 RTS,None,17,15
+Evolve,44,Somfy Sonesse 30 RTS WF,Cassette,22,22
+Evolve,44,Somfy Sonesse 30 RTS WF,Fascia,22,22
+Evolve,44,Somfy Sonesse 30 RTS WF,None,22,22
+Evolve,44,Somfy Sonesse 30 RTS WF,Separate cassette,20,20
+Evolve,44,Somfy Sonesse 30 RTS WF,Separate fascia,22,22
+Evolve,52,Somfy Sonesse 30 RTS WF,Cassette,22,22
+Evolve,52,Somfy Sonesse 30 RTS WF,Fascia,22,22
+Evolve,52,Somfy Sonesse 30 RTS WF,None,22,22
+Evolve,52,Somfy Sonesse 30 RTS WF,Separate cassette,20,20
+Evolve,52,Somfy Sonesse 30 RTS WF,Separate fascia,22,22
+Evolve,65,Somfy Sonesse 30 RTS WF,Cassette,25,25
+Evolve,65,Somfy Sonesse 30 RTS WF,Fascia,25,25
+Evolve,65,Somfy Sonesse 30 RTS WF,None,25,25
+Evolve,65,Somfy Sonesse 30 RTS WF,Separate cassette,23,23
+Evolve,65,Somfy Sonesse 30 RTS WF,Separate fascia,25,25
+Evolve,75,Somfy Sonesse 30 RTS WF,Cassette,25,25
+Evolve,75,Somfy Sonesse 30 RTS WF,Fascia,25,25
+Evolve,75,Somfy Sonesse 30 RTS WF,None,25,25
+Evolve,75,Somfy Sonesse 30 RTS WF,Separate cassette,23,23
+Evolve,75,Somfy Sonesse 30 RTS WF,Separate fascia,25,25
+Evolve Zero,44,Somfy Sonesse 30 RTS WF,Cassette,19,23
+Evolve Zero,44,Somfy Sonesse 30 RTS WF,Fascia,19,23
+Evolve Zero,44,Somfy Sonesse 30 RTS WF,None,19,23
+Evolve Zero,44,Somfy Sonesse 30 RTS WF,Separate cassette,17,21
+Evolve Zero,44,Somfy Sonesse 30 RTS WF,Separate fascia,19,23
+Evolve Zero,52,Somfy Sonesse 30 RTS WF,Cassette,19,23
+Evolve Zero,52,Somfy Sonesse 30 RTS WF,Fascia,19,23
+Evolve Zero,52,Somfy Sonesse 30 RTS WF,None,19,23
+Evolve Zero,52,Somfy Sonesse 30 RTS WF,Separate cassette,17,21
+Evolve Zero,52,Somfy Sonesse 30 RTS WF,Separate fascia,19,23
+Helios,38,Somfy Sonesse 30 RTS WF,Fascia,18,19
+Helios,38,Somfy Sonesse 30 RTS WF,None,18,19
+Helios,43,Somfy Sonesse 30 RTS WF,Fascia,18,19
+Helios,43,Somfy Sonesse 30 RTS WF,None,18,19
+Helios,52,Somfy Sonesse 30 RTS WF,Fascia,18,19
+Helios,52,Somfy Sonesse 30 RTS WF,None,18,19
+Helios,65,Somfy Sonesse 30 RTS WF,Fascia,21,22
+Helios,65,Somfy Sonesse 30 RTS WF,None,21,22
+Helios,75,Somfy Sonesse 30 RTS WF,Fascia,21,22
+Helios,75,Somfy Sonesse 30 RTS WF,None,21,22
+Sirios,38,Somfy Sonesse 30 RTS WF,Fascia,21,19
+Sirios,38,Somfy Sonesse 30 RTS WF,None,17,15
+Sirios,43,Somfy Sonesse 30 RTS WF,Fascia,21,19
+Sirios,43,Somfy Sonesse 30 RTS WF,None,17,15
+Evolve,44,Somfy Sonesse 30 Zigbee,Cassette,22,22
+Evolve,44,Somfy Sonesse 30 Zigbee,Fascia,22,22
+Evolve,44,Somfy Sonesse 30 Zigbee,None,22,22
+Evolve,44,Somfy Sonesse 30 Zigbee,Separate cassette,20,20
+Evolve,44,Somfy Sonesse 30 Zigbee,Separate fascia,22,22
+Evolve,52,Somfy Sonesse 30 Zigbee,Cassette,22,22
+Evolve,52,Somfy Sonesse 30 Zigbee,Fascia,22,22
+Evolve,52,Somfy Sonesse 30 Zigbee,None,22,22
+Evolve,52,Somfy Sonesse 30 Zigbee,Separate cassette,20,20
+Evolve,52,Somfy Sonesse 30 Zigbee,Separate fascia,22,22
+Evolve,65,Somfy Sonesse 30 Zigbee,Cassette,25,25
+Evolve,65,Somfy Sonesse 30 Zigbee,Fascia,25,25
+Evolve,65,Somfy Sonesse 30 Zigbee,None,25,25
+Evolve,65,Somfy Sonesse 30 Zigbee,Separate cassette,23,23
+Evolve,65,Somfy Sonesse 30 Zigbee,Separate fascia,25,25
+Evolve,75,Somfy Sonesse 30 Zigbee,Cassette,25,25
+Evolve,75,Somfy Sonesse 30 Zigbee,Fascia,25,25
+Evolve,75,Somfy Sonesse 30 Zigbee,None,25,25
+Evolve,75,Somfy Sonesse 30 Zigbee,Separate cassette,23,23
+Evolve,75,Somfy Sonesse 30 Zigbee,Separate fascia,25,25
+Evolve Zero,44,Somfy Sonesse 30 Zigbee,Cassette,19,23
+Evolve Zero,44,Somfy Sonesse 30 Zigbee,Fascia,19,23
+Evolve Zero,44,Somfy Sonesse 30 Zigbee,None,19,23
+Evolve Zero,44,Somfy Sonesse 30 Zigbee,Separate cassette,17,21
+Evolve Zero,44,Somfy Sonesse 30 Zigbee,Separate fascia,19,23
+Evolve Zero,52,Somfy Sonesse 30 Zigbee,Cassette,19,23
+Evolve Zero,52,Somfy Sonesse 30 Zigbee,Fascia,19,23
+Evolve Zero,52,Somfy Sonesse 30 Zigbee,None,19,23
+Evolve Zero,52,Somfy Sonesse 30 Zigbee,Separate cassette,17,21
+Evolve Zero,52,Somfy Sonesse 30 Zigbee,Separate fascia,19,23
+Helios,38,Somfy Sonesse 30 Zigbee,Fascia,18,23
+Helios,38,Somfy Sonesse 30 Zigbee,None,18,23
+Helios,43,Somfy Sonesse 30 Zigbee,Fascia,18,23
+Helios,43,Somfy Sonesse 30 Zigbee,None,18,23
+Helios,52,Somfy Sonesse 30 Zigbee,Fascia,18,23
+Helios,52,Somfy Sonesse 30 Zigbee,None,18,23
+Helios,65,Somfy Sonesse 30 Zigbee,Fascia,21,27
+Helios,65,Somfy Sonesse 30 Zigbee,None,21,27
+Helios,75,Somfy Sonesse 30 Zigbee,Fascia,21,27
+Helios,75,Somfy Sonesse 30 Zigbee,None,21,27
+Sirios,38,Somfy Sonesse 30 Zigbee,Fascia,21,19
+Sirios,38,Somfy Sonesse 30 Zigbee,None,17,15
+Sirios,43,Somfy Sonesse 30 Zigbee,Fascia,21,19
+Sirios,43,Somfy Sonesse 30 Zigbee,None,17,15
+Evolve,44,Somfy Sonesse 30 Zigbee WF,Cassette,22,22
+Evolve,44,Somfy Sonesse 30 Zigbee WF,Fascia,22,22
+Evolve,44,Somfy Sonesse 30 Zigbee WF,None,22,22
+Evolve,44,Somfy Sonesse 30 Zigbee WF,Separate cassette,20,20
+Evolve,44,Somfy Sonesse 30 Zigbee WF,Separate fascia,22,22
+Evolve,52,Somfy Sonesse 30 Zigbee WF,Cassette,22,22
+Evolve,52,Somfy Sonesse 30 Zigbee WF,Fascia,22,22
+Evolve,52,Somfy Sonesse 30 Zigbee WF,None,22,22
+Evolve,52,Somfy Sonesse 30 Zigbee WF,Separate cassette,20,20
+Evolve,52,Somfy Sonesse 30 Zigbee WF,Separate fascia,22,22
+Evolve,65,Somfy Sonesse 30 Zigbee WF,Cassette,25,25
+Evolve,65,Somfy Sonesse 30 Zigbee WF,Fascia,25,25
+Evolve,65,Somfy Sonesse 30 Zigbee WF,None,25,25
+Evolve,65,Somfy Sonesse 30 Zigbee WF,Separate cassette,23,23
+Evolve,65,Somfy Sonesse 30 Zigbee WF,Separate fascia,25,25
+Evolve,75,Somfy Sonesse 30 Zigbee WF,Cassette,25,25
+Evolve,75,Somfy Sonesse 30 Zigbee WF,Fascia,25,25
+Evolve,75,Somfy Sonesse 30 Zigbee WF,None,25,25
+Evolve,75,Somfy Sonesse 30 Zigbee WF,Separate cassette,23,23
+Evolve,75,Somfy Sonesse 30 Zigbee WF,Separate fascia,25,25
+Evolve Zero,44,Somfy Sonesse 30 Zigbee WF,Cassette,19,23
+Evolve Zero,44,Somfy Sonesse 30 Zigbee WF,Fascia,19,23
+Evolve Zero,44,Somfy Sonesse 30 Zigbee WF,None,19,23
+Evolve Zero,44,Somfy Sonesse 30 Zigbee WF,Separate cassette,17,21
+Evolve Zero,44,Somfy Sonesse 30 Zigbee WF,Separate fascia,19,23
+Evolve Zero,52,Somfy Sonesse 30 Zigbee WF,Cassette,19,23
+Evolve Zero,52,Somfy Sonesse 30 Zigbee WF,Fascia,19,23
+Evolve Zero,52,Somfy Sonesse 30 Zigbee WF,None,19,23
+Evolve Zero,52,Somfy Sonesse 30 Zigbee WF,Separate cassette,17,21
+Evolve Zero,52,Somfy Sonesse 30 Zigbee WF,Separate fascia,19,23
+Helios,38,Somfy Sonesse 30 Zigbee WF,Fascia,18,23
+Helios,38,Somfy Sonesse 30 Zigbee WF,None,18,23
+Helios,43,Somfy Sonesse 30 Zigbee WF,Fascia,18,23
+Helios,43,Somfy Sonesse 30 Zigbee WF,None,18,23
+Helios,52,Somfy Sonesse 30 Zigbee WF,Fascia,18,23
+Helios,52,Somfy Sonesse 30 Zigbee WF,None,18,23
+Helios,65,Somfy Sonesse 30 Zigbee WF,Fascia,21,27
+Helios,65,Somfy Sonesse 30 Zigbee WF,None,21,27
+Helios,75,Somfy Sonesse 30 Zigbee WF,Fascia,21,27
+Helios,75,Somfy Sonesse 30 Zigbee WF,None,21,27
+Sirios,38,Somfy Sonesse 30 Zigbee WF,Fascia,21,19
+Sirios,38,Somfy Sonesse 30 Zigbee WF,None,17,15
+Sirios,43,Somfy Sonesse 30 Zigbee WF,Fascia,21,19
+Sirios,43,Somfy Sonesse 30 Zigbee WF,None,17,15
+Evolve,44,Somfy Sonesse 40 IO,Cassette,25,25
+Evolve,44,Somfy Sonesse 40 IO,Fascia,25,25
+Evolve,44,Somfy Sonesse 40 IO,None,25,25
+Evolve,44,Somfy Sonesse 40 IO,Separate cassette,23,23
+Evolve,44,Somfy Sonesse 40 IO,Separate fascia,25,25
+Evolve,52,Somfy Sonesse 40 IO,Cassette,25,25
+Evolve,52,Somfy Sonesse 40 IO,Fascia,25,25
+Evolve,52,Somfy Sonesse 40 IO,None,25,25
+Evolve,52,Somfy Sonesse 40 IO,Separate cassette,23,23
+Evolve,52,Somfy Sonesse 40 IO,Separate fascia,25,25
+Evolve,65,Somfy Sonesse 40 IO,Cassette,26,27
+Evolve,65,Somfy Sonesse 40 IO,Fascia,26,27
+Evolve,65,Somfy Sonesse 40 IO,None,26,27
+Evolve,65,Somfy Sonesse 40 IO,Separate cassette,24,25
+Evolve,65,Somfy Sonesse 40 IO,Separate fascia,26,27
+Evolve,75,Somfy Sonesse 40 IO,Cassette,26,27
+Evolve,75,Somfy Sonesse 40 IO,Fascia,26,27
+Evolve,75,Somfy Sonesse 40 IO,None,26,27
+Evolve,75,Somfy Sonesse 40 IO,Separate cassette,24,25
+Evolve,75,Somfy Sonesse 40 IO,Separate fascia,26,27
+Evolve Zero,44,Somfy Sonesse 40 IO,Cassette,19,25
+Evolve Zero,44,Somfy Sonesse 40 IO,Fascia,19,25
+Evolve Zero,44,Somfy Sonesse 40 IO,None,19,25
+Evolve Zero,44,Somfy Sonesse 40 IO,Separate cassette,17,23
+Evolve Zero,44,Somfy Sonesse 40 IO,Separate fascia,19,25
+Evolve Zero,52,Somfy Sonesse 40 IO,Cassette,19,25
+Evolve Zero,52,Somfy Sonesse 40 IO,Fascia,19,25
+Evolve Zero,52,Somfy Sonesse 40 IO,None,19,25
+Evolve Zero,52,Somfy Sonesse 40 IO,Separate cassette,17,23
+Evolve Zero,52,Somfy Sonesse 40 IO,Separate fascia,19,25
+Helios,52,Somfy Sonesse 40 IO,Fascia,18,23
+Helios,52,Somfy Sonesse 40 IO,None,18,23
+Helios,65,Somfy Sonesse 40 IO,Fascia,21,25
+Helios,65,Somfy Sonesse 40 IO,None,21,25
+Helios,75,Somfy Sonesse 40 IO,Fascia,21,25
+Helios,75,Somfy Sonesse 40 IO,None,21,25
+Helios RL,65,Somfy Sonesse 40 IO,Fascia,21,25
+Sirios,44,Somfy Sonesse 40 IO,Fascia,21,26
+Sirios,44,Somfy Sonesse 40 IO,None,17,22
+Solaris,44,Somfy Sonesse 40 IO,None,20,22
+Evolve,44,Somfy Sonesse 40 RS485,Cassette,23,23
+Evolve,44,Somfy Sonesse 40 RS485,Fascia,23,23
+Evolve,44,Somfy Sonesse 40 RS485,None,23,23
+Evolve,44,Somfy Sonesse 40 RS485,Separate cassette,21,21
+Evolve,44,Somfy Sonesse 40 RS485,Separate fascia,23,23
+Evolve,52,Somfy Sonesse 40 RS485,Cassette,23,23
+Evolve,52,Somfy Sonesse 40 RS485,Fascia,23,23
+Evolve,52,Somfy Sonesse 40 RS485,None,23,23
+Evolve,52,Somfy Sonesse 40 RS485,Separate cassette,21,21
+Evolve,52,Somfy Sonesse 40 RS485,Separate fascia,23,23
+Evolve,65,Somfy Sonesse 40 RS485,Cassette,24,24
+Evolve,65,Somfy Sonesse 40 RS485,Fascia,24,24
+Evolve,65,Somfy Sonesse 40 RS485,None,24,24
+Evolve,65,Somfy Sonesse 40 RS485,Separate cassette,22,22
+Evolve,65,Somfy Sonesse 40 RS485,Separate fascia,24,24
+Evolve,75,Somfy Sonesse 40 RS485,Cassette,24,24
+Evolve,75,Somfy Sonesse 40 RS485,Fascia,24,24
+Evolve,75,Somfy Sonesse 40 RS485,None,24,24
+Evolve,75,Somfy Sonesse 40 RS485,Separate cassette,22,22
+Evolve,75,Somfy Sonesse 40 RS485,Separate fascia,24,24
+Evolve Zero,44,Somfy Sonesse 40 RS485,Cassette,19,23
+Evolve Zero,44,Somfy Sonesse 40 RS485,Fascia,19,23
+Evolve Zero,44,Somfy Sonesse 40 RS485,None,19,23
+Evolve Zero,44,Somfy Sonesse 40 RS485,Separate cassette,17,21
+Evolve Zero,44,Somfy Sonesse 40 RS485,Separate fascia,19,23
+Evolve Zero,52,Somfy Sonesse 40 RS485,Cassette,19,23
+Evolve Zero,52,Somfy Sonesse 40 RS485,Fascia,19,23
+Evolve Zero,52,Somfy Sonesse 40 RS485,None,19,23
+Evolve Zero,52,Somfy Sonesse 40 RS485,Separate cassette,17,21
+Evolve Zero,52,Somfy Sonesse 40 RS485,Separate fascia,19,23
+Helios,52,Somfy Sonesse 40 RS485,Fascia,18,21
+Helios,52,Somfy Sonesse 40 RS485,None,18,21
+Helios,65,Somfy Sonesse 40 RS485,Fascia,21,23
+Helios,65,Somfy Sonesse 40 RS485,None,21,23
+Helios,75,Somfy Sonesse 40 RS485,Fascia,21,23
+Helios,75,Somfy Sonesse 40 RS485,None,21,23
+Helios RL,65,Somfy Sonesse 40 RS485,Fascia,21,23
+Sirios,44,Somfy Sonesse 40 RS485,Fascia,21,24
+Sirios,44,Somfy Sonesse 40 RS485,None,17,20
+Solaris,44,Somfy Sonesse 40 RS485,None,20,20
+Evolve,44,Somfy Sonesse 40 RTS,Cassette,25,25
+Evolve,44,Somfy Sonesse 40 RTS,Fascia,25,25
+Evolve,44,Somfy Sonesse 40 RTS,None,25,25
+Evolve,44,Somfy Sonesse 40 RTS,Separate cassette,23,23
+Evolve,44,Somfy Sonesse 40 RTS,Separate fascia,25,25
+Evolve,52,Somfy Sonesse 40 RTS,Cassette,25,25
+Evolve,52,Somfy Sonesse 40 RTS,Fascia,25,25
+Evolve,52,Somfy Sonesse 40 RTS,None,25,25
+Evolve,52,Somfy Sonesse 40 RTS,Separate cassette,23,23
+Evolve,52,Somfy Sonesse 40 RTS,Separate fascia,25,25
+Evolve,65,Somfy Sonesse 40 RTS,Cassette,26,27
+Evolve,65,Somfy Sonesse 40 RTS,Fascia,26,27
+Evolve,65,Somfy Sonesse 40 RTS,None,26,27
+Evolve,65,Somfy Sonesse 40 RTS,Separate cassette,24,25
+Evolve,65,Somfy Sonesse 40 RTS,Separate fascia,26,27
+Evolve,75,Somfy Sonesse 40 RTS,Cassette,26,27
+Evolve,75,Somfy Sonesse 40 RTS,Fascia,26,27
+Evolve,75,Somfy Sonesse 40 RTS,None,26,27
+Evolve,75,Somfy Sonesse 40 RTS,Separate cassette,24,25
+Evolve,75,Somfy Sonesse 40 RTS,Separate fascia,26,27
+Evolve Zero,44,Somfy Sonesse 40 RTS,Cassette,19,25
+Evolve Zero,44,Somfy Sonesse 40 RTS,Fascia,19,25
+Evolve Zero,44,Somfy Sonesse 40 RTS,None,19,25
+Evolve Zero,44,Somfy Sonesse 40 RTS,Separate cassette,17,23
+Evolve Zero,44,Somfy Sonesse 40 RTS,Separate fascia,19,25
+Evolve Zero,52,Somfy Sonesse 40 RTS,Cassette,19,25
+Evolve Zero,52,Somfy Sonesse 40 RTS,Fascia,19,25
+Evolve Zero,52,Somfy Sonesse 40 RTS,None,19,25
+Evolve Zero,52,Somfy Sonesse 40 RTS,Separate cassette,17,23
+Evolve Zero,52,Somfy Sonesse 40 RTS,Separate fascia,19,25
+Helios,52,Somfy Sonesse 40 RTS,Fascia,18,23
+Helios,52,Somfy Sonesse 40 RTS,None,18,23
+Helios,65,Somfy Sonesse 40 RTS,Fascia,21,25
+Helios,65,Somfy Sonesse 40 RTS,None,21,25
+Helios,75,Somfy Sonesse 40 RTS,Fascia,21,25
+Helios,75,Somfy Sonesse 40 RTS,None,21,25
+Helios RL,65,Somfy Sonesse 40 RTS,Fascia,21,25
+Sirios,44,Somfy Sonesse 40 RTS,Fascia,21,26
+Sirios,44,Somfy Sonesse 40 RTS,None,17,22
+Solaris,44,Somfy Sonesse 40 RTS,None,20,22
+Evolve,44,Somfy Sonesse 40 RTS WF,Cassette,25,25
+Evolve,44,Somfy Sonesse 40 RTS WF,Fascia,25,25
+Evolve,44,Somfy Sonesse 40 RTS WF,None,25,25
+Evolve,44,Somfy Sonesse 40 RTS WF,Separate cassette,23,23
+Evolve,44,Somfy Sonesse 40 RTS WF,Separate fascia,25,25
+Evolve,52,Somfy Sonesse 40 RTS WF,Cassette,25,25
+Evolve,52,Somfy Sonesse 40 RTS WF,Fascia,25,25
+Evolve,52,Somfy Sonesse 40 RTS WF,None,25,25
+Evolve,52,Somfy Sonesse 40 RTS WF,Separate cassette,23,23
+Evolve,52,Somfy Sonesse 40 RTS WF,Separate fascia,25,25
+Evolve,65,Somfy Sonesse 40 RTS WF,Cassette,26,27
+Evolve,65,Somfy Sonesse 40 RTS WF,Fascia,26,27
+Evolve,65,Somfy Sonesse 40 RTS WF,None,26,27
+Evolve,65,Somfy Sonesse 40 RTS WF,Separate cassette,24,25
+Evolve,65,Somfy Sonesse 40 RTS WF,Separate fascia,26,27
+Evolve,75,Somfy Sonesse 40 RTS WF,Cassette,26,27
+Evolve,75,Somfy Sonesse 40 RTS WF,Fascia,26,27
+Evolve,75,Somfy Sonesse 40 RTS WF,None,26,27
+Evolve,75,Somfy Sonesse 40 RTS WF,Separate cassette,24,25
+Evolve,75,Somfy Sonesse 40 RTS WF,Separate fascia,26,27
+Evolve Zero,44,Somfy Sonesse 40 RTS WF,Cassette,19,25
+Evolve Zero,44,Somfy Sonesse 40 RTS WF,Fascia,19,25
+Evolve Zero,44,Somfy Sonesse 40 RTS WF,None,19,25
+Evolve Zero,44,Somfy Sonesse 40 RTS WF,Separate cassette,17,23
+Evolve Zero,44,Somfy Sonesse 40 RTS WF,Separate fascia,19,25
+Evolve Zero,52,Somfy Sonesse 40 RTS WF,Cassette,19,25
+Evolve Zero,52,Somfy Sonesse 40 RTS WF,Fascia,19,25
+Evolve Zero,52,Somfy Sonesse 40 RTS WF,None,19,25
+Evolve Zero,52,Somfy Sonesse 40 RTS WF,Separate cassette,17,23
+Evolve Zero,52,Somfy Sonesse 40 RTS WF,Separate fascia,19,25
+Helios,52,Somfy Sonesse 40 RTS WF,Fascia,18,23
+Helios,52,Somfy Sonesse 40 RTS WF,None,18,23
+Helios,65,Somfy Sonesse 40 RTS WF,Fascia,21,25
+Helios,65,Somfy Sonesse 40 RTS WF,None,21,25
+Helios,75,Somfy Sonesse 40 RTS WF,Fascia,21,25
+Helios,75,Somfy Sonesse 40 RTS WF,None,21,25
+Helios RL,65,Somfy Sonesse 40 RTS WF,Fascia,21,25
+Sirios,44,Somfy Sonesse 40 RTS WF,Fascia,21,26
+Sirios,44,Somfy Sonesse 40 RTS WF,None,17,22
+Solaris,44,Somfy Sonesse 40 RTS WF,None,20,22
+Evolve,44,Somfy Sonesse 40 WT,Cassette,25,25
+Evolve,44,Somfy Sonesse 40 WT,Fascia,25,25
+Evolve,44,Somfy Sonesse 40 WT,None,25,25
+Evolve,44,Somfy Sonesse 40 WT,Separate cassette,23,23
+Evolve,44,Somfy Sonesse 40 WT,Separate fascia,25,25
+Evolve,52,Somfy Sonesse 40 WT,Cassette,25,25
+Evolve,52,Somfy Sonesse 40 WT,Fascia,25,25
+Evolve,52,Somfy Sonesse 40 WT,None,25,25
+Evolve,52,Somfy Sonesse 40 WT,Separate cassette,23,23
+Evolve,52,Somfy Sonesse 40 WT,Separate fascia,25,25
+Evolve,65,Somfy Sonesse 40 WT,Cassette,26,27
+Evolve,65,Somfy Sonesse 40 WT,Fascia,26,27
+Evolve,65,Somfy Sonesse 40 WT,None,26,27
+Evolve,65,Somfy Sonesse 40 WT,Separate cassette,24,25
+Evolve,65,Somfy Sonesse 40 WT,Separate fascia,26,27
+Evolve,75,Somfy Sonesse 40 WT,Cassette,26,27
+Evolve,75,Somfy Sonesse 40 WT,Fascia,26,27
+Evolve,75,Somfy Sonesse 40 WT,None,26,27
+Evolve,75,Somfy Sonesse 40 WT,Separate cassette,24,25
+Evolve,75,Somfy Sonesse 40 WT,Separate fascia,26,27
+Evolve Zero,44,Somfy Sonesse 40 WT,Cassette,19,25
+Evolve Zero,44,Somfy Sonesse 40 WT,Fascia,19,25
+Evolve Zero,44,Somfy Sonesse 40 WT,None,19,25
+Evolve Zero,44,Somfy Sonesse 40 WT,Separate cassette,17,23
+Evolve Zero,44,Somfy Sonesse 40 WT,Separate fascia,19,25
+Evolve Zero,52,Somfy Sonesse 40 WT,Cassette,19,25
+Evolve Zero,52,Somfy Sonesse 40 WT,Fascia,19,25
+Evolve Zero,52,Somfy Sonesse 40 WT,None,19,25
+Evolve Zero,52,Somfy Sonesse 40 WT,Separate cassette,17,23
+Evolve Zero,52,Somfy Sonesse 40 WT,Separate fascia,19,25
+Helios,52,Somfy Sonesse 40 WT,Fascia,18,23
+Helios,52,Somfy Sonesse 40 WT,None,18,23
+Helios,65,Somfy Sonesse 40 WT,Fascia,21,25
+Helios,65,Somfy Sonesse 40 WT,None,21,25
+Helios,75,Somfy Sonesse 40 WT,Fascia,21,25
+Helios,75,Somfy Sonesse 40 WT,None,21,25
+Helios RL,65,Somfy Sonesse 40 WT,Fascia,21,25
+Sirios,44,Somfy Sonesse 40 WT,Fascia,21,26
+Sirios,44,Somfy Sonesse 40 WT,None,17,22
+Solaris,44,Somfy Sonesse 40 WT,None,20,22
+Evolve,44,Somfy Sonesse 40 Zigbee,Cassette,23,23
+Evolve,44,Somfy Sonesse 40 Zigbee,Fascia,23,23
+Evolve,44,Somfy Sonesse 40 Zigbee,None,23,23
+Evolve,44,Somfy Sonesse 40 Zigbee,Separate cassette,21,21
+Evolve,44,Somfy Sonesse 40 Zigbee,Separate fascia,23,23
+Evolve,52,Somfy Sonesse 40 Zigbee,Cassette,23,23
+Evolve,52,Somfy Sonesse 40 Zigbee,Fascia,23,23
+Evolve,52,Somfy Sonesse 40 Zigbee,None,23,23
+Evolve,52,Somfy Sonesse 40 Zigbee,Separate cassette,21,21
+Evolve,52,Somfy Sonesse 40 Zigbee,Separate fascia,23,23
+Evolve,65,Somfy Sonesse 40 Zigbee,Cassette,24,24
+Evolve,65,Somfy Sonesse 40 Zigbee,Fascia,24,24
+Evolve,65,Somfy Sonesse 40 Zigbee,None,24,24
+Evolve,65,Somfy Sonesse 40 Zigbee,Separate cassette,22,22
+Evolve,65,Somfy Sonesse 40 Zigbee,Separate fascia,24,24
+Evolve,75,Somfy Sonesse 40 Zigbee,Cassette,24,24
+Evolve,75,Somfy Sonesse 40 Zigbee,Fascia,24,24
+Evolve,75,Somfy Sonesse 40 Zigbee,None,24,24
+Evolve,75,Somfy Sonesse 40 Zigbee,Separate cassette,22,22
+Evolve,75,Somfy Sonesse 40 Zigbee,Separate fascia,24,24
+Evolve Zero,44,Somfy Sonesse 40 Zigbee,Cassette,19,23
+Evolve Zero,44,Somfy Sonesse 40 Zigbee,Fascia,19,23
+Evolve Zero,44,Somfy Sonesse 40 Zigbee,None,19,23
+Evolve Zero,44,Somfy Sonesse 40 Zigbee,Separate cassette,17,21
+Evolve Zero,44,Somfy Sonesse 40 Zigbee,Separate fascia,19,23
+Evolve Zero,52,Somfy Sonesse 40 Zigbee,Cassette,19,23
+Evolve Zero,52,Somfy Sonesse 40 Zigbee,Fascia,19,23
+Evolve Zero,52,Somfy Sonesse 40 Zigbee,None,19,23
+Evolve Zero,52,Somfy Sonesse 40 Zigbee,Separate cassette,17,21
+Evolve Zero,52,Somfy Sonesse 40 Zigbee,Separate fascia,19,23
+Helios,52,Somfy Sonesse 40 Zigbee,Fascia,18,21
+Helios,52,Somfy Sonesse 40 Zigbee,None,18,21
+Helios,65,Somfy Sonesse 40 Zigbee,Fascia,21,23
+Helios,65,Somfy Sonesse 40 Zigbee,None,21,23
+Helios,75,Somfy Sonesse 40 Zigbee,Fascia,21,23
+Helios,75,Somfy Sonesse 40 Zigbee,None,21,23
+Helios RL,65,Somfy Sonesse 40 Zigbee,Fascia,21,23
+Sirios,44,Somfy Sonesse 40 Zigbee,Fascia,21,24
+Sirios,44,Somfy Sonesse 40 Zigbee,None,17,20
+Solaris,44,Somfy Sonesse 40 Zigbee,None,20,20
+Evolve,44,Somfy Sonesse 40 Zigbee WF,Cassette,23,23
+Evolve,44,Somfy Sonesse 40 Zigbee WF,Fascia,23,23
+Evolve,44,Somfy Sonesse 40 Zigbee WF,None,23,23
+Evolve,44,Somfy Sonesse 40 Zigbee WF,Separate cassette,21,21
+Evolve,44,Somfy Sonesse 40 Zigbee WF,Separate fascia,23,23
+Evolve,52,Somfy Sonesse 40 Zigbee WF,Cassette,23,23
+Evolve,52,Somfy Sonesse 40 Zigbee WF,Fascia,23,23
+Evolve,52,Somfy Sonesse 40 Zigbee WF,None,23,23
+Evolve,52,Somfy Sonesse 40 Zigbee WF,Separate cassette,21,21
+Evolve,52,Somfy Sonesse 40 Zigbee WF,Separate fascia,23,23
+Evolve,65,Somfy Sonesse 40 Zigbee WF,Cassette,24,24
+Evolve,65,Somfy Sonesse 40 Zigbee WF,Fascia,24,24
+Evolve,65,Somfy Sonesse 40 Zigbee WF,None,24,24
+Evolve,65,Somfy Sonesse 40 Zigbee WF,Separate cassette,22,22
+Evolve,65,Somfy Sonesse 40 Zigbee WF,Separate fascia,24,24
+Evolve,75,Somfy Sonesse 40 Zigbee WF,Cassette,24,24
+Evolve,75,Somfy Sonesse 40 Zigbee WF,Fascia,24,24
+Evolve,75,Somfy Sonesse 40 Zigbee WF,None,24,24
+Evolve,75,Somfy Sonesse 40 Zigbee WF,Separate cassette,22,22
+Evolve,75,Somfy Sonesse 40 Zigbee WF,Separate fascia,24,24
+Evolve Zero,44,Somfy Sonesse 40 Zigbee WF,Cassette,19,23
+Evolve Zero,44,Somfy Sonesse 40 Zigbee WF,Fascia,19,23
+Evolve Zero,44,Somfy Sonesse 40 Zigbee WF,None,19,23
+Evolve Zero,44,Somfy Sonesse 40 Zigbee WF,Separate cassette,17,21
+Evolve Zero,44,Somfy Sonesse 40 Zigbee WF,Separate fascia,19,23
+Evolve Zero,52,Somfy Sonesse 40 Zigbee WF,Cassette,19,23
+Evolve Zero,52,Somfy Sonesse 40 Zigbee WF,Fascia,19,23
+Evolve Zero,52,Somfy Sonesse 40 Zigbee WF,None,19,23
+Evolve Zero,52,Somfy Sonesse 40 Zigbee WF,Separate cassette,17,21
+Evolve Zero,52,Somfy Sonesse 40 Zigbee WF,Separate fascia,19,23
+Helios,52,Somfy Sonesse 40 Zigbee WF,Fascia,18,21
+Helios,52,Somfy Sonesse 40 Zigbee WF,None,18,21
+Helios,65,Somfy Sonesse 40 Zigbee WF,Fascia,21,23
+Helios,65,Somfy Sonesse 40 Zigbee WF,None,21,23
+Helios,75,Somfy Sonesse 40 Zigbee WF,Fascia,21,23
+Helios,75,Somfy Sonesse 40 Zigbee WF,None,21,23
+Helios RL,65,Somfy Sonesse 40 Zigbee WF,Fascia,21,23
+Sirios,44,Somfy Sonesse 40 Zigbee WF,Fascia,21,24
+Sirios,44,Somfy Sonesse 40 Zigbee WF,None,17,20
+Solaris,44,Somfy Sonesse 40 Zigbee WF,None,20,20
+Evolve,65,Somfy Sonesse 50 RS485,Cassette,26,35
+Evolve,65,Somfy Sonesse 50 RS485,Fascia,26,35
+Evolve,65,Somfy Sonesse 50 RS485,None,26,35
+Evolve,65,Somfy Sonesse 50 RS485,Separate cassette,24,33
+Evolve,65,Somfy Sonesse 50 RS485,Separate fascia,26,35
+Evolve,75,Somfy Sonesse 50 RS485,Cassette,26,35
+Evolve,75,Somfy Sonesse 50 RS485,Fascia,26,35
+Evolve,75,Somfy Sonesse 50 RS485,None,26,35
+Evolve,75,Somfy Sonesse 50 RS485,Separate cassette,24,33
+Evolve,75,Somfy Sonesse 50 RS485,Separate fascia,26,35
+Helios,65,Somfy Sonesse 50 RS485,Fascia,21,30
+Helios,65,Somfy Sonesse 50 RS485,None,21,30
+Helios,75,Somfy Sonesse 50 RS485,Fascia,21,30
+Helios,75,Somfy Sonesse 50 RS485,None,21,30
+Helios RL,65,Somfy Sonesse 50 RS485,Fascia,21,30
+Evolve,65,Somfy Sonesse 50 RTS,Cassette,26,35
+Evolve,65,Somfy Sonesse 50 RTS,Fascia,26,35
+Evolve,65,Somfy Sonesse 50 RTS,None,26,35
+Evolve,65,Somfy Sonesse 50 RTS,Separate cassette,24,33
+Evolve,65,Somfy Sonesse 50 RTS,Separate fascia,26,35
+Evolve,75,Somfy Sonesse 50 RTS,Cassette,26,35
+Evolve,75,Somfy Sonesse 50 RTS,Fascia,26,35
+Evolve,75,Somfy Sonesse 50 RTS,None,26,35
+Evolve,75,Somfy Sonesse 50 RTS,Separate cassette,24,33
+Evolve,75,Somfy Sonesse 50 RTS,Separate fascia,26,35
+Helios,65,Somfy Sonesse 50 RTS,Fascia,21,30
+Helios,65,Somfy Sonesse 50 RTS,None,21,30
+Helios,75,Somfy Sonesse 50 RTS,Fascia,21,30
+Helios,75,Somfy Sonesse 50 RTS,None,21,30
+Helios RL,65,Somfy Sonesse 50 RTS,Fascia,21,30
+Evolve,65,Somfy Sonesse 50 WT,Cassette,26,35
+Evolve,65,Somfy Sonesse 50 WT,Fascia,26,35
+Evolve,65,Somfy Sonesse 50 WT,None,26,35
+Evolve,65,Somfy Sonesse 50 WT,Separate cassette,24,33
+Evolve,65,Somfy Sonesse 50 WT,Separate fascia,26,35
+Evolve,75,Somfy Sonesse 50 WT,Cassette,26,35
+Evolve,75,Somfy Sonesse 50 WT,Fascia,26,35
+Evolve,75,Somfy Sonesse 50 WT,None,26,35
+Evolve,75,Somfy Sonesse 50 WT,Separate cassette,24,33
+Evolve,75,Somfy Sonesse 50 WT,Separate fascia,26,35
+Helios,65,Somfy Sonesse 50 WT,Fascia,21,30
+Helios,65,Somfy Sonesse 50 WT,None,21,30
+Helios,75,Somfy Sonesse 50 WT,Fascia,21,30
+Helios,75,Somfy Sonesse 50 WT,None,21,30
+Helios RL,65,Somfy Sonesse 50 WT,Fascia,21,30
+Evolve,44,Drive - Chain,None,16,25
+Evolve,44,Drive - Chain,Separate cassette,14,23
+Evolve,44,Drive - Chain,Separate fascia,16,25
+Evolve,52,Drive - Chain,None,16,25
+Evolve,52,Drive - Chain,Separate cassette,14,23
+Evolve,52,Drive - Chain,Separate fascia,16,25
+Evolve,65,Drive - Chain,None,19,27
+Evolve,65,Drive - Chain,Separate cassette,17,25
+Evolve,65,Drive - Chain,Separate fascia,19,27
+Evolve,75,Drive - Chain,None,19,27
+Evolve,75,Drive - Chain,Separate cassette,17,25
+Evolve,75,Drive - Chain,Separate fascia,19,27
+Helios,38,Drive - Chain,None,11,20
+Helios,43,Drive - Chain,None,11,20
+Helios,52,Drive - Chain,None,11,20
+Helios,65,Drive - Chain,None,14,23
+Helios,75,Drive - Chain,None,14,23
+Sirios,38,Drive - Chain,None,11,22
+Sirios,43,Drive - Chain,None,10,22
+Evolve,44,Drive - Crank,None,16,39
+Evolve,44,Drive - Crank,Separate cassette,14,37
+Evolve,44,Drive - Crank,Separate fascia,16,39
+Evolve,52,Drive - Crank,None,16,39
+Evolve,52,Drive - Crank,Separate cassette,14,37
+Evolve,52,Drive - Crank,Separate fascia,16,39
+Evolve,65,Drive - Crank,None,19,41
+Evolve,65,Drive - Crank,Separate cassette,17,39
+Evolve,65,Drive - Crank,Separate fascia,19,41
+Evolve,75,Drive - Crank,None,19,41
+Evolve,75,Drive - Crank,Separate cassette,17,39
+Evolve,75,Drive - Crank,Separate fascia,19,41
+Helios,38,Drive - Crank,None,11,31
+Helios,43,Drive - Crank,None,11,31
+Helios,52,Drive - Crank,None,11,31
+Helios,65,Drive - Crank,None,14,34
+Helios,75,Drive - Crank,None,14,34
+Sirios,38,Drive - Crank,None,11,33
+Sirios,43,Drive - Crank,None,10,33
+Evolve,44,Drive - Nice Era Action,None,16,25
+Evolve,44,Drive - Nice Era Action,Separate cassette,14,23
+Evolve,44,Drive - Nice Era Action,Separate fascia,16,25
+Evolve,52,Drive - Nice Era Action,None,16,25
+Evolve,52,Drive - Nice Era Action,Separate cassette,14,23
+Evolve,52,Drive - Nice Era Action,Separate fascia,16,25
+Evolve,65,Drive - Nice Era Action,None,19,25
+Evolve,65,Drive - Nice Era Action,Separate cassette,17,23
+Evolve,65,Drive - Nice Era Action,Separate fascia,19,25
+Evolve,75,Drive - Nice Era Action,None,19,25
+Evolve,75,Drive - Nice Era Action,Separate cassette,17,23
+Evolve,75,Drive - Nice Era Action,Separate fascia,19,25
+Helios,52,Drive - Nice Era Action,None,11,23
+Helios,65,Drive - Nice Era Action,None,14,25
+Helios,75,Drive - Nice Era Action,None,14,25
+Sirios,44,Drive - Nice Era Action,None,12,22
+Evolve,44,Drive - Nice Era Edge,None,16,25
+Evolve,44,Drive - Nice Era Edge,Separate cassette,14,23
+Evolve,44,Drive - Nice Era Edge,Separate fascia,16,25
+Evolve,52,Drive - Nice Era Edge,None,16,25
+Evolve,52,Drive - Nice Era Edge,Separate cassette,14,23
+Evolve,52,Drive - Nice Era Edge,Separate fascia,16,25
+Evolve,65,Drive - Nice Era Edge,None,19,25
+Evolve,65,Drive - Nice Era Edge,Separate cassette,17,23
+Evolve,65,Drive - Nice Era Edge,Separate fascia,19,25
+Evolve,75,Drive - Nice Era Edge,None,19,25
+Evolve,75,Drive - Nice Era Edge,Separate cassette,17,23
+Evolve,75,Drive - Nice Era Edge,Separate fascia,19,25
+Helios,52,Drive - Nice Era Edge,None,11,23
+Helios,65,Drive - Nice Era Edge,None,14,25
+Helios,75,Drive - Nice Era Edge,None,14,25
+Sirios,44,Drive - Nice Era Edge,None,12,22
+Evolve,44,Drive - Nice Era Mat ST,None,16,25
+Evolve,44,Drive - Nice Era Mat ST,Separate cassette,14,23
+Evolve,44,Drive - Nice Era Mat ST,Separate fascia,16,25
+Evolve,52,Drive - Nice Era Mat ST,None,16,25
+Evolve,52,Drive - Nice Era Mat ST,Separate cassette,14,23
+Evolve,52,Drive - Nice Era Mat ST,Separate fascia,16,25
+Evolve,65,Drive - Nice Era Mat ST,None,19,25
+Evolve,65,Drive - Nice Era Mat ST,Separate cassette,17,23
+Evolve,65,Drive - Nice Era Mat ST,Separate fascia,19,25
+Evolve,75,Drive - Nice Era Mat ST,None,19,25
+Evolve,75,Drive - Nice Era Mat ST,Separate cassette,17,23
+Evolve,75,Drive - Nice Era Mat ST,Separate fascia,19,25
+Helios,52,Drive - Nice Era Mat ST,None,11,23
+Helios,65,Drive - Nice Era Mat ST,None,14,25
+Helios,75,Drive - Nice Era Mat ST,None,14,25
+Sirios,44,Drive - Nice Era Mat ST,None,12,22
+Evolve,44,Drive - Nice Era S,None,16,25
+Evolve,44,Drive - Nice Era S,Separate cassette,14,23
+Evolve,44,Drive - Nice Era S,Separate fascia,16,25
+Evolve,52,Drive - Nice Era S,None,16,25
+Evolve,52,Drive - Nice Era S,Separate cassette,14,23
+Evolve,52,Drive - Nice Era S,Separate fascia,16,25
+Evolve,65,Drive - Nice Era S,None,19,25
+Evolve,65,Drive - Nice Era S,Separate cassette,17,23
+Evolve,65,Drive - Nice Era S,Separate fascia,19,25
+Evolve,75,Drive - Nice Era S,None,19,25
+Evolve,75,Drive - Nice Era S,Separate cassette,17,23
+Evolve,75,Drive - Nice Era S,Separate fascia,19,25
+Helios,52,Drive - Nice Era S,None,11,23
+Helios,65,Drive - Nice Era S,None,14,25
+Helios,75,Drive - Nice Era S,None,14,25
+Sirios,44,Drive - Nice Era S,None,12,22
+Evolve,44,Drive - Nice Era Smart,None,16,25
+Evolve,44,Drive - Nice Era Smart,Separate cassette,14,23
+Evolve,44,Drive - Nice Era Smart,Separate fascia,16,25
+Evolve,52,Drive - Nice Era Smart,None,16,25
+Evolve,52,Drive - Nice Era Smart,Separate cassette,14,23
+Evolve,52,Drive - Nice Era Smart,Separate fascia,16,25
+Evolve,65,Drive - Nice Era Smart,None,19,25
+Evolve,65,Drive - Nice Era Smart,Separate cassette,17,23
+Evolve,65,Drive - Nice Era Smart,Separate fascia,19,25
+Evolve,75,Drive - Nice Era Smart,None,19,25
+Evolve,75,Drive - Nice Era Smart,Separate cassette,17,23
+Evolve,75,Drive - Nice Era Smart,Separate fascia,19,25
+Helios,52,Drive - Nice Era Smart,None,11,23
+Helios,65,Drive - Nice Era Smart,None,14,25
+Helios,75,Drive - Nice Era Smart,None,14,25
+Sirios,44,Drive - Nice Era Smart,None,12,22
+Evolve,44,Drive - Nice Era Star ST,None,16,25
+Evolve,44,Drive - Nice Era Star ST,Separate cassette,14,23
+Evolve,44,Drive - Nice Era Star ST,Separate fascia,16,25
+Evolve,52,Drive - Nice Era Star ST,None,16,25
+Evolve,52,Drive - Nice Era Star ST,Separate cassette,14,23
+Evolve,52,Drive - Nice Era Star ST,Separate fascia,16,25
+Evolve,65,Drive - Nice Era Star ST,None,19,25
+Evolve,65,Drive - Nice Era Star ST,Separate cassette,17,23
+Evolve,65,Drive - Nice Era Star ST,Separate fascia,19,25
+Evolve,75,Drive - Nice Era Star ST,None,19,25
+Evolve,75,Drive - Nice Era Star ST,Separate cassette,17,23
+Evolve,75,Drive - Nice Era Star ST,Separate fascia,19,25
+Helios,52,Drive - Nice Era Star ST,None,11,23
+Helios,65,Drive - Nice Era Star ST,None,14,25
+Helios,75,Drive - Nice Era Star ST,None,14,25
+Sirios,44,Drive - Nice Era Star ST,None,12,22
+Evolve,44,Drive - Somfy Sonesse 28 RTS WF,None,16,22
+Evolve,44,Drive - Somfy Sonesse 28 RTS WF,Separate cassette,14,20
+Evolve,44,Drive - Somfy Sonesse 28 RTS WF,Separate fascia,16,22
+Evolve,52,Drive - Somfy Sonesse 28 RTS WF,None,16,22
+Evolve,52,Drive - Somfy Sonesse 28 RTS WF,Separate cassette,14,20
+Evolve,52,Drive - Somfy Sonesse 28 RTS WF,Separate fascia,16,22
+Evolve,65,Drive - Somfy Sonesse 28 RTS WF,None,19,25
+Evolve,65,Drive - Somfy Sonesse 28 RTS WF,Separate cassette,17,23
+Evolve,65,Drive - Somfy Sonesse 28 RTS WF,Separate fascia,19,25
+Evolve,75,Drive - Somfy Sonesse 28 RTS WF,None,19,25
+Evolve,75,Drive - Somfy Sonesse 28 RTS WF,Separate cassette,17,23
+Evolve,75,Drive - Somfy Sonesse 28 RTS WF,Separate fascia,19,25
+Helios,38,Drive - Somfy Sonesse 28 RTS WF,None,11,23
+Helios,43,Drive - Somfy Sonesse 28 RTS WF,None,11,23
+Helios,52,Drive - Somfy Sonesse 28 RTS WF,None,11,23
+Helios,65,Drive - Somfy Sonesse 28 RTS WF,None,14,27
+Helios,75,Drive - Somfy Sonesse 28 RTS WF,None,14,27
+Sirios,38,Drive - Somfy Sonesse 28 RTS WF,None,10,15
+Sirios,43,Drive - Somfy Sonesse 28 RTS WF,None,10,15
+Evolve,44,Drive - Somfy Sonesse 28 Zigbee WF,None,16,22
+Evolve,44,Drive - Somfy Sonesse 28 Zigbee WF,Separate cassette,14,20
+Evolve,44,Drive - Somfy Sonesse 28 Zigbee WF,Separate fascia,16,22
+Evolve,52,Drive - Somfy Sonesse 28 Zigbee WF,None,16,22
+Evolve,52,Drive - Somfy Sonesse 28 Zigbee WF,Separate cassette,14,20
+Evolve,52,Drive - Somfy Sonesse 28 Zigbee WF,Separate fascia,16,22
+Evolve,65,Drive - Somfy Sonesse 28 Zigbee WF,None,19,25
+Evolve,65,Drive - Somfy Sonesse 28 Zigbee WF,Separate cassette,17,23
+Evolve,65,Drive - Somfy Sonesse 28 Zigbee WF,Separate fascia,19,25
+Evolve,75,Drive - Somfy Sonesse 28 Zigbee WF,None,19,25
+Evolve,75,Drive - Somfy Sonesse 28 Zigbee WF,Separate cassette,17,23
+Evolve,75,Drive - Somfy Sonesse 28 Zigbee WF,Separate fascia,19,25
+Helios,38,Drive - Somfy Sonesse 28 Zigbee WF,None,11,23
+Helios,43,Drive - Somfy Sonesse 28 Zigbee WF,None,11,23
+Helios,52,Drive - Somfy Sonesse 28 Zigbee WF,None,11,23
+Helios,65,Drive - Somfy Sonesse 28 Zigbee WF,None,14,27
+Helios,75,Drive - Somfy Sonesse 28 Zigbee WF,None,14,27
+Sirios,38,Drive - Somfy Sonesse 28 Zigbee WF,None,10,15
+Sirios,43,Drive - Somfy Sonesse 28 Zigbee WF,None,10,15
+Evolve,44,Drive - Somfy Sonesse 30 DCT,None,16,22
+Evolve,44,Drive - Somfy Sonesse 30 DCT,Separate cassette,14,20
+Evolve,44,Drive - Somfy Sonesse 30 DCT,Separate fascia,16,22
+Evolve,52,Drive - Somfy Sonesse 30 DCT,None,16,22
+Evolve,52,Drive - Somfy Sonesse 30 DCT,Separate cassette,14,20
+Evolve,52,Drive - Somfy Sonesse 30 DCT,Separate fascia,16,22
+Evolve,65,Drive - Somfy Sonesse 30 DCT,None,19,25
+Evolve,65,Drive - Somfy Sonesse 30 DCT,Separate cassette,17,23
+Evolve,65,Drive - Somfy Sonesse 30 DCT,Separate fascia,19,25
+Evolve,75,Drive - Somfy Sonesse 30 DCT,None,19,25
+Evolve,75,Drive - Somfy Sonesse 30 DCT,Separate cassette,17,23
+Evolve,75,Drive - Somfy Sonesse 30 DCT,Separate fascia,19,25
+Helios,38,Drive - Somfy Sonesse 30 DCT,None,11,23
+Helios,43,Drive - Somfy Sonesse 30 DCT,None,11,23
+Helios,52,Drive - Somfy Sonesse 30 DCT,None,11,23
+Helios,65,Drive - Somfy Sonesse 30 DCT,None,14,27
+Helios,75,Drive - Somfy Sonesse 30 DCT,None,14,27
+Sirios,38,Drive - Somfy Sonesse 30 DCT,None,10,15
+Sirios,43,Drive - Somfy Sonesse 30 DCT,None,10,15
+Evolve,44,Drive - Somfy Sonesse 30 RS485,None,16,22
+Evolve,44,Drive - Somfy Sonesse 30 RS485,Separate cassette,14,20
+Evolve,44,Drive - Somfy Sonesse 30 RS485,Separate fascia,16,22
+Evolve,52,Drive - Somfy Sonesse 30 RS485,None,16,22
+Evolve,52,Drive - Somfy Sonesse 30 RS485,Separate cassette,14,20
+Evolve,52,Drive - Somfy Sonesse 30 RS485,Separate fascia,16,22
+Evolve,65,Drive - Somfy Sonesse 30 RS485,None,19,25
+Evolve,65,Drive - Somfy Sonesse 30 RS485,Separate cassette,17,23
+Evolve,65,Drive - Somfy Sonesse 30 RS485,Separate fascia,19,25
+Evolve,75,Drive - Somfy Sonesse 30 RS485,None,19,25
+Evolve,75,Drive - Somfy Sonesse 30 RS485,Separate cassette,17,23
+Evolve,75,Drive - Somfy Sonesse 30 RS485,Separate fascia,19,25
+Helios,38,Drive - Somfy Sonesse 30 RS485,None,11,23
+Helios,43,Drive - Somfy Sonesse 30 RS485,None,11,23
+Helios,52,Drive - Somfy Sonesse 30 RS485,None,11,23
+Helios,65,Drive - Somfy Sonesse 30 RS485,None,14,27
+Helios,75,Drive - Somfy Sonesse 30 RS485,None,14,27
+Sirios,38,Drive - Somfy Sonesse 30 RS485,None,10,15
+Sirios,43,Drive - Somfy Sonesse 30 RS485,None,10,15
+Evolve,44,Drive - Somfy Sonesse 30 RTS,None,16,22
+Evolve,44,Drive - Somfy Sonesse 30 RTS,Separate cassette,14,20
+Evolve,44,Drive - Somfy Sonesse 30 RTS,Separate fascia,16,22
+Evolve,52,Drive - Somfy Sonesse 30 RTS,None,16,22
+Evolve,52,Drive - Somfy Sonesse 30 RTS,Separate cassette,14,20
+Evolve,52,Drive - Somfy Sonesse 30 RTS,Separate fascia,16,22
+Evolve,65,Drive - Somfy Sonesse 30 RTS,None,19,25
+Evolve,65,Drive - Somfy Sonesse 30 RTS,Separate cassette,17,23
+Evolve,65,Drive - Somfy Sonesse 30 RTS,Separate fascia,19,25
+Evolve,75,Drive - Somfy Sonesse 30 RTS,None,19,25
+Evolve,75,Drive - Somfy Sonesse 30 RTS,Separate cassette,17,23
+Evolve,75,Drive - Somfy Sonesse 30 RTS,Separate fascia,19,25
+Helios,38,Drive - Somfy Sonesse 30 RTS,None,11,23
+Helios,43,Drive - Somfy Sonesse 30 RTS,None,11,23
+Helios,52,Drive - Somfy Sonesse 30 RTS,None,11,23
+Helios,65,Drive - Somfy Sonesse 30 RTS,None,14,27
+Helios,75,Drive - Somfy Sonesse 30 RTS,None,14,27
+Sirios,38,Drive - Somfy Sonesse 30 RTS,None,10,15
+Sirios,43,Drive - Somfy Sonesse 30 RTS,None,10,15
+Evolve,44,Drive - Somfy Sonesse 30 RTS WF,None,16,22
+Evolve,44,Drive - Somfy Sonesse 30 RTS WF,Separate cassette,14,20
+Evolve,44,Drive - Somfy Sonesse 30 RTS WF,Separate fascia,16,22
+Evolve,52,Drive - Somfy Sonesse 30 RTS WF,None,16,22
+Evolve,52,Drive - Somfy Sonesse 30 RTS WF,Separate cassette,14,20
+Evolve,52,Drive - Somfy Sonesse 30 RTS WF,Separate fascia,16,22
+Evolve,65,Drive - Somfy Sonesse 30 RTS WF,None,19,25
+Evolve,65,Drive - Somfy Sonesse 30 RTS WF,Separate cassette,17,23
+Evolve,65,Drive - Somfy Sonesse 30 RTS WF,Separate fascia,19,25
+Evolve,75,Drive - Somfy Sonesse 30 RTS WF,None,19,25
+Evolve,75,Drive - Somfy Sonesse 30 RTS WF,Separate cassette,17,23
+Evolve,75,Drive - Somfy Sonesse 30 RTS WF,Separate fascia,19,25
+Helios,38,Drive - Somfy Sonesse 30 RTS WF,None,11,19
+Helios,43,Drive - Somfy Sonesse 30 RTS WF,None,11,19
+Helios,52,Drive - Somfy Sonesse 30 RTS WF,None,11,19
+Helios,65,Drive - Somfy Sonesse 30 RTS WF,None,14,22
+Helios,75,Drive - Somfy Sonesse 30 RTS WF,None,14,22
+Sirios,38,Drive - Somfy Sonesse 30 RTS WF,None,10,15
+Sirios,43,Drive - Somfy Sonesse 30 RTS WF,None,10,15
+Evolve,44,Drive - Somfy Sonesse 30 Zigbee,None,16,22
+Evolve,44,Drive - Somfy Sonesse 30 Zigbee,Separate cassette,14,20
+Evolve,44,Drive - Somfy Sonesse 30 Zigbee,Separate fascia,16,22
+Evolve,52,Drive - Somfy Sonesse 30 Zigbee,None,16,22
+Evolve,52,Drive - Somfy Sonesse 30 Zigbee,Separate cassette,14,20
+Evolve,52,Drive - Somfy Sonesse 30 Zigbee,Separate fascia,16,22
+Evolve,65,Drive - Somfy Sonesse 30 Zigbee,None,19,25
+Evolve,65,Drive - Somfy Sonesse 30 Zigbee,Separate cassette,17,23
+Evolve,65,Drive - Somfy Sonesse 30 Zigbee,Separate fascia,19,25
+Evolve,75,Drive - Somfy Sonesse 30 Zigbee,None,19,25
+Evolve,75,Drive - Somfy Sonesse 30 Zigbee,Separate cassette,17,23
+Evolve,75,Drive - Somfy Sonesse 30 Zigbee,Separate fascia,19,25
+Helios,38,Drive - Somfy Sonesse 30 Zigbee,None,11,23
+Helios,43,Drive - Somfy Sonesse 30 Zigbee,None,11,23
+Helios,52,Drive - Somfy Sonesse 30 Zigbee,None,11,23
+Helios,65,Drive - Somfy Sonesse 30 Zigbee,None,14,27
+Helios,75,Drive - Somfy Sonesse 30 Zigbee,None,14,27
+Sirios,38,Drive - Somfy Sonesse 30 Zigbee,None,10,15
+Sirios,43,Drive - Somfy Sonesse 30 Zigbee,None,10,15
+Evolve,44,Drive - Somfy Sonesse 30 Zigbee WF,None,16,22
+Evolve,44,Drive - Somfy Sonesse 30 Zigbee WF,Separate cassette,14,20
+Evolve,44,Drive - Somfy Sonesse 30 Zigbee WF,Separate fascia,16,22
+Evolve,52,Drive - Somfy Sonesse 30 Zigbee WF,None,16,22
+Evolve,52,Drive - Somfy Sonesse 30 Zigbee WF,Separate cassette,14,20
+Evolve,52,Drive - Somfy Sonesse 30 Zigbee WF,Separate fascia,16,22
+Evolve,65,Drive - Somfy Sonesse 30 Zigbee WF,None,19,25
+Evolve,65,Drive - Somfy Sonesse 30 Zigbee WF,Separate cassette,17,23
+Evolve,65,Drive - Somfy Sonesse 30 Zigbee WF,Separate fascia,19,25
+Evolve,75,Drive - Somfy Sonesse 30 Zigbee WF,None,19,25
+Evolve,75,Drive - Somfy Sonesse 30 Zigbee WF,Separate cassette,17,23
+Evolve,75,Drive - Somfy Sonesse 30 Zigbee WF,Separate fascia,19,25
+Helios,38,Drive - Somfy Sonesse 30 Zigbee WF,None,11,23
+Helios,43,Drive - Somfy Sonesse 30 Zigbee WF,None,11,23
+Helios,52,Drive - Somfy Sonesse 30 Zigbee WF,None,11,23
+Helios,65,Drive - Somfy Sonesse 30 Zigbee WF,None,14,27
+Helios,75,Drive - Somfy Sonesse 30 Zigbee WF,None,14,27
+Sirios,38,Drive - Somfy Sonesse 30 Zigbee WF,None,10,15
+Sirios,43,Drive - Somfy Sonesse 30 Zigbee WF,None,10,15
+Evolve,44,Drive - Somfy Sonesse 40 IO,None,16,25
+Evolve,44,Drive - Somfy Sonesse 40 IO,Separate cassette,14,23
+Evolve,44,Drive - Somfy Sonesse 40 IO,Separate fascia,16,25
+Evolve,52,Drive - Somfy Sonesse 40 IO,None,16,25
+Evolve,52,Drive - Somfy Sonesse 40 IO,Separate cassette,14,23
+Evolve,52,Drive - Somfy Sonesse 40 IO,Separate fascia,16,25
+Evolve,65,Drive - Somfy Sonesse 40 IO,None,19,27
+Evolve,65,Drive - Somfy Sonesse 40 IO,Separate cassette,17,25
+Evolve,65,Drive - Somfy Sonesse 40 IO,Separate fascia,19,27
+Evolve,75,Drive - Somfy Sonesse 40 IO,None,19,27
+Evolve,75,Drive - Somfy Sonesse 40 IO,Separate cassette,17,25
+Evolve,75,Drive - Somfy Sonesse 40 IO,Separate fascia,19,27
+Helios,52,Drive - Somfy Sonesse 40 IO,None,11,23
+Helios,65,Drive - Somfy Sonesse 40 IO,None,14,25
+Helios,75,Drive - Somfy Sonesse 40 IO,None,14,25
+Sirios,44,Drive - Somfy Sonesse 40 IO,None,12,22
+Evolve,44,Drive - Somfy Sonesse 40 RS485,None,16,23
+Evolve,44,Drive - Somfy Sonesse 40 RS485,Separate cassette,14,21
+Evolve,44,Drive - Somfy Sonesse 40 RS485,Separate fascia,16,23
+Evolve,52,Drive - Somfy Sonesse 40 RS485,None,16,23
+Evolve,52,Drive - Somfy Sonesse 40 RS485,Separate cassette,14,21
+Evolve,52,Drive - Somfy Sonesse 40 RS485,Separate fascia,16,23
+Evolve,65,Drive - Somfy Sonesse 40 RS485,None,19,24
+Evolve,65,Drive - Somfy Sonesse 40 RS485,Separate cassette,17,22
+Evolve,65,Drive - Somfy Sonesse 40 RS485,Separate fascia,19,24
+Evolve,75,Drive - Somfy Sonesse 40 RS485,None,19,24
+Evolve,75,Drive - Somfy Sonesse 40 RS485,Separate cassette,17,22
+Evolve,75,Drive - Somfy Sonesse 40 RS485,Separate fascia,19,24
+Helios,52,Drive - Somfy Sonesse 40 RS485,None,11,21
+Helios,65,Drive - Somfy Sonesse 40 RS485,None,14,23
+Helios,75,Drive - Somfy Sonesse 40 RS485,None,14,23
+Sirios,44,Drive - Somfy Sonesse 40 RS485,None,12,20
+Evolve,44,Drive - Somfy Sonesse 40 RTS,None,16,25
+Evolve,44,Drive - Somfy Sonesse 40 RTS,Separate cassette,14,23
+Evolve,44,Drive - Somfy Sonesse 40 RTS,Separate fascia,16,25
+Evolve,52,Drive - Somfy Sonesse 40 RTS,None,16,25
+Evolve,52,Drive - Somfy Sonesse 40 RTS,Separate cassette,14,23
+Evolve,52,Drive - Somfy Sonesse 40 RTS,Separate fascia,16,25
+Evolve,65,Drive - Somfy Sonesse 40 RTS,None,19,27
+Evolve,65,Drive - Somfy Sonesse 40 RTS,Separate cassette,17,25
+Evolve,65,Drive - Somfy Sonesse 40 RTS,Separate fascia,19,27
+Evolve,75,Drive - Somfy Sonesse 40 RTS,None,19,27
+Evolve,75,Drive - Somfy Sonesse 40 RTS,Separate cassette,17,25
+Evolve,75,Drive - Somfy Sonesse 40 RTS,Separate fascia,19,27
+Helios,52,Drive - Somfy Sonesse 40 RTS,None,11,23
+Helios,65,Drive - Somfy Sonesse 40 RTS,None,14,25
+Helios,75,Drive - Somfy Sonesse 40 RTS,None,14,25
+Sirios,44,Drive - Somfy Sonesse 40 RTS,None,12,22
+Evolve,44,Drive - Somfy Sonesse 40 RTS WF,None,16,25
+Evolve,44,Drive - Somfy Sonesse 40 RTS WF,Separate cassette,14,23
+Evolve,44,Drive - Somfy Sonesse 40 RTS WF,Separate fascia,16,25
+Evolve,52,Drive - Somfy Sonesse 40 RTS WF,None,16,25
+Evolve,52,Drive - Somfy Sonesse 40 RTS WF,Separate cassette,14,23
+Evolve,52,Drive - Somfy Sonesse 40 RTS WF,Separate fascia,16,25
+Evolve,65,Drive - Somfy Sonesse 40 RTS WF,None,19,27
+Evolve,65,Drive - Somfy Sonesse 40 RTS WF,Separate cassette,17,25
+Evolve,65,Drive - Somfy Sonesse 40 RTS WF,Separate fascia,19,27
+Evolve,75,Drive - Somfy Sonesse 40 RTS WF,None,19,27
+Evolve,75,Drive - Somfy Sonesse 40 RTS WF,Separate cassette,17,25
+Evolve,75,Drive - Somfy Sonesse 40 RTS WF,Separate fascia,19,27
+Helios,52,Drive - Somfy Sonesse 40 RTS WF,None,11,23
+Helios,65,Drive - Somfy Sonesse 40 RTS WF,None,14,25
+Helios,75,Drive - Somfy Sonesse 40 RTS WF,None,14,25
+Sirios,44,Drive - Somfy Sonesse 40 RTS WF,None,12,22
+Evolve,44,Drive - Somfy Sonesse 40 WT,None,16,25
+Evolve,44,Drive - Somfy Sonesse 40 WT,Separate cassette,14,23
+Evolve,44,Drive - Somfy Sonesse 40 WT,Separate fascia,16,25
+Evolve,52,Drive - Somfy Sonesse 40 WT,None,16,25
+Evolve,52,Drive - Somfy Sonesse 40 WT,Separate cassette,14,23
+Evolve,52,Drive - Somfy Sonesse 40 WT,Separate fascia,16,25
+Evolve,65,Drive - Somfy Sonesse 40 WT,None,19,27
+Evolve,65,Drive - Somfy Sonesse 40 WT,Separate cassette,17,25
+Evolve,65,Drive - Somfy Sonesse 40 WT,Separate fascia,19,27
+Evolve,75,Drive - Somfy Sonesse 40 WT,None,19,27
+Evolve,75,Drive - Somfy Sonesse 40 WT,Separate cassette,17,25
+Evolve,75,Drive - Somfy Sonesse 40 WT,Separate fascia,19,27
+Helios,52,Drive - Somfy Sonesse 40 WT,None,11,23
+Helios,65,Drive - Somfy Sonesse 40 WT,None,14,25
+Helios,75,Drive - Somfy Sonesse 40 WT,None,14,25
+Sirios,44,Drive - Somfy Sonesse 40 WT,None,12,22
+Evolve,44,Drive - Somfy Sonesse 40 Zigbee,None,16,23
+Evolve,44,Drive - Somfy Sonesse 40 Zigbee,Separate cassette,14,21
+Evolve,44,Drive - Somfy Sonesse 40 Zigbee,Separate fascia,16,23
+Evolve,52,Drive - Somfy Sonesse 40 Zigbee,None,16,23
+Evolve,52,Drive - Somfy Sonesse 40 Zigbee,Separate cassette,14,21
+Evolve,52,Drive - Somfy Sonesse 40 Zigbee,Separate fascia,16,23
+Evolve,65,Drive - Somfy Sonesse 40 Zigbee,None,19,24
+Evolve,65,Drive - Somfy Sonesse 40 Zigbee,Separate cassette,17,22
+Evolve,65,Drive - Somfy Sonesse 40 Zigbee,Separate fascia,19,24
+Evolve,75,Drive - Somfy Sonesse 40 Zigbee,None,19,24
+Evolve,75,Drive - Somfy Sonesse 40 Zigbee,Separate cassette,17,22
+Evolve,75,Drive - Somfy Sonesse 40 Zigbee,Separate fascia,19,24
+Helios,52,Drive - Somfy Sonesse 40 Zigbee,None,11,21
+Helios,65,Drive - Somfy Sonesse 40 Zigbee,None,14,23
+Helios,75,Drive - Somfy Sonesse 40 Zigbee,None,14,23
+Sirios,44,Drive - Somfy Sonesse 40 Zigbee,None,12,20
+Evolve,44,Drive - Somfy Sonesse 40 Zigbee WF,None,16,23
+Evolve,44,Drive - Somfy Sonesse 40 Zigbee WF,Separate cassette,14,21
+Evolve,44,Drive - Somfy Sonesse 40 Zigbee WF,Separate fascia,16,23
+Evolve,52,Drive - Somfy Sonesse 40 Zigbee WF,None,16,23
+Evolve,52,Drive - Somfy Sonesse 40 Zigbee WF,Separate cassette,14,21
+Evolve,52,Drive - Somfy Sonesse 40 Zigbee WF,Separate fascia,16,23
+Evolve,65,Drive - Somfy Sonesse 40 Zigbee WF,None,19,24
+Evolve,65,Drive - Somfy Sonesse 40 Zigbee WF,Separate cassette,17,22
+Evolve,65,Drive - Somfy Sonesse 40 Zigbee WF,Separate fascia,19,24
+Evolve,75,Drive - Somfy Sonesse 40 Zigbee WF,None,19,24
+Evolve,75,Drive - Somfy Sonesse 40 Zigbee WF,Separate cassette,17,22
+Evolve,75,Drive - Somfy Sonesse 40 Zigbee WF,Separate fascia,19,24
+Helios,52,Drive - Somfy Sonesse 40 Zigbee WF,None,11,21
+Helios,65,Drive - Somfy Sonesse 40 Zigbee WF,None,14,23
+Helios,75,Drive - Somfy Sonesse 40 Zigbee WF,None,14,23
+Sirios,44,Drive - Somfy Sonesse 40 Zigbee WF,None,12,20
+Evolve,65,Drive - Somfy Sonesse 50 RS485,None,19,35
+Evolve,65,Drive - Somfy Sonesse 50 RS485,Separate cassette,17,33
+Evolve,65,Drive - Somfy Sonesse 50 RS485,Separate fascia,19,35
+Evolve,75,Drive - Somfy Sonesse 50 RS485,None,19,35
+Evolve,75,Drive - Somfy Sonesse 50 RS485,Separate cassette,17,33
+Evolve,75,Drive - Somfy Sonesse 50 RS485,Separate fascia,19,35
+Helios,65,Drive - Somfy Sonesse 50 RS485,None,14,30
+Helios,75,Drive - Somfy Sonesse 50 RS485,None,14,30
+Evolve,65,Drive - Somfy Sonesse 50 RTS,None,19,35
+Evolve,65,Drive - Somfy Sonesse 50 RTS,Separate cassette,17,33
+Evolve,65,Drive - Somfy Sonesse 50 RTS,Separate fascia,19,35
+Evolve,75,Drive - Somfy Sonesse 50 RTS,None,19,35
+Evolve,75,Drive - Somfy Sonesse 50 RTS,Separate cassette,17,33
+Evolve,75,Drive - Somfy Sonesse 50 RTS,Separate fascia,19,35
+Helios,65,Drive - Somfy Sonesse 50 RTS,None,14,30
+Helios,75,Drive - Somfy Sonesse 50 RTS,None,14,30
+Evolve,65,Drive - Somfy Sonesse 50 WT,None,19,35
+Evolve,65,Drive - Somfy Sonesse 50 WT,Separate cassette,17,33
+Evolve,65,Drive - Somfy Sonesse 50 WT,Separate fascia,19,35
+Evolve,75,Drive - Somfy Sonesse 50 WT,None,19,35
+Evolve,75,Drive - Somfy Sonesse 50 WT,Separate cassette,17,33
+Evolve,75,Drive - Somfy Sonesse 50 WT,Separate fascia,19,35
+Helios,65,Drive - Somfy Sonesse 50 WT,None,14,30
+Helios,75,Drive - Somfy Sonesse 50 WT,None,14,30
+Evolve,44,End Slave Unit,None,25,6
+Evolve,44,End Slave Unit,Separate cassette,23,8
+Evolve,44,End Slave Unit,Separate fascia,25,6
+Evolve,52,End Slave Unit,None,25,6
+Evolve,52,End Slave Unit,Separate cassette,23,8
+Evolve,52,End Slave Unit,Separate fascia,25,6
+Evolve,65,End Slave Unit,None,26,9
+Evolve,65,End Slave Unit,Separate cassette,24,11
+Evolve,65,End Slave Unit,Separate fascia,26,9
+Evolve,75,End Slave Unit,None,26,9
+Evolve,75,End Slave Unit,Separate cassette,24,11
+Evolve,75,End Slave Unit,Separate fascia,26,9
+Helios,38,End Slave Unit,None,18,10
+Helios,43,End Slave Unit,None,18,10
+Helios,52,End Slave Unit,None,18,10
+Helios,65,End Slave Unit,None,21,13
+Helios,75,End Slave Unit,None,21,13
+Sirios,38,End Slave Unit,None,15,12
+Sirios,43,End Slave Unit,None,15,12
+Sirios,44,End Slave Unit,None,17,12
+Evolve,44,Middle Slave Unit,None,6,16
+Evolve,44,Middle Slave Unit,Separate cassette,8,14
+Evolve,44,Middle Slave Unit,Separate fascia,6,16
+Evolve,52,Middle Slave Unit,None,6,16
+Evolve,52,Middle Slave Unit,Separate cassette,8,14
+Evolve,52,Middle Slave Unit,Separate fascia,6,16
+Evolve,65,Middle Slave Unit,None,9,19
+Evolve,65,Middle Slave Unit,Separate cassette,11,17
+Evolve,65,Middle Slave Unit,Separate fascia,9,19
+Evolve,75,Middle Slave Unit,None,9,19
+Evolve,75,Middle Slave Unit,Separate cassette,11,17
+Evolve,75,Middle Slave Unit,Separate fascia,9,19
+Helios,38,Middle Slave Unit,None,10,11
+Helios,43,Middle Slave Unit,None,10,11
+Helios,52,Middle Slave Unit,None,10,11
+Helios,65,Middle Slave Unit,None,13,14
+Helios,75,Middle Slave Unit,None,13,14
+Sirios,38,Middle Slave Unit,None,12,10
+Sirios,43,Middle Slave Unit,None,12,10
+Sirios,44,Middle Slave Unit,None,12,10
