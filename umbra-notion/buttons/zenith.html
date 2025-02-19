@@ -14,30 +14,36 @@
             background: transparent;
         }
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 0;
+            font-size: 20px;
+            font-weight: bold;
             cursor: pointer;
             border: none;
-            background-color: #7b7662;
-            color: white;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            background: none;
+            color: #7b7662;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         button:hover {
-            background-color: #5b573f;
-        }
-        button:active {
-            transform: scale(0.98);
+            text-decoration: underline;
         }
         #tempInput {
             position: absolute;
             left: -9999px;
         }
+        .icon {
+            width: 20px;
+            height: 20px;
+        }
     </style>
 </head>
 <body>
-    <button onclick="copyToClipboard()">Zenith - Copy Link</button>
-    <input type="text" id="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/zenith" readonly>
+    <button onclick="copyToClipboard()">
+        <img src="https://res.cloudinary.com/devoqxxo8/image/upload/v1739961644/copypaste_meoewc.png" alt="Copy Icon" class="icon"> Zenith - Copy Link <img src="https://res.cloudinary.com/devoqxxo8/image/upload/v1739961644/copypaste_meoewc.png" alt="Copy Icon" class="icon">
+    </button>
+    <input type="text" id="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/zenith?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
     <script>
         function copyToClipboard() {
             const tempInput = document.getElementById('tempInput');
@@ -45,9 +51,9 @@
             document.execCommand('copy');
             
             const btn = document.querySelector('button');
-            btn.textContent = 'Zenith Link Copied!';
+            btn.innerHTML = `<img src="https://res.cloudinary.com/devoqxxo8/image/upload/v1739961644/copypaste_meoewc.png" alt="Copy Icon" class="icon"> [insert ubiquitous button-pressed confirmation here] <img src="https://res.cloudinary.com/devoqxxo8/image/upload/v1739961644/copypaste_meoewc.png" alt="Copy Icon" class="icon">`;
             setTimeout(() => {
-                btn.textContent = 'Zenith - Copy Link';
+                btn.innerHTML = `<img src="https://res.cloudinary.com/devoqxxo8/image/upload/v1739961644/copypaste_meoewc.png" alt="Copy Icon" class="icon"> Zenith - Copy Link <img src="https://res.cloudinary.com/devoqxxo8/image/upload/v1739961644/copypaste_meoewc.png" alt="Copy Icon" class="icon">`;
             }, 2000);
         }
     </script>
