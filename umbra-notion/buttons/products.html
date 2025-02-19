@@ -6,33 +6,50 @@
   <title>Blind Matrix</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
       padding: 0;
       background-color: #f4f4f4;
+      text-align: center;
     }
+
     h2 {
       color: #333;
-      font-size: 1.5em;
+      font-size: 2em;
       margin-bottom: 10px;
+      font-weight: bold;
+      font-family: 'Georgia', serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: linear-gradient(to right, #c7bb9b, #a89f85);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
+
     .button-container {
       display: flex;
+      justify-content: center;
       flex-wrap: wrap;
       gap: 10px;
+      margin-bottom: 20px;
     }
+
     .button-container button {
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
+      padding: 12px 24px;
+      background-color: #c7bb9b;
+      color: #333;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 14px;
-      transition: background-color 0.3s ease;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     }
+
     .button-container button:hover {
-      background-color: #45a049;
+      background-color: #b5a88a;
+      transform: translateY(-2px);
     }
   </style>
 </head>
