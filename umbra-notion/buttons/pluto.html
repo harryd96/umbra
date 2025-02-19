@@ -40,13 +40,13 @@
             navigator.clipboard.writeText(text)
                 .then(() => {
                     const btn = document.querySelector('button');
-                    btn.textContent = 'Copied!';
+                    btn.textContent = 'you copied the heck out of that link';
                     setTimeout(() => {
-                        btn.textContent = 'Pluto - Copy Link';
+                        btn.textContent = 'Copy Pluto Link';
                     }, 2000);
                 })
                 .catch(err => {
-                    console.error("Failed to copy:", err);
+                    console.error("something went pop:", err);
                     alert("Failed to copy link");
                 });
         }
