@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy Link Button</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: transparent;
+            gap: 20px;
+        }
+        .button-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap; /* Allows buttons to wrap in case of small screens */
+            justify-content: center;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 2px solid #7b7662;
+            background: none;
+            color: #7b7662;
+            font-family: Arial, sans-serif;
+            border-radius: 5px;
+            min-width: 200px; /* Ensures all buttons have a minimum width */
+            text-align: center;
+        }
+        button:hover {
+            background: #7b7662;
+            color: white;
+        }
+        .tempInput {
+            position: absolute;
+            left: -9999px;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-row">
+        <button onclick="copyToClipboard('erisTemp', this)">Eris - Copy Link</button>
+        <input type="text" id="erisTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/eris?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+        
+        <button onclick="copyToClipboard('persiaTemp', this)">Persia - Copy Link</button>
+        <input type="text" id="persiaTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/persia?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+        
+        <button onclick="copyToClipboard('atlantisTemp', this)">Atlantis - Copy Link</button>
+        <input type="text" id="atlantisTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/atlantis?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+    </div>
+    
+    <div class="button-row">
+        <button onclick="copyToClipboard('neptuneTemp', this)">Neptune - Copy Link</button>
+        <input type="text" id="neptuneTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/neptune?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+        
+        <button onclick="copyTo
