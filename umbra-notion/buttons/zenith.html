@@ -7,53 +7,87 @@
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
             background: transparent;
+            gap: 20px;
+        }
+        .button-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap; /* Allows buttons to wrap in case of small screens */
+            justify-content: center;
         }
         button {
-            padding: 0;
+            padding: 10px 20px;
             font-size: 20px;
             font-weight: bold;
             cursor: pointer;
-            border: none;
+            border: 2px solid #7b7662;
             background: none;
             color: #7b7662;
             font-family: Arial, sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            border-radius: 5px;
+            min-width: 200px; /* Ensures all buttons have a minimum width */
+            text-align: center;
         }
         button:hover {
-            text-decoration: underline;
+            background: #7b7662;
+            color: white;
         }
-        #tempInput {
+        .tempInput {
             position: absolute;
             left: -9999px;
-        }
-        .icon {
-            width: 20px;
-            height: 20px;
         }
     </style>
 </head>
 <body>
-    <button onclick="copyToClipboard()">
-        <img src="https://res.cloudinary.com/devoqxxo8/image/upload/v1739961644/copypaste_meoewc.png" alt="Copy Icon" class="icon"> Zenith - Copy Link <img src="https://res.cloudinary.com/devoqxxo8/image/upload/v1739961644/copypaste_meoewc.png" alt="Copy Icon" class="icon">
-    </button>
-    <input type="text" id="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/zenith?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+    <div class="button-row">
+        <button onclick="copyToClipboard('plutoTemp', this)">Pluto - Copy Link</button>
+        <input type="text" id="plutoTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/pluto?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+        
+        <button onclick="copyToClipboard('zenithTemp', this)">Zenith - Copy Link</button>
+        <input type="text" id="zenithTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/zenith?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+        
+        <button onclick="copyToClipboard('lunarTemp', this)">Lunar - Copy Link</button>
+        <input type="text" id="lunarTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/lunar?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+    </div>
+    
+    <div class="button-row">
+        <button onclick="copyToClipboard('viennaTemp', this)">Vienna - Copy Link</button>
+        <input type="text" id="viennaTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/vienna?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+        
+        <button onclick="copyToClipboard('globeTemp', this)">Globe - Copy Link</button>
+        <input type="text" id="globeTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/globe?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+        
+        <button onclick="copyToClipboard('crescentTemp', this)">Crescent - Copy Link</button>
+        <input type="text" id="crescentTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/crescent?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+    </div>
+    
     <script>
-        function copyToClipboard() {
-            const tempInput = document.getElementById('tempInput');
+        function copyToClipboard(inputId, button) {
+            const tempInput = document.getElementById(inputId);
             tempInput.select();
             document.execCommand('copy');
             
-            const btn = document.querySelector('button');
-            btn.innerHTML = `<img src="https://res.cloudinary.com/devoqxxo8/image/upload/v1739961644/copypaste_meoewc.png" alt="Copy Icon" class="icon"> [insert ubiquitous button-pressed confirmation here] <img src="https://res.cloudinary.com/devoqxxo8/image/upload/v1739961644/copypaste_meoewc.png" alt="Copy Icon" class="icon">`;
+            button.textContent = "[insert ubiquitous button-pressed confirmation here]";
             setTimeout(() => {
-                btn.innerHTML = `<img src="https://res.cloudinary.com/devoqxxo8/image/upload/v1739961644/copypaste_meoewc.png" alt="Copy Icon" class="icon"> Zenith - Copy Link <img src="https://res.cloudinary.com/devoqxxo8/image/upload/v1739961644/copypaste_meoewc.png" alt="Copy Icon" class="icon">`;
+                if (inputId === 'zenithTemp') {
+                    button.textContent = "Zenith - Copy Link";
+                } else if (inputId === 'plutoTemp') {
+                    button.textContent = "Pluto - Copy Link";
+                } else if (inputId === 'lunarTemp') {
+                    button.textContent = "Lunar - Copy Link";
+                } else if (inputId === 'viennaTemp') {
+                    button.textContent = "Vienna - Copy Link";
+                } else if (inputId === 'globeTemp') {
+                    button.textContent = "Globe - Copy Link";
+                } else {
+                    button.textContent = "Crescent - Copy Link";
+                }
             }, 2000);
         }
     </script>
