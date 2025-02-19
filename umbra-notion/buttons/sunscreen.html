@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy Link Button</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: transparent;
+            gap: 20px;
+        }
+        .button-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap; /* Allows buttons to wrap in case of small screens */
+            justify-content: center;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 2px solid #7b7662;
+            background: none;
+            color: #7b7662;
+            font-family: Arial, sans-serif;
+            border-radius: 5px;
+            min-width: 200px; /* Ensures all buttons have a minimum width */
+            text-align: center;
+        }
+        button:hover {
+            background: #7b7662;
+            color: white;
+        }
+        .tempInput {
+            position: absolute;
+            left: -9999px;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-row">
+        <button onclick="copyToClipboard('spectrum5010Temp', this)">Spectrum 5010 - Copy Link</button>
+        <input type="text" id="spectrum5010Temp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/spectrum-5010?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+        
+        <button onclick="copyToClipboard('spectrum4060Temp', this)">Spectrum 4060 - Copy Link</button>
+        <input type="text" id="spectrum4060Temp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/spectrum-4060?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+        
+        <button onclick="copyToClipboard('repelTemp', this)">Repel - Copy Link</button>
+        <input type="text" id="repelTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/repel?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+    </div>
+    
+    <div class="button-row">
+        <button onclick="copyToClipboard('axiomTemp', this)">Axiom - Copy Link</button>
+        <input type="text" id="axiomTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/axiom?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+        
+        <button onclick="copyToClipboard('wildeTemp', this)">Wilde - Copy Link</button>
+        <input type="text" id="wildeTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/wilde?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+        
+        <button onclick="copyToClipboard('orlaTemp', this)">Orla - Copy Link</button>
+        <input type="text" id="orlaTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/orla?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+    </div>
+    
+    <div class="button-row">
+        <button onclick="copyToClipboard('vantageTemp', this)">Vantage - Copy Link</button>
+        <input type="text" id="vantageTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/vantage?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+        
+        <button onclick="copyToClipboard('antanaTemp', this)">Antana - Copy Link</button>
+        <input type="text" id="antanaTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/antana?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+        
+        <button onclick="copyToClipboard('helixTemp', this)">Helix - Copy Link</button>
+        <input type="text" id="helixTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/helix?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+    </div>
+    
+    <script>
+        function copyToClipboard(inputId, button) {
+            const tempInput = document.getElementById(inputId);
+            tempInput.select();
+            document.execCommand('copy');
+            
+            button.textContent = "[insert ubiquitous button-pressed confirmation here]";
+            setTimeout(() => {
+                if (inputId === 'spectrum5010Temp') {
+                    button.textContent = "Spectrum 5010 - Copy Link";
+                } else if (inputId === 'spectrum4060Temp') {
+                    button.textContent = "Spectrum 4060 - Copy Link";
+                } else if (inputId === 'repelTemp') {
+                    button.textContent = "Repel - Copy Link";
+                } else if (inputId === 'axiomTemp') {
+                    button.textContent = "Axiom - Copy Link";
+                } else if (inputId === 'wildeTemp') {
+                    button.textContent = "Wilde - Copy Link";
+                } else if (inputId === 'orlaTemp') {
+                    button.textContent = "Orla - Copy Link";
+                } else if (inputId === 'vantageTemp') {
+                    button.textContent = "Vantage - Copy Link";
+                } else if (inputId === 'antanaTemp') {
+                    button.textContent = "Antana - Copy Link";
+                } else {
+                    button.textContent = "Helix - Copy Link";
+                }
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
