@@ -52,7 +52,8 @@
   <script>
     function copyToClipboard(url) {
       navigator.clipboard.writeText(url).then(() => {
-        alert('Copied to clipboard: ' + url);
+        let explosion = new Audio('https://www.fesliyanstudios.com/play-mp3/4385');
+        explosion.play();
       }).catch(err => {
         console.error('Failed to copy: ', err);
       });
