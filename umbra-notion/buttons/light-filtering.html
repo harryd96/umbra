@@ -60,4 +60,36 @@
         <button onclick="copyToClipboard('neptuneTemp', this)">Neptune - Copy Link</button>
         <input type="text" id="neptuneTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/neptune?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
         
-        <button onclick="copyTo
+        <button onclick="copyToClipboard('dreamTemp', this)">Dream - Copy Link</button>
+        <input type="text" id="dreamTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/dream?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+        
+        <button onclick="copyToClipboard('mistTemp', this)">Mist - Copy Link</button>
+        <input type="text" id="mistTemp" class="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/mist?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12" readonly>
+    </div>
+    
+    <script>
+        function copyToClipboard(inputId, button) {
+            const tempInput = document.getElementById(inputId);
+            tempInput.select();
+            document.execCommand('copy');
+            
+            button.textContent = "[insert ubiquitous button-pressed confirmation here]";
+            setTimeout(() => {
+                if (inputId === 'erisTemp') {
+                    button.textContent = "Eris - Copy Link";
+                } else if (inputId === 'persiaTemp') {
+                    button.textContent = "Persia - Copy Link";
+                } else if (inputId === 'atlantisTemp') {
+                    button.textContent = "Atlantis - Copy Link";
+                } else if (inputId === 'neptuneTemp') {
+                    button.textContent = "Neptune - Copy Link";
+                } else if (inputId === 'dreamTemp') {
+                    button.textContent = "Dream - Copy Link";
+                } else {
+                    button.textContent = "Mist - Copy Link";
+                }
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
