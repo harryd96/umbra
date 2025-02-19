@@ -33,14 +33,14 @@
     </style>
 </head>
 <body>
-    <button onclick="copyToClipboard()"></button>
+    <button onclick="copyToClipboard()">Zenith - Copy Link</button>
     <script>
         function copyToClipboard() {
             const text = "https://docs.umbrashading.co.uk/fabrics/our-fabric-range/zenith";
             navigator.clipboard.writeText(text)
                 .then(() => {
                     const btn = document.querySelector('button');
-                    btn.textContent = 'Copied!';
+                    btn.textContent = 'Zenith Link Copied!';
                     setTimeout(() => {
                         btn.textContent = 'Zenith - Copy Link';
                     }, 2000);
