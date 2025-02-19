@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy to Clipboard</title>
+    <style>
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        function copyToClipboard() {
+            const text = "https://docs.umbrashading.co.uk/fabrics/our-fabric-range/zenith";
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Link copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy:", err);
+            });
+        }
+    </script>
+</head>
+<body>
+
+    <button onclick="copyToClipboard()">Copy Link</button>
+
+</body>
+</html>
