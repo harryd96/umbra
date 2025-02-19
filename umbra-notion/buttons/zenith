@@ -3,36 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Copy to Clipboard</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Copy Link Button</title>
     <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: transparent;
+        }
         button {
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
             border: none;
-            background-color: #007bff;
+            background-color: #7b7662;
             color: white;
             border-radius: 5px;
+            transition: background-color 0.3s;
         }
-
         button:hover {
-            background-color: #0056b3;
+            background-color: #5b573f;
+        }
+        button:active {
+            transform: scale(0.98);
         }
     </style>
+</head>
+<body>
+    <button onclick="copyToClipboard()">Copy Link</button>
     <script>
         function copyToClipboard() {
             const text = "https://docs.umbrashading.co.uk/fabrics/our-fabric-range/zenith";
-            navigator.clipboard.writeText(text).then(() => {
-                alert("Link copied to clipboard!");
-            }).catch(err => {
-                console.error("Failed to copy:", err);
-            });
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    const btn = document.querySelector('button');
+                    btn.textContent = 'Copied!';
+                    setTimeout(() => {
+                        btn.textContent = 'Copy Link';
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error("Failed to copy:", err);
+                    alert("Failed to copy link");
+                });
         }
     </script>
-</head>
-<body>
-
-    <button onclick="copyToClipboard()">Copy Link</button>
-
 </body>
 </html>
