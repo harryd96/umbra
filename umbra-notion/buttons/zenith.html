@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Copy Link Button</title>
     <style>
         body {
@@ -30,25 +29,26 @@
         button:active {
             transform: scale(0.98);
         }
+        #tempInput {
+            position: absolute;
+            left: -9999px;
+        }
     </style>
 </head>
 <body>
     <button onclick="copyToClipboard()">Zenith - Copy Link</button>
+    <input type="text" id="tempInput" value="https://docs.umbrashading.co.uk/fabrics/our-fabric-range/zenith" readonly>
     <script>
         function copyToClipboard() {
-            const text = "https://docs.umbrashading.co.uk/fabrics/our-fabric-range/zenith?utm_source=email_hyperlink&utm_medium=email&utm_campaign=12";
-            navigator.clipboard.writeText(text)
-                .then(() => {
-                    const btn = document.querySelector('button');
-                    btn.textContent = '[insert obligatory link copy confirmation here]';
-                    setTimeout(() => {
-                        btn.textContent = 'Zenith - Copy Link';
-                    }, 2000);
-                })
-                .catch(err => {
-                    console.error("Failed to copy:", err);
-                    alert("Failed to copy link");
-                });
+            const tempInput = document.getElementById('tempInput');
+            tempInput.select();
+            document.execCommand('copy');
+            
+            const btn = document.querySelector('button');
+            btn.textContent = 'Zenith Link Copied!';
+            setTimeout(() => {
+                btn.textContent = 'Zenith - Copy Link';
+            }, 2000);
         }
     </script>
 </body>
