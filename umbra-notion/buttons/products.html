@@ -33,10 +33,20 @@
             border-radius: 5px;
             min-width: 200px; /* Ensures all buttons have a minimum width */
             text-align: center;
+            transition: transform 0.2s ease-in-out;
         }
         button:hover {
             background: #7b7662;
             color: white;
+        }
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
         }
   </style>
 </head>
@@ -44,50 +54,56 @@
 
 <h2>Roller Blinds</h2>
 <div class="button-container">
-  <button onclick="copyToClipboard('https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/evolve')">Evolve</button>
-  <button onclick="copyToClipboard('https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/evolve-zero')">Evolve Zero</button>
-  <button onclick="copyToClipboard('https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/evolve-fascia')">Evolve Fascia</button>
-  <button onclick="copyToClipboard('https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/evolve-cassette')">Evolve Cassette</button>
-  <button onclick="copyToClipboard('https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/sirios')">Sirios</button>
-  <button onclick="copyToClipboard('https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/solaris')">Solaris</button>
+  <button onclick="copyToClipboard(this, 'https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/evolve')">Evolve</button>
+  <button onclick="copyToClipboard(this, 'https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/evolve-zero')">Evolve Zero</button>
+  <button onclick="copyToClipboard(this, 'https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/evolve-fascia')">Evolve Fascia</button>
+  <button onclick="copyToClipboard(this, 'https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/evolve-cassette')">Evolve Cassette</button>
+  <button onclick="copyToClipboard(this, 'https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/sirios')">Sirios</button>
+  <button onclick="copyToClipboard(this, 'https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/solaris')">Solaris</button>
 </div>
 
 <h2>Blackout Blinds</h2>
 <div class="button-container">
-  <button onclick="copyToClipboard('https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/kuro')">Kuro</button>
-  <button onclick="copyToClipboard('https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/kurolok')">KuroLok</button>
+  <button onclick="copyToClipboard(this, 'https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/kuro')">Kuro</button>
+  <button onclick="copyToClipboard(this, 'https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/kurolok')">KuroLok</button>
 </div>
 
 <h2>Rooflight Blinds</h2>
 <div class="button-container">
-  <button onclick="copyToClipboard('https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/kurolok-rl')">KuroLok RL</button>
-  <button onclick="copyToClipboard('https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/kurolok-twin-rl')">KuroLok Twin RL</button>
+  <button onclick="copyToClipboard(this, 'https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/kurolok-rl')">KuroLok RL</button>
+  <button onclick="copyToClipboard(this, 'https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/kurolok-twin-rl')">KuroLok Twin RL</button>
 </div>
 
 <h2>Concealment</h2>
 <div class="button-container">
-  <button onclick="copyToClipboard('https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/s-series')">S-Series</button>
-  <button onclick="copyToClipboard('https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/c-series')">C-Series</button>
-  <button onclick="copyToClipboard('https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/tracktrim')">Tracktrim</button>
+  <button onclick="copyToClipboard(this, 'https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/s-series')">S-Series</button>
+  <button onclick="copyToClipboard(this, 'https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/c-series')">C-Series</button>
+  <button onclick="copyToClipboard(this, 'https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/tracktrim')">Tracktrim</button>
 </div>
 
 <h2>Curtain Tracks</h2>
 <div class="button-container">
-  <button onclick="copyToClipboard('https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/flow')">Flow</button>
+  <button onclick="copyToClipboard(this, 'https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/flow')">Flow</button>
 </div>
 
 <h2>Roman Blinds</h2>
 <div class="button-container">
-  <button onclick="copyToClipboard('https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/cascade')">Cascade</button>
+  <button onclick="copyToClipboard(this, 'https://docs.umbrashading.co.uk/blindmatrix-the-ordering-guide/cascade')">Cascade</button>
 </div>
 
 <script>
-  function copyToClipboard(link) {
-      navigator.clipboard.writeText(link).then(() => {
-          alert("Copied to clipboard: " + link);
-      }).catch(err => {
+  async function copyToClipboard(button, link) {
+      try {
+          if (!navigator.clipboard) {
+              throw new Error("Clipboard API not supported");
+          }
+          await navigator.clipboard.writeText(link);
+          button.classList.add('shake');
+          setTimeout(() => button.classList.remove('shake'), 300);
+      } catch (err) {
+          alert("Failed to copy link. Please try manually.");
           console.error('Error copying text: ', err);
-      });
+      }
   }
 </script>
 
