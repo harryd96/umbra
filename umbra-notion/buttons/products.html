@@ -5,60 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blind Matrix</title>
   <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      text-align: center;
-      background-color: #f4f4f4;
-      padding: 20px;
-    }
-    h2 {
-      color: #000;
-      font-size: 2em;
-      font-weight: bold;
-      font-family: 'Georgia', serif;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-    .button-container {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 30px;
-    }
-    .button-container button {
-      padding: 12px 24px;
-      background-color: #c7bb9b;
-      color: #333;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-      transition: all 0.3s ease;
-    }
-    .button-container button:hover {
-      background-color: #b5a88a;
-      transform: translateY(-2px);
-    }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: transparent;
+            gap: 20px;
+        }
+        .button-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap; /* Allows buttons to wrap in case of small screens */
+            justify-content: center;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 2px solid #7b7662;
+            background: none;
+            color: #7b7662;
+            font-family: Arial, sans-serif;
+            border-radius: 5px;
+            min-width: 200px; /* Ensures all buttons have a minimum width */
+            text-align: center;
+        }
+        button:hover {
+            background: #7b7662;
+            color: white;
+        }
+        .tempInput {
+            position: absolute;
+            left: -9999px;
+        }
   </style>
-  <script>
-    function copyToClipboard(url) {
-      if (!navigator.clipboard) {
-        console.error('Clipboard API not supported');
-        return;
-      }
-      const tempInput = document.createElement('input');
-      tempInput.value = url;
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      document.execCommand('copy');
-      document.body.removeChild(tempInput);
-      
-      let explosion = new Audio('https://www.fesliyanstudios.com/play-mp3/387');
-      explosion.play();
-    }
-  </script>
 </head>
 <body>
 
