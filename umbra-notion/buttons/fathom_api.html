@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fathom Analytics Live Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .dashboard {
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            width: 50%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h1 { color: #333; }
+        .metric {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Live Website Analytics</h1>
+        <p class="metric">Visitors: <span id="visitors">Loading...</span></p>
+        <p class="metric">Avg Time on Site: <span id="time">Loading...</span> sec</p>
+        <p class="metric">Bounce Rate: <span id="bounce">Loading...</span>%</p>
+    </div>
+
+    <script>
+        async function fetchAnalytics() {
+            try {
+                const response = await fetch('https://api.usefathom.com/v1/aggregations', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer 3377699722000012|uu6ZnY5prCVVLKIRn1kAmbOxoRAXEG75JfzS1bqI',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (!Array.isArray(data) || data.length === 0 || !data[0]) {
+                    throw new Error('Invalid data format or empty response');
+                }
+                
+                document.getElementById('visitors').innerText = data[0].visitors ?? 'N/A';
+                document.getElementById('time').innerText = data[0].average_time_on_site ?? 'N/A';
+                document.getElementById('bounce').innerText = data[0].bounce_rate ?? 'N/A';
+            } catch (error) {
+                console.error('Error fetching analytics:', error);
+                document.getElementById('visitors').innerText = 'Error';
+                document.getElementById('time').innerText = 'Error';
+                document.getElementById('bounce').innerText = 'Error';
+            }
+        }
+        
+        fetchAnalytics();
+        setInterval(fetchAnalytics, 10000); // Update every 10 seconds
+    </script>
+</body>
+</html>
