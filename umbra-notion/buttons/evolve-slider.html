@@ -1,0 +1,39 @@
+import { useState } from 'react';
+
+export default function UmbraBlindsSlider() {
+  const images = [
+    {src: "https://via.placeholder.com/800x400?text=Champagne+hardware", caption: "Champagne hardware"},
+    {src: "https://via.placeholder.com/800x400?text=White+hardware", caption: "White hardware"},
+    {src: "https://via.placeholder.com/800x400?text=Black+hardware", caption: "Black hardware"},
+    {src: "https://via.placeholder.com/800x400?text=Black+hardware+variant", caption: "Black hardware variant"},
+    {src: "https://via.placeholder.com/800x400?text=Dark+hardware", caption: "Dark hardware"},
+    {src: "https://via.placeholder.com/800x400?text=Silver+hardware", caption: "Silver hardware"}
+  ];
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const changeSlide = (direction) => {
+    setCurrentSlide((currentSlide + direction + images.length) % images.length);
+  };
+
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="max-w-3xl w-full relative rounded overflow-hidden shadow-lg">
+        <div id="slider">
+          <img src={images[currentSlide].src} alt="Slide Image" className="w-full object-cover" />
+          <div className="absolute bottom-0 bg-black bg-opacity-50 text-white text-center w-full py-2">
+            {images[currentSlide].caption}
+          </div>
+        </div>
+
+        <button onClick={() => changeSlide(-1)} className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full p-2">
+          &#10094;
+        </button>
+
+        <button onClick={() => changeSlide(1)} className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full p-2">
+          &#10095;
+        </button>
+      </div>
+    </div>
+  );
+}
