@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang=\"en\">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
     <title>Image Slider</title>
     <style>
         * {
@@ -18,29 +18,36 @@
             overflow: hidden;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-
-        .slides {
-            display: flex;
-            width: 400%;
-            animation: slide 16s infinite;
+            position: relative;
         }
 
         .slides img {
             width: 100%;
-            flex-shrink: 0;
+            display: none;
         }
 
-        @keyframes slide {
-            0% { transform: translateX(0); }
-            20% { transform: translateX(0); }
-            25% { transform: translateX(-100%); }
-            45% { transform: translateX(-100%); }
-            50% { transform: translateX(-200%); }
-            70% { transform: translateX(-200%); }
-            75% { transform: translateX(-300%); }
-            95% { transform: translateX(-300%); }
-            100% { transform: translateX(0); }
+        .slides img.active {
+            display: block;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
         }
 
         @media (max-width: 768px) {
@@ -52,14 +59,38 @@
 </head>
 <body>
 
-<div class="slider">
-    <div class="slides">
-        <img src="https://umbrashading.co.uk/wp-content/uploads/2025/03/2022.10.04-Umbra-Blinds6052-1024x1024.jpg" alt="Slide 1">
-        <img src="https://umbrashading.co.uk/wp-content/uploads/2025/03/2022.10.04-Umbra-Blinds6041-Main-1024x683.jpg" alt="Slide 2">
-        <img src="https://umbrashading.co.uk/wp-content/uploads/2025/03/2022.10.04-Umbra-Blinds6119-1024x683.jpg" alt="Slide 3">
-        <img src="https://umbrashading.co.uk/wp-content/uploads/2025/03/2022.10.04-Umbra-Blinds6141-1024x683.jpg" alt="Slide 4">
+<div class=\"slider\">
+    <div class=\"slides\">
+        <img src=\"https://umbrashading.co.uk/wp-content/uploads/2025/03/2022.10.04-Umbra-Blinds6052-1024x1024.jpg\" class=\"active\" alt=\"Slide 1\">
+        <img src=\"https://umbrashading.co.uk/wp-content/uploads/2025/03/2022.10.04-Umbra-Blinds6041-Main-1024x683.jpg\" alt=\"Slide 2\">
+        <img src=\"https://umbrashading.co.uk/wp-content/uploads/2025/03/2022.10.04-Umbra-Blinds6119-1024x683.jpg\" alt=\"Slide 3\">
+        <img src=\"https://umbrashading.co.uk/wp-content/uploads/2025/03/2022.10.04-Umbra-Blinds6141-1024x683.jpg\" alt=\"Slide 4\">
     </div>
+    <button class=\"nav-button prev\">Prev</button>
+    <button class=\"nav-button next\">Next</button>
 </div>
+
+<script>
+    const slides = document.querySelectorAll('.slides img');
+    const next = document.querySelector('.next');
+    const prev = document.querySelector('.prev');
+    let current = 0;
+
+    function showSlide(index) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        slides[index].classList.add('active');
+    }
+
+    next.addEventListener('click', () => {
+        current = (current + 1) % slides.length;
+        showSlide(current);
+    });
+
+    prev.addEventListener('click', () => {
+        current = (current - 1 + slides.length) % slides.length;
+        showSlide(current);
+    });
+</script>
 
 </body>
 </html>
