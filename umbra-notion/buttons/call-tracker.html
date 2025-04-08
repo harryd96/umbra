@@ -174,21 +174,62 @@
           circle.style.opacity = '0';
 
           setTimeout(() => {
-            if (parent.children.length > baseTarget) {
-              parent.removeChild(circle);
-            } else {
-              circle.classList.remove('green');
-              delete circle.dataset.details;
-              circle.style.transform = 'scale(1)';
-              circle.style.opacity = '1';
-            }
-            updateOverflowText(parent.closest('.category'), baseTarget);
-          }, 200);
+  if (parent.children.length > baseTarget) {
+    parent.removeChild(circle);
+  } else {
+    circle.classList.remove('green');
+    delete circle.dataset.details;
+    circle.style.transform = 'scale(1)';
+    circle.style.opacity = '1';
+  }
+  updateOverflowText(parent.closest('.category'), baseTarget);
+  saveProgress();
+}, 200);
         }
       });
     }
 
-    function updateOverflowText(container, target) {
+    function saveProgress() {
+  const stored = [];
+  document.querySelectorAll('.category').forEach(category => {
+    const callType = category.querySelector('h2').dataset.baseTitle;
+    const circles = category.querySelectorAll('.circle.green');
+    circles.forEach(circle => {
+      stored.push({
+        callType,
+        details: circle.dataset.details,
+        index: [...circle.parentNode.children].indexOf(circle)
+      });
+    });
+  });
+  localStorage.setItem('callTrackingData', JSON.stringify(stored));
+}
+
+function loadProgress() {
+  const saved = JSON.parse(localStorage.getItem('callTrackingData') || '[]');
+  saved.forEach(({ callType, details, index }) => {
+    const catIndex = categoryTitleIndexMap[callType];
+    const category = document.getElementsByClassName('category')[catIndex];
+    const circlesContainer = category.querySelector('.circles');
+    const baseTarget = parseInt(circlesContainer.dataset.target);
+    const circleList = Array.from(circlesContainer.children);
+    const empty = circleList.find(c => !c.classList.contains('green'));
+    if (empty) {
+      empty.classList.add('green');
+      empty.dataset.details = details;
+    } else {
+      const newCircle = document.createElement('div');
+      newCircle.className = 'circle green';
+      newCircle.dataset.details = details;
+      newCircle.dataset.index = circleList.length;
+      setupCircleEvents(newCircle, catIndex, circlesContainer);
+      circlesContainer.appendChild(newCircle);
+    }
+    updateOverflowText(category, baseTarget);
+  });
+}
+
+function updateOverflowText(container, target) {
       const filled = container.querySelectorAll('.circle.green').length;
       const heading = container.querySelector('h2');
       const base = heading.dataset.baseTitle;
@@ -196,6 +237,7 @@
     }
 
     function submitCall() {
+  saveProgress();
       const name = document.getElementById('input-name').value;
       const notes = document.getElementById('input-notes').value;
       if (!name) return alert('Please enter a name');
@@ -232,6 +274,7 @@ Notes: ${notes}`;
     }
 
     function clearAll() {
+  localStorage.removeItem('callTrackingData');
       document.querySelectorAll('.category').forEach(container => {
         const circles = container.querySelectorAll('.circle');
         const baseTarget = parseInt(container.querySelector('.circles').dataset.target);
@@ -302,6 +345,7 @@ function exportToExcel() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  loadProgress();
   let index = 0;
   categories.forEach(cat => {
     if (cat.group) {
