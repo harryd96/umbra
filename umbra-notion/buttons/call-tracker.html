@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Call Tracking</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; position: relative; }
+    .circle { width: 20px; height: 20px; border-radius: 50%; background: lightgray; margin: 3px; display: inline-block; cursor: pointer; }
+    .circle.green { background: green; }
+    .row { display: flex; align-items: center; margin-bottom: 10px; }
+    .add-btn, .undo-btn { margin-left: 10px; cursor: pointer; font-size: 20px; user-select: none; }
+    .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; }
+    .popup {
+      background: white;
+      z-index: 2;
+      padding: 20px;
+      border: 1px solid #ccc;
+      width: 300px;
+      max-height: 300px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      overflow: auto;
+    }
+    .popup h3 { margin-top: 0; }
+    .overlay { background: rgba(0,0,0,0.5); z-index: 1; }
+    .hover-display { background: #f8f8f8; padding: 10px; border: 2px solid #555; margin-bottom: 20px; min-height: 70px; width: 50%; color: #333; white-space: pre-wrap; }
+    .group-title { font-size: 20px; font-weight: bold; margin-top: 30px; color: #2c3e50; }
+    .clear-all-btn { position: absolute; top: 20px; right: 20px; background: #f8f8f8; border: 2px solid #555; padding: 8px 12px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+  </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+</head>
+<body>
+  <h1>Call Tracking</h1>
+  <div class="clear-all-btn" onclick="clearAll()">Clear All ↺</div>
+  <div class="clear-all-btn" style="right: 150px;" onclick="exportToExcel()">Export Data ⬇</div>
+  <div id="hover-display" class="hover-display"></div>
+  <div id="categories"></div>
+  <div class="overlay" id="overlay" style="display: none;"></div>
+  <div class="popup" id="popup" style="display: none;">
+    <h3 id="popup-title"></h3>
+    <label>Name: <input type="text" id="input-name"></label><br><br>
+    <label>Notes: <input type="text" id="input-notes"></label><br><br>
+    <button onclick="submitCall()">Submit</button>
+    <button onclick="closePopup()">Cancel</button>
+  </div>
+
+<script>
+    const categories = [
+      { title: 'Quote Followup', target: 10 },
+      { title: 'Account Management', target: 5 },
+      { group: 'Cold Calls', items: [
+        { title: 'Residential', target: 10 },
+        { title: 'Commercial Architects', target: 5 },
+        { title: 'Commercial Contractors', target: 5 }
+      ]}
+    ];
+
+    const titleMap = {
+      Q: 'Quote Followup',
+      A: 'Account Management',
+      R: 'Residential',
+      CA: 'Commercial Architects',
+      CC: 'Commercial Contractors'
+    };
+
+    const undoStacks = {};
+    const keyBuffer = [];
+    let keyTimeout;
+    let currentCategoryIndex = null;
+    const categoryTitleIndexMap = {};
+
+    function createCategory(title, target, index) {
+      const container = document.createElement('div');
+      container.className = 'category';
+
+      const heading = document.createElement('h2');
+      heading.dataset.baseTitle = title;
+      heading.dataset.target = target;
+      heading.textContent = title;
+      container.appendChild(heading);
+
+      const row = document.createElement('div');
+      row.className = 'row';
+
+      const circlesContainer = document.createElement('div');
+      circlesContainer.className = 'circles';
+      circlesContainer.dataset.target = target;
+      undoStacks[index] = [];
+
+      for (let i = 0; i < target; i++) {
+        const circle = document.createElement('div');
+        circle.className = 'circle';
+        circle.dataset.index = i;
+        setupCircleEvents(circle, index, circlesContainer);
+        circlesContainer.appendChild(circle);
+      }
+
+      const addBtn = document.createElement('div');
+      addBtn.className = 'add-btn';
+      addBtn.textContent = '+';
+      addBtn.title = 'Add a call';
+      addBtn.addEventListener('click', () => openPopup(index));
+
+      const undoBtn = document.createElement('div');
+      undoBtn.className = 'undo-btn';
+      undoBtn.textContent = '↺';
+      undoBtn.title = 'Undo last deletion';
+      undoBtn.addEventListener('click', () => {
+        undoBtn.style.transition = 'transform 0.5s';
+        undoBtn.style.transform = 'rotate(360deg)';
+        setTimeout(() => { undoBtn.style.transform = 'rotate(0deg)'; }, 500);
+
+        const parentCategory = undoBtn.closest('.category');
+        const catIndex = Array.from(document.getElementsByClassName('category')).indexOf(parentCategory);
+        const circlesContainer = parentCategory.querySelector('.circles');
+        const baseTarget = parseInt(circlesContainer.dataset.target);
+        const last = undoStacks[catIndex].pop();
+        if (!last) return;
+
+        const newCircle = document.createElement('div');
+        newCircle.className = 'circle green';
+        newCircle.dataset.index = last.i;
+        newCircle.dataset.details = last.details;
+        setupCircleEvents(newCircle, catIndex, circlesContainer);
+
+        if (circlesContainer.children.length > baseTarget) {
+          circlesContainer.insertBefore(newCircle, circlesContainer.children[last.i] || null);
+        } else {
+          const emptySpot = Array.from(circlesContainer.children).find(c => !c.classList.contains('green'));
+          if (emptySpot) {
+            emptySpot.classList.add('green');
+            emptySpot.dataset.details = last.details;
+          } else {
+            circlesContainer.appendChild(newCircle);
+          }
+        }
+
+        updateOverflowText(parentCategory, baseTarget);
+      });
+
+      row.appendChild(circlesContainer);
+      row.appendChild(addBtn);
+      row.appendChild(undoBtn);
+      container.appendChild(row);
+      document.getElementById('categories').appendChild(container);
+    }
+
+    function setupCircleEvents(circle, index, parent) {
+      circle.addEventListener('mouseover', () => {
+        if (circle.classList.contains('green')) {
+          const hoverDisplay = document.getElementById('hover-display');
+          if (hoverDisplay) hoverDisplay.textContent = circle.dataset.details || '';
+        }
+      });
+      circle.addEventListener('mouseout', () => {
+        const hoverDisplay = document.getElementById('hover-display');
+        if (hoverDisplay) hoverDisplay.textContent = '';
+      });
+      circle.addEventListener('dblclick', () => {
+        if (circle.classList.contains('green')) {
+          const baseTarget = parseInt(parent.dataset.target);
+          const catIndex = index;
+          const details = circle.dataset.details;
+          const i = Array.from(parent.children).indexOf(circle);
+          undoStacks[catIndex].push({ i, details });
+
+          circle.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+          circle.style.transform = 'scale(0)';
+          circle.style.opacity = '0';
+
+          setTimeout(() => {
+            if (parent.children.length > baseTarget) {
+              parent.removeChild(circle);
+            } else {
+              circle.classList.remove('green');
+              delete circle.dataset.details;
+              circle.style.transform = 'scale(1)';
+              circle.style.opacity = '1';
+            }
+            updateOverflowText(parent.closest('.category'), baseTarget);
+          }, 200);
+        }
+      });
+    }
+
+    function updateOverflowText(container, target) {
+      const filled = container.querySelectorAll('.circle.green').length;
+      const heading = container.querySelector('h2');
+      const base = heading.dataset.baseTitle;
+      heading.textContent = filled > target ? `${base} (+${filled - target})` : base;
+    }
+
+    function submitCall() {
+      const name = document.getElementById('input-name').value;
+      const notes = document.getElementById('input-notes').value;
+      if (!name) return alert('Please enter a name');
+
+      const category = document.getElementsByClassName('category')[currentCategoryIndex];
+      const circlesContainer = category.querySelector('.circles');
+      const baseTarget = parseInt(circlesContainer.dataset.target);
+      const circleList = Array.from(circlesContainer.children);
+      const empty = circleList.find(c => !c.classList.contains('green'));
+
+      if (empty) {
+        empty.classList.add('green');
+        empty.dataset.details = `Name: ${name}
+Notes: ${notes}`;
+      } else {
+        const newCircle = document.createElement('div');
+        newCircle.className = 'circle green';
+        newCircle.dataset.index = circleList.length;
+        newCircle.dataset.details = `Name: ${name}
+Notes: ${notes}`;
+        setupCircleEvents(newCircle, currentCategoryIndex, circlesContainer);
+        circlesContainer.appendChild(newCircle);
+      }
+
+      updateOverflowText(category, baseTarget);
+      closePopup();
+    }
+
+    function closePopup() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('popup').style.display = 'none';
+      document.getElementById('input-name').value = '';
+      document.getElementById('input-notes').value = '';
+    }
+
+    function clearAll() {
+      document.querySelectorAll('.category').forEach(container => {
+        const circles = container.querySelectorAll('.circle');
+        const baseTarget = parseInt(container.querySelector('.circles').dataset.target);
+        circles.forEach((circle, i) => {
+          if (i >= baseTarget) circle.remove();
+          else circle.classList.remove('green'), delete circle.dataset.details;
+        });
+        const heading = container.querySelector('h2');
+        heading.textContent = heading.dataset.baseTitle;
+      });
+    }
+    function openPopup(index) {
+      currentCategoryIndex = index;
+      const categoryTitle = document.getElementsByClassName('category')[index].querySelector('h2').textContent;
+      document.getElementById('popup-title').textContent = `Add Call: ${categoryTitle}`;
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('popup').style.display = 'block';
+      const inputName = document.getElementById('input-name');
+      if (inputName) inputName.focus();
+    }
+
+    document.addEventListener('keydown', e => {
+      const popup = document.getElementById('popup');
+      const popupVisible = popup && popup.style.display === 'block';
+      if (popupVisible && e.key === 'Escape') return closePopup();
+
+      const key = e.key.toUpperCase();
+      if (popupVisible && key === 'ENTER') return submitCall();
+
+      if (!popupVisible) {
+        keyBuffer.push(key);
+        clearTimeout(keyTimeout);
+        keyTimeout = setTimeout(() => keyBuffer.length = 0, 300);
+        const combo = keyBuffer.join('');
+        const mappedTitle = titleMap[combo];
+        if (mappedTitle && categoryTitleIndexMap[mappedTitle] !== undefined) {
+          e.preventDefault();
+          openPopup(categoryTitleIndexMap[mappedTitle]);
+          keyBuffer.length = 0;
+        }
+      }
+    });
+function exportToExcel() {
+  if (typeof XLSX === 'undefined') {
+    alert('Export library not loaded. Please check your internet connection.');
+    return;
+  }
+  const XLSX = window.XLSX;
+  const wb = XLSX.utils.book_new();
+  const data = [['Call Type', 'Name', 'Notes', 'Date']];
+
+  document.querySelectorAll('.category').forEach(category => {
+    const callType = category.querySelector('h2').dataset.baseTitle;
+    category.querySelectorAll('.circle.green').forEach(circle => {
+      const details = circle.dataset.details || '';
+      const nameMatch = details.match(/Name: (.*?)/);
+      const notesMatch = details.match(/Notes: (.*)/);
+      const name = nameMatch ? nameMatch[1] : '';
+      const notes = notesMatch ? notesMatch[1] : '';
+      const date = new Date().toLocaleDateString();
+      data.push([callType, name, notes, date]);
+    });
+  });
+
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  XLSX.utils.book_append_sheet(wb, ws, 'Calls');
+  XLSX.writeFile(wb, 'call_data.xlsx');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  let index = 0;
+  categories.forEach(cat => {
+    if (cat.group) {
+      const groupHeading = document.createElement('h2');
+      groupHeading.textContent = cat.group;
+      groupHeading.className = 'group-title';
+      document.getElementById('categories').appendChild(groupHeading);
+      cat.items.forEach(subcat => {
+        categoryTitleIndexMap[subcat.title] = index;
+        createCategory(subcat.title, subcat.target, index++);
+      });
+    } else {
+      categoryTitleIndexMap[cat.title] = index;
+      createCategory(cat.title, cat.target, index++);
+    }
+  });
+});
+
+</script>
+</html>
