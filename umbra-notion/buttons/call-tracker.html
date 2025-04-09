@@ -81,8 +81,7 @@ function handleBlur(el) {
 <body>
   <h1>Call Tracking</h1>
   <div class="clear-all-btn" onclick="clearAll()">Clear All ↺</div>
-  <div class="clear-all-btn" style="right: 150px;" id="save-button" onclick="saveProgress()">Save 💾</div>
-  <div id="hover-display" class="hover-display"></div>
+    <div id="hover-display" class="hover-display"></div>
   <div id="categories"></div>
   <div class="notes-box">
   <strong>NOTES</strong><br>
@@ -99,6 +98,8 @@ function handleBlur(el) {
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('click', saveProgress);
+    document.addEventListener('keyup', saveProgress);
     const categories = [
       { title: 'Quote Followup', target: 10 },
       { title: 'Account Management', target: 5 },
@@ -247,12 +248,7 @@ function handleBlur(el) {
     }
 
     function saveProgress() {
-      const saveBtn = document.getElementById('save-button');
-      if (saveBtn) {
-        saveBtn.classList.add('shake');
-        setTimeout(() => saveBtn.classList.remove('shake'), 500);
-      }
-      const stored = [];
+            const stored = [];
       document.querySelectorAll('.category').forEach(category => {
         const callType = category.querySelector('h2').dataset.baseTitle;
         const circles = category.querySelectorAll('.circle.green');
