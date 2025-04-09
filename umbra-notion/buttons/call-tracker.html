@@ -30,15 +30,64 @@
     .hover-display { background: #f8f8f8; padding: 10px; border: 2px solid #555; margin-bottom: 20px; min-height: 70px; width: 50%; color: #333; white-space: pre-wrap; }
     .group-title { font-size: 20px; font-weight: bold; margin-top: 30px; color: #2c3e50; }
     .clear-all-btn { position: absolute; top: 20px; right: 20px; background: #f8f8f8; border: 2px solid #555; padding: 8px 12px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
-  </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  .notes-box {
+  background: #f8f8f8;
+  border: 2px solid #555;
+  width: 40%;
+  height: 300px;
+  position: absolute;
+  top: 110px;
+  right: 20px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+}
+    .notes-box textarea {
+  width: calc(100% - 4px);
+  height: calc(100% - 30px);
+  resize: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  margin-top: 10px;
+}
+    .shake {
+      animation: shake 0.4s;
+    }
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      50% { transform: translateX(4px); }
+      75% { transform: translateX(-4px); }
+      100% { transform: translateX(0); }
+    }
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js">function handleFocus(el) {
+  if (el.innerText.trim() === "write 'em here") {
+    el.innerText = '';
+    el.style.color = '#000';
+  }
+}
+function handleBlur(el) {
+  if (el.innerText.trim() === '') {
+    el.innerText = "write 'em here";
+    el.style.color = '#999';
+  }
+}
+</script>
 </head>
 <body>
   <h1>Call Tracking</h1>
   <div class="clear-all-btn" onclick="clearAll()">Clear All ↺</div>
-  <div class="clear-all-btn" style="right: 150px;" onclick="exportToExcel()">Export Data ⬇</div>
+  <div class="clear-all-btn" style="right: 150px;" id="save-button" onclick="saveProgress()">Save 💾</div>
   <div id="hover-display" class="hover-display"></div>
   <div id="categories"></div>
+  <div class="notes-box">
+  <strong>NOTES</strong><br>
+  <div id="future-notes" contenteditable="true" style="width: 100%; height: calc(100% - 30px); font-size: 16px; outline: none; overflow-y: auto; color: #999;" onfocus="handleFocus(this)" onblur="handleBlur(this)">write 'em here</div>
+</div>
   <div class="overlay" id="overlay"></div>
   <div class="popup" id="popup">
     <h3 id="popup-title"></h3>
@@ -198,6 +247,11 @@
     }
 
     function saveProgress() {
+      const saveBtn = document.getElementById('save-button');
+      if (saveBtn) {
+        saveBtn.classList.add('shake');
+        setTimeout(() => saveBtn.classList.remove('shake'), 500);
+      }
       const stored = [];
       document.querySelectorAll('.category').forEach(category => {
         const callType = category.querySelector('h2').dataset.baseTitle;
@@ -211,31 +265,37 @@
         });
       });
       localStorage.setItem('callTrackingData', JSON.stringify(stored));
+      const noteContent = document.getElementById('future-notes')?.innerText || '';
+      localStorage.setItem('futureNotes', noteContent);
     }
 
     function loadProgress() {
-      const saved = JSON.parse(localStorage.getItem('callTrackingData') || '[]');
-      saved.forEach(({ callType, details, index }) => {
-        const catIndex = categoryTitleIndexMap[callType];
-        const category = document.getElementsByClassName('category')[catIndex];
-        const circlesContainer = category.querySelector('.circles');
-        const baseTarget = parseInt(circlesContainer.dataset.target);
-        const circleList = Array.from(circlesContainer.children);
-        const empty = circleList.find(c => !c.classList.contains('green'));
-        if (empty) {
-          empty.classList.add('green');
-          empty.dataset.details = details;
-        } else {
-          const newCircle = document.createElement('div');
-          newCircle.className = 'circle green';
-          newCircle.dataset.details = details;
-          newCircle.dataset.index = circleList.length;
-          setupCircleEvents(newCircle, catIndex, circlesContainer);
-          circlesContainer.appendChild(newCircle);
-        }
-        updateOverflowText(category, baseTarget);
-      });
+  const saved = JSON.parse(localStorage.getItem('callTrackingData') || '[]');
+  saved.forEach(({ callType, details, index }) => {
+    const catIndex = categoryTitleIndexMap[callType];
+    const category = document.getElementsByClassName('category')[catIndex];
+    const circlesContainer = category.querySelector('.circles');
+    const baseTarget = parseInt(circlesContainer.dataset.target);
+    const circleList = Array.from(circlesContainer.children);
+    const empty = circleList.find(c => !c.classList.contains('green'));
+    if (empty) {
+      empty.classList.add('green');
+      empty.dataset.details = details;
+    } else {
+      const newCircle = document.createElement('div');
+      newCircle.className = 'circle green';
+      newCircle.dataset.details = details;
+      newCircle.dataset.index = circleList.length;
+      setupCircleEvents(newCircle, catIndex, circlesContainer);
+      circlesContainer.appendChild(newCircle);
     }
+    updateOverflowText(category, baseTarget);
+  });
+
+  const savedNotes = localStorage.getItem('futureNotes') || '';
+  const notesEl = document.getElementById('future-notes');
+  if (notesEl) notesEl.innerText = savedNotes;
+}
 
     function submitCall() {
       saveProgress();
@@ -317,33 +377,7 @@
         }
       }
     });
-
-    function exportToExcel() {
-      if (typeof XLSX === 'undefined') {
-        alert('Export library not loaded. Please check your internet connection.');
-        return;
-      }
-      const wb = XLSX.utils.book_new();
-      const data = [['Call Type', 'Name', 'Notes', 'Date']];
-
-      document.querySelectorAll('.category').forEach(category => {
-        const callType = category.querySelector('h2').dataset.baseTitle;
-        category.querySelectorAll('.circle.green').forEach(circle => {
-          const details = circle.dataset.details || '';
-          const nameMatch = details.match(/Name: (.*?)/);
-          const notesMatch = details.match(/Notes: (.*)/);
-          const name = nameMatch ? nameMatch[1] : '';
-          const notes = notesMatch ? notesMatch[1] : '';
-          const date = new Date().toLocaleDateString();
-          data.push([callType, name, notes, date]);
-        });
-      });
-
-      const ws = XLSX.utils.aoa_to_sheet(data);
-      XLSX.utils.book_append_sheet(wb, ws, 'Calls');
-      XLSX.writeFile(wb, 'call_data.xlsx');
-    }
-
+      
     let index = 0;
     categories.forEach(cat => {
       if (cat.group) {
