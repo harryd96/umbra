@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Callback Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+  <div id="root"></div>
+
+  <!-- React and ReactDOM UMD -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+  <!-- Babel for JSX -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- App script -->
+  <script type="text/babel">
+    const { useEffect, useMemo, useRef, useState } = React;
+
+    function formatUKTimestamp(date = new Date()) {
+      const parts = new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Europe/London",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      }).formatToParts(date);
+      const get = (type) =>
+        parts.find((p) => p.type === type)?.value || "";
+      const day = get("day");
+      const month = get("month");
+      const year = get("year");
+      const hour = get("hour");
+      const minute = get("minute");
+      const dayPeriod = (get("dayPeriod") || "").toLowerCase();
+      return `${day} ${month} ${year}, ${hour}.${minute}${dayPeriod}`;
+    }
+
+    // Storage helpers
+    const ALLOWED_USERS = ["harry.doling", "brendan.hill", "raff.nunn"];
+    const LS_CURRENT_USER = "oct_current_user";
+    const LS_DATA_PREFIX = "oct_data_";
+
+    function loadCurrentUser() {
+      try {
+        return localStorage.getItem(LS_CURRENT_USER) || "";
+      } catch {
+        return "";
+      }
+    }
+
+    function saveCurrentUser(username) {
+      try {
+        if (username) localStorage.setItem(LS_CURRENT_USER, username);
+        else localStorage.removeItem(LS_CURRENT_USER);
+      } catch {}
+    }
+
+    function loadUserDataLocal(username) {
+      try {
+        const raw = localStorage.getItem(LS_DATA_PREFIX + username);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveUserDataLocal(username, records) {
+      try {
+        localStorage.setItem(
+          LS_DATA_PREFIX + username,
+          JSON.stringify(records)
+        );
+      } catch {}
+    }
+
+    function uid() {
+      return (
+        Math.random().toString(36).slice(2) +
+        Date.now().toString(36)
+      );
+    }
+
+    function normalizeNumber(n) {
+      return (n || "").replace(/\D+/g, "");
+    }
+
+    // Optional remote sync
+    async function pullRemote(username) {
+      const base = window.OCT_REMOTE_BASE;
+      if (!base) return null;
+      try {
+        const res = await fetch(
+          `${base.replace(/\/$/, "")}/${encodeURIComponent(username)}.json`,
+          {
+            method: "GET",
+            headers: { Accept: "application/json" },
+            cache: "no-store",
+          }
+        );
+        if (!res.ok) return null;
+        const data = await res.json();
+        return Array.isArray(data) ? data : null;
+      } catch {
+        return null;
+      }
+    }
+
+    async function pushRemote(username, records) {
+      const base = window.OCT_REMOTE_BASE;
+      if (!base) return false;
+      try {
+        const res = await fetch(
+          `${base.replace(/\/$/, "")}/${encodeURIComponent(username)}.json`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(records),
+          }
+        );
+        return res.ok;
+      } catch {
+        return false;
+      }
+    }
+
+    function mergeRecords(a = [], b = []) {
+      const byId = new Map();
+      for (const r of [...a, ...b]) {
+        const existing = byId.get(r.id);
+        if (!existing) byId.set(r.id, r);
+        else {
+          const exT = Date.parse(existing.createdAtISO || 0);
+          const rT = Date.parse(r.createdAtISO || 0);
+          if (rT > exT) byId.set(r.id, r);
+        }
+      }
+      return [...byId.values()].sort(
+        (x, y) =>
+          Date.parse(y.createdAtISO || 0) -
+          Date.parse(x.createdAtISO || 0)
+      );
+    }
+
+    function LoginButton({ currentUser, onLogin, onLogout }) {
+      const [open, setOpen] = useState(false);
+      const [username, setUsername] = useState("");
+      const [error, setError] = useState("");
+
+      useEffect(() => {
+        setUsername("");
+        setError("");
+      }, [open]);
+
+      return (
+        <div className="absolute top-4 left-4 z-50">
+          {currentUser ? (
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">{currentUser}</span>
+              <button
+                className="px-3 py-1 text-sm rounded-xl border border-gray-300 hover:bg-gray-50"
+                onClick={onLogout}
+                title="Log out"
+              >
+                Log out
+              </button>
+            </div>
+          ) : (
+            <button
+              className="px-4 py-2 rounded-xl border border-gray-300 shadow-sm hover:bg-gray-50"
+              onClick={() => setOpen(true)}
+              title="Log in"
+            >
+              Log in
+            </button>
+          )}
+
+          {open && !currentUser && (
+            <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
+              <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
+                <h2 className="text-xl font-semibold mb-4">Sign in</h2>
+                <input
+                  autoFocus
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value.trim())}
+                  placeholder="Username"
+                  className="w-full border rounded-xl px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-black/20"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      if (!ALLOWED_USERS.includes(username)) {
+                        setError("Unknown username");
+                        return;
+                      }
+                      onLogin(username);
+                      setOpen(false);
+                    }
+                    if (e.key === "Escape") setOpen(false);
+                  }}
+                />
+                {error && (
+                  <div className="text-sm text-red-600 mb-3">{error}</div>
+                )}
+                <div className="flex justify-end gap-2">
+                  <button
+                    className="px-3 py-2 rounded-xl border border-gray-300"
+                    onClick={() => setOpen(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="px-4 py-2 rounded-xl bg-black text-white"
+                    onClick={() => {
+                      if (!ALLOWED_USERS.includes(username)) {
+                        setError("Unknown username");
+                        return;
+                      }
+                      onLogin(username);
+                      setOpen(false);
+                    }}
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    function InputPanel({ currentUser, onAdd }) {
+      const [name, setName] = useState("");
+      const [number, setNumber] = useState("");
+      const [notes, setNotes] = useState("");
+      const nameRef = useRef(null);
+      const numberRef = useRef(null);
+      const notesRef = useRef(null);
+
+      useEffect(() => {
+        nameRef.current?.focus();
+      }, [currentUser]);
+
+      useEffect(() => {
+        const onKey = async (e) => {
+          if (e.altKey || e.metaKey || e.ctrlKey) return;
+          if (e.key === "1") {
+            e.preventDefault();
+            nameRef.current?.focus();
+          } else if (e.key === "2") {
+            e.preventDefault();
+            numberRef.current?.focus();
+          } else if (e.key === "3") {
+            e.preventDefault();
+            notesRef.current?.focus();
+          } else if (e.key === "4") {
+            e.preventDefault();
+            numberRef.current?.focus();
+            try {
+              const clip = await navigator.clipboard.readText();
+              if (clip != null) {
+                const t = String(clip);
+                setNumber(t);
+                setTimeout(() => {
+                  const el = numberRef.current;
+                  if (el) el.setSelectionRange(t.length, t.length);
+                }, 0);
+              }
+            } catch {}
+          }
+        };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+      }, []);
+
+      const submit = () => {
+        if (!currentUser) return;
+        if (!name.trim() && !number.trim() && !notes.trim()) return;
+        const record = {
+          id: uid(),
+          name: name.trim(),
+          number: number.trim(),
+          notes: notes.trim(),
+          timestamp: formatUKTimestamp(new Date()),
+          createdAtISO: new Date().toISOString(),
+        };
+        onAdd(record);
+        setName("");
+        setNumber("");
+        setNotes("");
+        nameRef.current?.focus();
+      };
+
+      return (
+        <div className="h-full flex flex-col">
+          <div className="flex flex-col gap-3">
+            <input
+              ref={nameRef}
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Name"
+              className="w-full border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black/20"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") submit();
+              }}
+            />
+            <input
+              ref={numberRef}
+              type="tel"
+              value={number}
+              onChange={(e) => setNumber(e.target.value)}
+              placeholder="Number"
+              className="w-full border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black/20"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") submit();
+              }}
+            />
+            <textarea
+              ref={notesRef}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Notes"
+              className="w-full h-40 border rounded-xl px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-black/20"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  submit();
+                }
+              }}
+            />
+          </div>
+          <div className="mt-4">
+            <button
+              disabled={!currentUser}
+              onClick={submit}
+              className={`px-4 py-2 rounded-xl ${
+                currentUser
+                  ? "bg-black text-white"
+                  : "bg-gray-200 text-gray-500"
+              }`}
+              title={currentUser ? "Add record" : "Log in to add"}
+            >
+              Add record
+            </button>
+          </div>
+          {!currentUser && (
+            <p className="text-sm text-red-600 mt-2">Log in to save entries.</p>
+          )}
+        </div>
+      );
+    }
+
+    function SearchPanel({ records, onDelete }) {
+      const [q, setQ] = useState("");
+      const [highlight, setHighlight] = useState(0);
+      const [selected, setSelected] = useState(null);
+      const listRef = useRef(null);
+
+      const results = useMemo(() => {
+        const base = records;
+        if (!q) return base;
+        const qn = normalizeNumber(q);
+        const ql = q.toLowerCase();
+        return base.filter((r) => {
+          const nameHit = (r.name || "").toLowerCase().includes(ql);
+          const numHit =
+            normalizeNumber(r.number).includes(qn) ||
+            (qn && normalizeNumber(r.notes).includes(qn));
+          const nameLike = ql && (r.notes || "").toLowerCase().includes(ql);
+          return nameHit || numHit || nameLike;
+        });
+      }, [q, records]);
+
+      useEffect(() => {
+        setHighlight(0);
+      }, [q, results.length]);
+
+      useEffect(() => {
+        if (!listRef.current) return;
+        const el = listRef.current.querySelector(
+          `[data-idx='${highlight}']`
+        );
+        if (el) el.scrollIntoView({ block: "nearest" });
+      }, [highlight]);
+
+      const openHighlighted = () => {
+        if (results.length === 0) return;
+        const r =
+          results[Math.max(0, Math.min(highlight, results.length - 1))];
+        setSelected(r);
+      };
+
+      const handleDelete = (id) => {
+        onDelete(id);
+        setSelected(null);
+      };
+
+      return (
+        <div className="h-full flex flex-col">
+          <div>
+            <input
+              type="text"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="Search by name or number"
+              className="w-full border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black/20"
+              onKeyDown={(e) => {
+                if (e.key === "ArrowDown") {
+                  e.preventDefault();
+                  setHighlight((h) =>
+                    Math.min(h + 1, Math.max(0, results.length - 1))
+                  );
+                } else if (e.key === "ArrowUp") {
+                  e.preventDefault();
+                  setHighlight((h) => Math.max(h - 1, 0));
+                } else if (e.key === "Enter") {
+                  openHighlighted();
+                }
+              }}
+            />
+          </div>
+
+          <div className="mt-3 flex-1 min-h-0">
+            {!selected ? (
+              <div
+                ref={listRef}
+                className="border rounded-xl divide-y max-h-80 overflow-auto"
+              >
+                {results.map((r, idx) => (
+                  <button
+                    key={r.id}
+                    data-idx={idx}
+                    className={`w-full text-left px-3 py-2 hover:bg-gray-50 ${
+                      idx === highlight ? "bg-gray-100" : ""
+                    }`}
+                    onMouseEnter={() => setHighlight(idx)}
+                    onClick={() => setSelected(r)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="font-medium truncate">
+                        {r.name || "(No name)"}
+                      </div>
+                      <div className="text-sm text-gray-600 ml-2">
+                        {r.timestamp}
+                      </div>
+                    </div>
+                    <div className="text-sm text-gray-700 truncate">
+                      {r.number || "(No number)"}
+                    </div>
+                    {r.notes && (
+                      <div className="text-xs text-gray-500 line-clamp-2">
+                        {r.notes}
+                      </div>
+                    )}
+                  </button>
+                ))}
+                {results.length === 0 && (
+                  <div className="px-3 py-2 text-sm text-gray-500">
+                    No results
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="border rounded-2xl p-3 h-full overflow-auto">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="text-sm text-gray-500">Saved</div>
+                    <div className="font-semibold flex items-center gap-3">
+                      {selected.timestamp}
+                    </div>
+                    <button
+                      className="mt-2 inline-flex items-center gap-2 text-red-600 hover:text-red-700 text-sm"
+                      onClick={() => handleDelete(selected.id)}
+                      title="Delete this record"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="w-5 h-5"
+                      >
+                        <path d="M9 3h6a1 1 0 011 1v1h4a1 1 0 110 2h-1v12a3 3 0 01-3 3H8a3 3 0 01-3-3V7H4a1 1 0 110-2h4V4a1 1 0 011-1zm1 4a1 1 0 10-2 0v10a1 1 0 102 0V7zm6 0a1 1 0 10-2 0v10a1 1 0 102 0V7zM9 4v1h6V4H9z" />
+                      </svg>
+                      Delete
+                    </button>
+                  </div>
+                  <button
+                    className="text-sm text-gray-600 underline"
+                    onClick={() => setSelected(null)}
+                  >
+                    Back to results
+                  </button>
+                </div>
+                <div className="mt-3 grid grid-cols-3 gap-3">
+                  <div className="col-span-3">
+                    <div className="text-xs text-gray-500">Name</div>
+                    <div className="text-base">
+                      {selected.name || "(No name)"}
+                    </div>
+                  </div>
+                  <div className="col-span-3">
+                    <div className="text-xs text-gray-500">Number</div>
+                    <div className="text-base">
+                      {selected.number || "(No number)"}
+                    </div>
+                  </div>
+                  <div className="col-span-3">
+                    <div className="text-xs text-gray-500">Notes</div>
+                    <div className="whitespace-pre-wrap text-base">
+                      {selected.notes || "(No notes)"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    function App() {
+      const [currentUser, setCurrentUser] = useState(loadCurrentUser());
+      const [records, setRecords] = useState(() =>
+        currentUser ? loadUserDataLocal(currentUser) : []
+      );
+
+      // On user change: persist username and load local, then attempt remote pull & merge
+      useEffect(() => {
+        (async () => {
+          if (!currentUser) return;
+          saveCurrentUser(currentUser);
+          const local = loadUserDataLocal(currentUser);
+          let merged = local;
+          const remote = await pullRemote(currentUser);
+          if (remote) merged = mergeRecords(local, remote);
+          setRecords(merged);
+          saveUserDataLocal(currentUser, merged);
+        })();
+      }, [currentUser]);
+
+      // Persist locally and try to push remote on change
+      useEffect(() => {
+        (async () => {
+          if (!currentUser) return;
+          saveUserDataLocal(currentUser, records);
+          await pushRemote(currentUser, records);
+        })();
+      }, [currentUser, records]);
+
+      const handleAdd = (record) => {
+        setRecords((prev) => [record, ...prev]);
+      };
+      const handleDelete = (id) => {
+        setRecords((prev) => prev.filter((r) => r.id !== id));
+      };
+      const handleLogin = (u) => setCurrentUser(u);
+      const handleLogout = () => {
+        setCurrentUser("");
+        saveCurrentUser("");
+      };
+
+      return (
+        <div className="relative min-h-screen bg-gray-50">
+          <LoginButton
+            currentUser={currentUser}
+            onLogin={handleLogin}
+            onLogout={handleLogout}
+          />
+          <div className="max-w-6xl mx-auto px-4 pt-10 pb-6">
+            <main className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[70vh]">
+              <section className="bg-white rounded-2xl shadow-sm p-4 overflow-hidden">
+                <SearchPanel records={records} onDelete={handleDelete} />
+              </section>
+              <section className="bg-white rounded-2xl shadow-sm p-4 overflow-hidden">
+                <InputPanel currentUser={currentUser} onAdd={handleAdd} />
+              </section>
+            </main>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>
