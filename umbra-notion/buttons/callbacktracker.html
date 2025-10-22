@@ -204,4 +204,265 @@
         if (!hasText && !hasDigits) return records;
 
         return records.filter((r) => {
-          const nameMat
+          const nameMatch = hasText && (r.name || "").toLowerCase().includes(ql);
+          const notesMatch = hasText && (r.notes || "").toLowerCase().includes(ql);
+          const numberMatch = hasDigits && normalizeNumber(r.number).includes(qn);
+          return nameMatch || notesMatch || numberMatch;
+        });
+      }, [q, records]);
+
+      return (
+        <div className="flex flex-col">
+          <input type="text" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search by name, notes, or number" className="w-full border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black/20" />
+          <div className="mt-3 border rounded-xl divide-y">
+            {results.map((r) => (
+              <div key={r.id} className="px-3 py-2">
+                <div className="flex items-center justify-between">
+                  <div className="font-medium truncate">{r.name || "(No name)"}</div>
+                  <div className="text-sm text-gray-600 ml-2">{r.timestamp}</div>
+                </div>
+                <div className="text-sm text-gray-700 truncate">{r.number || "(No number)"}</div>
+                {r.notes && <div className="text-xs text-gray-500 whitespace-pre-wrap">{r.notes}</div>}
+                <div className="mt-2 flex items-center gap-4">
+                  <button className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-800 text-sm" onClick={() => onEdit(r)} title="Edit">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path d="M4 17.25V21h3.75L17.81 10.94l-3.75-3.75L4 17.25zM20.71 7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/></svg>
+                    Edit
+                  </button>
+                  <button className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 text-sm" onClick={() => onDelete(r.id)}>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path d="M9 3h6a1 1 0 011 1v1h4a1 1 0 110 2h-1v12a3 3 0 01-3 3H8a3 3 0 01-3-3V7H4a1 1 0 110-2h4V4a1 1 0 011-1zm1 4a1 1 0 10-2 0v10a1 1 0 102 0V7zm6 0a1 1 0 10-2 0v10a1 1 0 102 0V7zM9 4v1h6V4H9z" /></svg>
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // ---------- Prospecting page & deck ----------
+    function ProspectingPage({ onClose, onAddProspect, onUpdateProspect, onDeleteProspect, currentUser, prospects }) {
+      const [name, setName] = useState("");
+      const [number, setNumber] = useState("");
+      const [notes, setNotes] = useState("");
+      const [editing, setEditing] = useState(null);
+
+      const nameRef = useRef(null);
+      const numberRef = useRef(null);
+      const notesRef = useRef(null);
+
+      useEffect(() => { nameRef.current?.focus(); }, []);
+      useEffect(() => { if (editing) nameRef.current?.focus(); }, [editing]);
+
+      useEffect(() => {
+        const onKey = async (e) => {
+          if (e.key === "Enter" && (name || number || notes)) { e.preventDefault(); submit(); }
+          if (e.key === "ArrowLeft") { e.preventDefault(); nameRef.current?.focus(); }
+          if (e.key === "ArrowDown") { e.preventDefault(); numberRef.current?.focus(); }
+          if (e.key === "ArrowRight") { e.preventDefault(); notesRef.current?.focus(); }
+          if (e.key === "ArrowUp") {
+            e.preventDefault();
+            try { const clip = await navigator.clipboard.readText(); if (clip) { setNumber(clip); numberRef.current?.focus(); } } catch {}
+          }
+        };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+      }, [name, number, notes, editing, currentUser]);
+
+      const beginEdit = (p) => { setEditing(p); setName(p.name || ""); setNumber(p.number || ""); setNotes(p.notes || ""); };
+      const reset = () => { setEditing(null); setName(""); setNumber(""); setNotes(""); nameRef.current?.focus(); };
+
+      const submit = () => {
+        if (!currentUser) return;
+        if (!name.trim() && !number.trim() && !notes.trim()) return;
+        if (editing) { onUpdateProspect({ ...editing, name: name.trim(), number: number.trim(), notes: notes.trim() }); reset(); return; }
+        onAddProspect({ id: uid(), name: name.trim(), number: number.trim(), notes: notes.trim(), createdAtISO: new Date().toISOString() });
+        reset();
+      };
+
+      return (
+        <div className="min-h-screen bg-gray-50 p-6 pt-24">
+          <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Prospecting</h2>
+              <button className="px-3 py-2 rounded-xl border" onClick={onClose}>Back to tracker</button>
+            </div>
+
+            {/* Form */}
+            <div className="flex flex-col gap-3">
+              <input ref={nameRef} value={name} onChange={(e)=>setName(e.target.value)} placeholder="Name" className="w-full border rounded-xl px-3 py-2" />
+              <input ref={numberRef} value={number} onChange={(e)=>setNumber(e.target.value)} placeholder="Number" className="w-full border rounded-xl px-3 py-2" />
+              <textarea ref={notesRef} value={notes} onChange={(e)=>setNotes(e.target.value)} placeholder="Notes" className="w-full h-28 border rounded-xl px-3 py-2" />
+            </div>
+            <div className="mt-4 flex gap-2">
+              {!editing ? (
+                <button disabled={!currentUser} onClick={submit} className={`px-4 py-2 rounded-xl ${currentUser ? "bg-black text-white" : "bg-gray-200 text-gray-500"}`}>Add prospect</button>
+              ) : (
+                <>
+                  <button className="px-4 py-2 rounded-xl bg-black text-white" onClick={submit}>Save changes</button>
+                  <button className="px-4 py-2 rounded border" onClick={reset}>Cancel</button>
+                </>
+              )}
+            </div>
+
+            {/* Compact list below form */}
+            <div className="mt-6">
+              <div className="text-sm font-medium mb-2">Your prospects</div>
+              <div className="rounded-xl border divide-y">
+                {prospects.length === 0 && (
+                  <div className="px-3 py-2 text-sm text-gray-500">No prospects yet.</div>
+                )}
+                {prospects.map((p) => (
+                  <div key={p.id} className="px-3 py-2 text-xs sm:text-sm grid grid-cols-12 gap-2 items-start">
+                    <div className="col-span-3 truncate"><span className="font-medium">{p.name || "(No name)"}</span></div>
+                    <div className="col-span-3 truncate">{p.number || "(No number)"}</div>
+                    <div className="col-span-4 truncate text-gray-600">{p.notes}</div>
+                    <div className="col-span-2 flex gap-2 justify-end">
+                      <button className="px-2 py-1 rounded border text-blue-700" onClick={() => beginEdit(p)}>Edit</button>
+                      <button className="px-2 py-1 rounded border text-red-600" onClick={() => { if (editing?.id === p.id) reset(); onDeleteProspect(p.id); }}>Delete</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function ProspectsDeck({ prospects, onPromote, onRemove }) {
+      const [extraNote, setExtraNote] = useState("");
+      const current = prospects[0];
+      useEffect(() => { setExtraNote(""); }, [current?.id]);
+      if (!current) return null;
+      return (
+        <div className="mt-4 border rounded-xl p-4">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="font-semibold">Prospect</h3>
+            <span className="text-xs text-gray-500">{prospects.length} queued</span>
+          </div>
+          <div className="text-sm">
+            <div><span className="font-medium">Name:</span> {current.name || "(No name)"}</div>
+            <div><span className="font-medium">Number:</span> {current.number || "(No number)"}</div>
+            {current.notes && <div className="mt-1 whitespace-pre-wrap">{current.notes}</div>}
+          </div>
+          <textarea value={extraNote} onChange={(e)=>setExtraNote(e.target.value)} placeholder="Additional note" className="mt-3 w-full h-20 border rounded-xl px-3 py-2" />
+          <div className="mt-3 flex gap-2">
+            <button className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-green-600 text-white" title="Submit to records" onClick={() => onPromote(current, extraNote)}>✓</button>
+            <button className="px-3 py-2 rounded-xl border" onClick={() => onRemove(current.id)}>Remove</button>
+          </div>
+        </div>
+      );
+    }
+
+    // ---------- App ----------
+    function App() {
+      const [currentUser, setCurrentUser] = useState(loadCurrentUser());
+      const [records, setRecords] = useState(() => (currentUser ? loadUserData(currentUser) : []));
+      const [prospects, setProspects] = useState(() => (currentUser ? loadProspects(currentUser) : []));
+      const [editingRecord, setEditingRecord] = useState(null);
+      const [showProspecting, setShowProspecting] = useState(false);
+
+      useEffect(() => {
+        if (currentUser) {
+          saveCurrentUser(currentUser);
+          setRecords(loadUserData(currentUser));
+          setProspects(loadProspects(currentUser));
+        }
+      }, [currentUser]);
+      useEffect(() => { if (currentUser) saveUserData(currentUser, records); }, [currentUser, records]);
+      useEffect(() => { if (currentUser) saveProspects(currentUser, prospects); }, [currentUser, prospects]);
+
+      const handleAdd = (record) => setRecords((prev) => [record, ...prev]);
+      const handleDelete = (id) => {
+        setRecords((prev) => prev.filter((r) => r.id !== id));
+        if (editingRecord && editingRecord.id === id) setEditingRecord(null);
+      };
+      const handleEditStart = (record) => setEditingRecord(record);
+      const handleSaveEdit = (updated) => {
+        setRecords((prev) => prev.map((r) => (r.id === updated.id ? { ...r, ...updated } : r)));
+        setEditingRecord(null);
+      };
+      const handleCancelEdit = () => setEditingRecord(null);
+
+      const handleLogin = (u) => setCurrentUser(u);
+      const handleLogout = () => setCurrentUser("");
+
+      const addProspect = (p) => setProspects((prev)=>[...prev, p]);
+      const removeProspect = (id) => setProspects((prev)=>prev.filter(p=>p.id!==id));
+      const updateProspect = (updated) => setProspects((prev)=>prev.map(p => p.id === updated.id ? updated : p));
+      const promoteProspect = (p, extraNote) => {
+        const combinedNotes = [p.notes, extraNote].filter(Boolean).join("\n");
+        const record = {
+          id: uid(),
+          name: p.name || "",
+          number: p.number || "",
+          notes: combinedNotes,
+          timestamp: formatUKTimestamp(new Date()),
+          createdAtISO: new Date().toISOString()
+        };
+        setRecords((prev)=>[record, ...prev]);
+        removeProspect(p.id);
+      };
+
+      if (showProspecting) {
+        return (
+          <>
+            <TopBar currentUser={currentUser} onLogin={handleLogin} onLogout={handleLogout} onToggleMode={() => setShowProspecting(false)} isProspecting={true} />
+            <ProspectingPage
+              onClose={()=>setShowProspecting(false)}
+              onAddProspect={addProspect}
+              onUpdateProspect={updateProspect}
+              onDeleteProspect={removeProspect}
+              currentUser={currentUser}
+              prospects={prospects}
+            />
+          </>
+        );
+      }
+
+      return (
+        <div className="relative min-h-screen bg-gray-50">
+          <TopBar currentUser={currentUser} onLogin={handleLogin} onLogout={handleLogout} onToggleMode={() => setShowProspecting(true)} isProspecting={false} />
+          <div className="max-w-6xl mx-auto px-4 pt-20 pb-8">
+            <main className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* LEFT: search & call records */}
+              <section className="bg-white rounded-2xl shadow-sm p-4">
+                <SearchPanel records={records} onDelete={handleDelete} onEdit={handleEditStart} />
+              </section>
+
+              {/* RIGHT: input form + prospects deck */}
+              <section className="bg-white rounded-2xl shadow-sm p-4">
+                <InputPanel
+                  currentUser={currentUser}
+                  onAdd={handleAdd}
+                  onSaveEdit={handleSaveEdit}
+                  onCancelEdit={handleCancelEdit}
+                  editingRecord={editingRecord}
+                />
+                <ProspectsDeck
+                  prospects={prospects}
+                  onPromote={promoteProspect}
+                  onRemove={removeProspect}
+                />
+              </section>
+            </main>
+          </div>
+        </div>
+      );
+    }
+
+    // ---------- Lightweight runtime checks (dev only, harmless in prod) ----------
+    try {
+      console.assert(normalizeNumber("+44 7700 900123") === "447700900123", "normalizeNumber should strip non-digits");
+      console.assert(normalizeNumber("") === "", "normalizeNumber empty");
+      const a = uid(), b = uid();
+      console.assert(a !== b, "uid should differ across calls");
+    } catch {}
+
+    // Mount
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>
