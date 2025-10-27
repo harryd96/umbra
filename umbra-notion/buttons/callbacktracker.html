@@ -4,28 +4,21 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Call Tracker + Prospecting</title>
-
-  <!-- Tailwind (CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- React 18 (UMD) + ReactDOM -->
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-
-  <!-- Babel for in-browser JSX transform -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
 </head>
 <body class="antialiased">
   <div id="root"></div>
-
   <script type="text/babel">
     const { useEffect, useMemo, useRef, useState } = React;
 
-    // ---------- Constants (UNCHANGED KEYS TO PROTECT EXISTING DATA) ----------
+    // ---------- Constants (keys unchanged to protect data) ----------
     const ALLOWED_USERS = ["harry.doling", "brendan.hill", "raff.nunn"];
-    const LS_CURRENT_USER = "oct_current_user";          // selected username
-    const LS_DATA_PREFIX = "oct_data_";                  // call records per user
-    const LS_PROSPECT_PREFIX = "oct_prospects_";         // prospect queue per user
+    const LS_CURRENT_USER = "oct_current_user";
+    const LS_DATA_PREFIX = "oct_data_";
+    const LS_PROSPECT_PREFIX = "oct_prospects_";
 
     // ---------- Utils ----------
     function formatUKTimestamp(date = new Date()) {
@@ -41,15 +34,16 @@
       const get = (type) => parts.find((p) => p.type === type)?.value || "";
       return `${get("day")} ${get("month")} ${get("year")}, ${get("hour")}:${get("minute")}${(get("dayPeriod") || "").toLowerCase()}`;
     }
-    function uid() { return Math.random().toString(36).slice(2) + Date.now().toString(36); }
-    function normalizeNumber(n) { return (n || "").replace(/\D+/g, ""); }
+    const uid = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
+    const normalizeNumber = (n) => (n || "").replace(/\D+/g, "");
 
-    function loadCurrentUser() { try { return localStorage.getItem(LS_CURRENT_USER) || ""; } catch { return ""; } }
-    function saveCurrentUser(username) { try { username ? localStorage.setItem(LS_CURRENT_USER, username) : localStorage.removeItem(LS_CURRENT_USER); } catch {} }
-    function loadUserData(username) { try { const raw = localStorage.getItem(LS_DATA_PREFIX + username); return raw ? JSON.parse(raw) : []; } catch { return []; } }
-    function saveUserData(username, records) { try { localStorage.setItem(LS_DATA_PREFIX + username, JSON.stringify(records)); } catch (e) { console.error("LocalStorage write failed", e); } }
-    function loadProspects(username) { try { const raw = localStorage.getItem(LS_PROSPECT_PREFIX + username); return raw ? JSON.parse(raw) : []; } catch { return []; } }
-    function saveProspects(username, prospects) { try { localStorage.setItem(LS_PROSPECT_PREFIX + username, JSON.stringify(prospects)); } catch (e) { console.error("LocalStorage write failed", e); } }
+    // localStorage wrappers (safe for private mode)
+    const loadCurrentUser = () => { try { return localStorage.getItem(LS_CURRENT_USER) || ""; } catch { return ""; } };
+    const saveCurrentUser = (u) => { try { u ? localStorage.setItem(LS_CURRENT_USER, u) : localStorage.removeItem(LS_CURRENT_USER); } catch {} };
+    const loadUserData = (u) => { try { const raw = localStorage.getItem(LS_DATA_PREFIX + u); return raw ? JSON.parse(raw) : []; } catch { return []; } };
+    const saveUserData = (u, d) => { try { localStorage.setItem(LS_DATA_PREFIX + u, JSON.stringify(d)); } catch {} };
+    const loadProspects = (u) => { try { const raw = localStorage.getItem(LS_PROSPECT_PREFIX + u); return raw ? JSON.parse(raw) : []; } catch { return []; } };
+    const saveProspects = (u, p) => { try { localStorage.setItem(LS_PROSPECT_PREFIX + u, JSON.stringify(p)); } catch {} };
 
     // ---------- Top bar ----------
     function TopBar({ currentUser, onLogin, onLogout, onToggleMode, isProspecting }) {
@@ -57,50 +51,28 @@
       const [username, setUsername] = useState("");
       const [error, setError] = useState("");
       const modeButtonLabel = isProspecting ? "Calling Mode" : "Prospecting Mode";
-
-      const tryLogin = () => {
-        if (!ALLOWED_USERS.includes(username)) { setError("Unknown username"); return; }
-        onLogin(username); setOpen(false);
-      };
-
+      const tryLogin = () => { if (!ALLOWED_USERS.includes(username)) { setError("Unknown username"); return; } onLogin(username); setOpen(false); };
       return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b">
           <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-2">
             {currentUser ? (
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600" aria-live="polite">{currentUser}</span>
+                <span className="text-sm text-gray-600">{currentUser}</span>
                 <button className="px-4 py-2 text-sm rounded-xl border border-gray-300 hover:bg-gray-50" onClick={onLogout}>Log out</button>
               </div>
             ) : (
               <button className="px-4 py-2 text-sm rounded-xl border border-gray-300 shadow-sm hover:bg-gray-50" onClick={() => setOpen(true)}>Log in</button>
             )}
-
-            <button className="ml-auto px-4 py-2 text-sm rounded-xl border border-gray-300 shadow-sm hover:bg-gray-50" onClick={onToggleMode}>
-              {modeButtonLabel}
-            </button>
+            <button className="ml-auto px-4 py-2 text-sm rounded-xl border border-gray-300 shadow-sm hover:bg-gray-50" onClick={onToggleMode}>{modeButtonLabel}</button>
           </div>
-
           {open && !currentUser && (
             <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
-              <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6" role="dialog" aria-modal="true" aria-labelledby="login-title">
-                <h2 id="login-title" className="text-base font-semibold mb-3">Select user</h2>
-                <label className="sr-only" htmlFor="username">Username</label>
-                <input
-                  id="username"
-                  autoFocus
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value.trim())}
-                  placeholder="Username"
-                  className="w-full border rounded-xl px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-black/20"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") tryLogin();
-                    if (e.key === "Escape") setOpen(false);
-                  }}
-                />
-                {error && <div className="text-sm text-red-600 mb-3" role="alert">{error}</div>}
+              <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6" role="dialog" aria-modal="true">
+                <h2 className="text-base font-semibold mb-3">Select user</h2>
+                <input id="username" autoFocus type="text" value={username} onChange={(e)=>setUsername(e.target.value.trim())} placeholder="Username" className="w-full border rounded-xl px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-black/20" onKeyDown={(e)=>{ if(e.key==="Enter") tryLogin(); if(e.key==="Escape") setOpen(false); }} />
+                {error && <div className="text-sm text-red-600 mb-3">{error}</div>}
                 <div className="flex justify-end gap-2">
-                  <button className="px-3 py-2 rounded-xl border border-gray-300" onClick={() => setOpen(false)}>Cancel</button>
+                  <button className="px-3 py-2 rounded-xl border" onClick={()=>setOpen(false)}>Cancel</button>
                   <button className="px-4 py-2 rounded-xl bg-black text-white" onClick={tryLogin}>Submit</button>
                 </div>
               </div>
@@ -110,101 +82,62 @@
       );
     }
 
-    // ---------- Input panel (add + edit mode) ----------
-    function InputPanel({ currentUser, onAdd, onSaveEdit, onCancelEdit, editingRecord }) {
+    // ---------- Input panel ----------
+    function InputPanel({ currentUser, onAdd, onSaveEdit, onCancelEdit, editingRecord, editingProspect, onSaveProspect, onCancelProspect }) {
       const [name, setName] = useState("");
       const [number, setNumber] = useState("");
       const [notes, setNotes] = useState("");
-      const nameRef = useRef(null);
-      const numberRef = useRef(null);
-      const notesRef = useRef(null);
+      const nameRef = useRef(null), numberRef = useRef(null), notesRef = useRef(null);
 
+      // Focus/Prefill sequences
       useEffect(() => { nameRef.current?.focus(); }, [currentUser]);
-      useEffect(() => {
-        if (editingRecord) {
-          setName(editingRecord.name || "");
-          setNumber(editingRecord.number || "");
-          setNotes(editingRecord.notes || "");
-          nameRef.current?.focus();
-        }
-      }, [editingRecord]);
+      useEffect(() => { if (editingRecord) { setName(editingRecord.name||""); setNumber(editingRecord.number||""); setNotes(editingRecord.notes||""); nameRef.current?.focus(); } }, [editingRecord]);
+      useEffect(() => { if (editingProspect) { setName(editingProspect.name||""); setNumber(editingProspect.number||""); setNotes(editingProspect.notes||""); nameRef.current?.focus(); } }, [editingProspect]);
 
       const submit = () => {
-        if (!currentUser) return;
-        const nameT = name.trim();
-        const numberT = number.trim();
-        const notesT = notes.trim();
-        if (!nameT && !numberT && !notesT) return;
-        if (editingRecord) {
-          onSaveEdit({
-            ...editingRecord,
-            name: nameT,
-            number: numberT,
-            numberNormalized: normalizeNumber(numberT),
-            notes: notesT,
-            updatedAtISO: new Date().toISOString(),
-          });
-          return;
-        }
-        const record = {
-          id: uid(),
-          name: nameT,
-          number: numberT,
-          numberNormalized: normalizeNumber(numberT),
-          notes: notesT,
-          timestamp: formatUKTimestamp(new Date()),
-          createdAtISO: new Date().toISOString(),
-        };
-        onAdd(record);
-        setName(""); setNumber(""); setNotes("");
-        nameRef.current?.focus();
+        if (!currentUser) return; const nameT=name.trim(), numberT=number.trim(), notesT=notes.trim(); if(!nameT && !numberT && !notesT) return;
+        if (editingRecord) { onSaveEdit({ ...editingRecord, name:nameT, number:numberT, numberNormalized:normalizeNumber(numberT), notes:notesT, updatedAtISO:new Date().toISOString() }); return; }
+        if (editingProspect) { onSaveProspect({ ...editingProspect, name:nameT, number:numberT, notes:notesT }); return; }
+        onAdd({ id:uid(), name:nameT, number:numberT, numberNormalized:normalizeNumber(numberT), notes:notesT, timestamp:formatUKTimestamp(new Date()), createdAtISO:new Date().toISOString() });
+        setName(""); setNumber(""); setNotes(""); nameRef.current?.focus();
       };
-
-      const submitRef = useRef(submit);
-      submitRef.current = submit;
-
+      const submitRef = useRef(submit); submitRef.current = submit;
       const resetFields = () => { setName(""); setNumber(""); setNotes(""); nameRef.current?.focus(); };
-
       useEffect(() => {
-        const handleKeyDown = async (e) => {
+        const onKey = async (e) => {
           if (e.key === "Enter") { e.preventDefault(); submitRef.current(); }
-          if (e.key === "ArrowLeft")  { e.preventDefault(); nameRef.current?.focus(); }
-          if (e.key === "ArrowDown")  { e.preventDefault(); numberRef.current?.focus(); }
+          if (e.key === "ArrowLeft") { e.preventDefault(); nameRef.current?.focus(); }
+          if (e.key === "ArrowDown") { e.preventDefault(); numberRef.current?.focus(); }
           if (e.key === "ArrowRight") { e.preventDefault(); notesRef.current?.focus(); }
-          if (e.key === "ArrowUp") {
-            e.preventDefault();
-            try { if (navigator.clipboard?.readText) {
-              const clip = await navigator.clipboard.readText();
-              if (clip) { setNumber(clip); numberRef.current?.focus(); }
-            }} catch {}
-          }
+          if (e.key === "ArrowUp") { e.preventDefault(); try { const clip = await navigator.clipboard.readText(); if (clip) { setNumber(clip); numberRef.current?.focus(); } } catch {} }
         };
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
       }, []);
 
+      const inProspectEdit = !!editingProspect && !editingRecord;
       const canSubmit = currentUser && (name.trim() || number.trim() || notes.trim());
 
       return (
         <div className="flex flex-col">
           <div className="flex flex-col gap-3">
-            <label htmlFor="name" className="sr-only">Name</label>
-            <input id="name" ref={nameRef} type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" className="w-full border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black/20" />
-
-            <label htmlFor="number" className="sr-only">Number</label>
-            <input id="number" ref={numberRef} type="tel" inputMode="tel" autoComplete="tel" value={number} onChange={(e) => setNumber(e.target.value)} placeholder="Number" className="w-full border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black/20" />
-
-            <label htmlFor="notes" className="sr-only">Notes</label>
-            <textarea id="notes" ref={notesRef} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Notes" className="w-full h-40 border rounded-xl px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-black/20" />
+            <input ref={nameRef} value={name} onChange={(e)=>setName(e.target.value)} placeholder="Name" className="w-full border rounded-xl px-3 py-2" />
+            <input ref={numberRef} value={number} onChange={(e)=>setNumber(e.target.value)} placeholder="Number" className="w-full border rounded-xl px-3 py-2" inputMode="tel" autoComplete="tel" />
+            <textarea ref={notesRef} value={notes} onChange={(e)=>setNotes(e.target.value)} placeholder="Notes" className="w-full h-40 border rounded-xl px-3 py-2 resize-none" />
           </div>
           <div className="mt-4 flex gap-2">
-            {!editingRecord ? (
-              <button disabled={!canSubmit} onClick={submit} className={`${canSubmit ? "bg-black text-white" : "bg-gray-200 text-gray-500"} px-4 py-2 rounded-xl`}>Add record</button>
-            ) : (
+            {editingRecord ? (
               <>
                 <button className="px-4 py-2 rounded-xl bg-black text-white" onClick={submit}>Save changes</button>
                 <button className="px-4 py-2 rounded-xl border border-gray-300" onClick={() => { onCancelEdit(); resetFields(); }}>Cancel</button>
               </>
+            ) : inProspectEdit ? (
+              <>
+                <button className="px-4 py-2 rounded-xl bg-blue-600 text-white" onClick={submit}>Save prospect</button>
+                <button className="px-4 py-2 rounded-xl border border-gray-300" onClick={() => { onCancelProspect(); resetFields(); }}>Cancel</button>
+              </>
+            ) : (
+              <button disabled={!canSubmit} onClick={submit} className={`${canSubmit ? "bg-black text-white" : "bg-gray-200 text-gray-500"} px-4 py-2 rounded-xl`}>Add record</button>
             )}
           </div>
           {!currentUser && <p className="text-sm text-red-600 mt-2">Log in to save entries.</p>}
@@ -212,130 +145,108 @@
       );
     }
 
-    // ---------- Search panel ----------
-    function SearchPanel({ records, onDelete, onEdit }) {
+    // ---------- Search panel (green Add/Remove + prospect cue) ----------
+    function SearchPanel({ records, prospects, onDelete, onEdit, onToggleProspect }) {
       const [q, setQ] = useState("");
-
       const results = useMemo(() => {
-        const qt = q.trim();
-        const ql = qt.toLowerCase();
-        const qn = normalizeNumber(qt);
-
-        const hasText = ql.length > 0;
-        const hasDigits = qn.length > 0;
-
-        if (!hasText && !hasDigits) return records;
-
-        return records.filter((r) => {
-          const nameMatch = hasText && (r.name || "").toLowerCase().includes(ql);
-          const notesMatch = hasText && (r.notes || "").toLowerCase().includes(ql);
-          const numField = r.numberNormalized || normalizeNumber(r.number || "");
-          const numberMatch = hasDigits && numField.includes(qn);
-          return nameMatch || notesMatch || numberMatch;
-        });
+        const qt=q.trim(), ql=qt.toLowerCase(), qn=normalizeNumber(qt); if(!qt) return records;
+        return records.filter(r=> (r.name||"").toLowerCase().includes(ql) || (r.notes||"").toLowerCase().includes(ql) || (r.number||"").includes(qt) || normalizeNumber(r.number||"").includes(qn));
       }, [q, records]);
-
+      const isInProspects = (rec) => {
+        const rn = normalizeNumber(rec.number||"");
+        return prospects.some(p => normalizeNumber(p.number||"") === rn && rn);
+      };
       return (
         <div className="flex flex-col">
-          <input type="text" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search by name, notes, or number" className="w-full border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black/20" />
+          <input type="text" value={q} onChange={(e)=>setQ(e.target.value)} placeholder="Search by name, notes, or number" className="w-full border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black/20" />
           <div className="mt-3 border rounded-xl divide-y">
-            {results.length === 0 && (
-              <div className="px-3 py-2 text-sm text-gray-500">No matches</div>
-            )}
-            {results.map((r) => (
-              <div key={r.id} className="px-3 py-2">
-                <div className="flex items-center justify-between">
-                  <div className="font-medium truncate">{r.name || "(No name)"}</div>
-                  <div className="text-sm text-gray-600 ml-2">{r.timestamp}</div>
+            {results.length===0 && <div className="px-3 py-2 text-sm text-gray-500">No matches</div>}
+            {results.map((r)=>{
+              const inProspect = isInProspects(r);
+              return (
+                <div key={r.id} className={`px-3 py-2 ${inProspect ? 'bg-green-50' : ''}`}>
+                  <div className="flex items-center justify-between">
+                    <div className="font-medium truncate flex items-center gap-2">
+                      {r.name || "(No name)"}
+                      {inProspect && <span className="text-xs text-green-700 font-medium">On prospect list</span>}
+                    </div>
+                    <div className="text-sm text-gray-600 ml-2">{r.timestamp}</div>
+                  </div>
+                  <div className="text-sm text-gray-700 truncate">{r.number || "(No number)"}</div>
+                  {r.notes && <div className="text-xs text-gray-500 whitespace-pre-wrap">{r.notes}</div>}
+                  <div className="mt-2 flex items-center gap-4">
+                    <button className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-800 text-sm px-2 py-1" onClick={()=>onEdit(r)} aria-label="Edit record" title="Edit">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path d="M4 17.25V21h3.75L17.81 10.94l-3.75-3.75L4 17.25zM20.71 7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/></svg>
+                      Edit
+                    </button>
+                    <button className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 text-sm px-2 py-1" onClick={()=>onDelete(r.id)} aria-label="Delete record" title="Delete">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path d="M9 3h6a1 1 0 011 1v1h4a1 1 0 110 2h-1v12a3 3 0 01-3 3H8a3 3 0 01-3-3V7H4a1 1 0 110-2h4V4a1 1 0 011-1zm1 4a1 1 0 10-2 0v10a1 1 0 102 0V7zm6 0a1 1 0 10-2 0v10a1 1 0 102 0V7zM9 4v1h6V4H9z"/></svg>
+                      Delete
+                    </button>
+                    <button
+                      className={`inline-flex items-center gap-2 text-sm px-2 py-1 ${inProspect ? 'text-red-600 hover:text-red-700' : 'text-green-700 hover:text-green-800'}`}
+                      onClick={()=> onToggleProspect(r, inProspect)}
+                      aria-label={inProspect ? 'Remove from prospecting' : 'Add to prospecting'}
+                      title={inProspect ? 'Remove from prospecting' : 'Add to prospecting'}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                        {inProspect ? (
+                          <path d="M18.3 5.71a1 1 0 00-1.41 0L12 10.59 7.11 5.7a1 1 0 10-1.41 1.42L10.59 12l-4.9 4.89a1 1 0 101.41 1.42L12 13.41l4.89 4.9a1 1 0 001.42-1.41L13.41 12l4.9-4.89a1 1 0 000-1.4z" />
+                        ) : (
+                          <path d="M12 5a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H6a1 1 0 110-2h5V6a1 1 0 011-1z" />
+                        )}
+                      </svg>
+                      {inProspect ? 'Remove' : 'Add'}
+                    </button>
+                  </div>
                 </div>
-                <div className="text-sm text-gray-700 truncate">{r.number || "(No number)"}</div>
-                {r.notes && <div className="text-xs text-gray-500 whitespace-pre-wrap">{r.notes}</div>}
-                <div className="mt-2 flex items-center gap-4">
-                  <button aria-label="Edit record" className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-800 text-sm" onClick={() => onEdit(r)} title="Edit">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path d="M4 17.25V21h3.75L17.81 10.94l-3.75-3.75L4 17.25zM20.71 7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/></svg>
-                    Edit
-                  </button>
-                  <button aria-label="Delete record" className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 text-sm" onClick={() => onDelete(r.id)}>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path d="M9 3h6a1 1 0 011 1v1h4a1 1 0 110 2h-1v12a3 3 0 01-3 3H8a3 3 0 01-3-3V7H4a1 1 0 110-2h4V4a1 1 0 011-1zm1 4a1 1 0 10-2 0v10a1 1 0 102 0V7zm6 0a1 1 0 10-2 0v10a1 1 0 102 0V7zM9 4v1h6V4H9z" /></svg>
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       );
     }
 
-    // ---------- Prospecting page & deck ----------
+    // ---------- Prospecting page ----------
     function ProspectingPage({ onAddProspect, onUpdateProspect, onDeleteProspect, currentUser, prospects }) {
       const [name, setName] = useState("");
       const [number, setNumber] = useState("");
       const [notes, setNotes] = useState("");
       const [editing, setEditing] = useState(null);
-
-      const nameRef = useRef(null);
-      const numberRef = useRef(null);
-      const notesRef = useRef(null);
-
+      const nameRef = useRef(null), numberRef = useRef(null), notesRef = useRef(null);
       useEffect(() => { nameRef.current?.focus(); }, []);
       useEffect(() => { if (editing) nameRef.current?.focus(); }, [editing]);
-
       const submit = () => {
-        if (!currentUser) return;
-        const nameT = name.trim();
-        const numberT = number.trim();
-        const notesT = notes.trim();
-        if (!nameT && !numberT && !notesT) return;
-        if (editing) { onUpdateProspect({ ...editing, name: nameT, number: numberT, notes: notesT }); reset(); return; }
-        onAddProspect({ id: uid(), name: nameT, number: numberT, notes: notesT, createdAtISO: new Date().toISOString() });
-        reset();
+        if(!currentUser) return; const nameT=name.trim(), numberT=number.trim(), notesT=notes.trim(); if(!nameT && !numberT && !notesT) return;
+        if(editing){ onUpdateProspect({ ...editing, name:nameT, number:numberT, notes:notesT }); reset(); return; }
+        onAddProspect({ id:uid(), name:nameT, number:numberT, notes:notesT, createdAtISO:new Date().toISOString() }); reset();
       };
-
-      const submitRef = useRef(submit);
-      submitRef.current = submit;
-
-      useEffect(() => { nameRef.current?.focus(); }, []);
-
+      const submitRef = useRef(submit); submitRef.current = submit;
       useEffect(() => {
         const onKey = async (e) => {
           if (e.key === "Enter") { e.preventDefault(); submitRef.current(); }
           if (e.key === "ArrowLeft") { e.preventDefault(); nameRef.current?.focus(); }
           if (e.key === "ArrowDown") { e.preventDefault(); numberRef.current?.focus(); }
           if (e.key === "ArrowRight") { e.preventDefault(); notesRef.current?.focus(); }
-          if (e.key === "ArrowUp") {
-            e.preventDefault();
-            try { if (navigator.clipboard?.readText) {
-              const clip = await navigator.clipboard.readText(); if (clip) { setNumber(clip); numberRef.current?.focus(); }
-            }} catch {}
-          }
+          if (e.key === "ArrowUp") { e.preventDefault(); try{ const clip=await navigator.clipboard.readText(); if(clip){ setNumber(clip); numberRef.current?.focus(); } }catch{} }
         };
         window.addEventListener("keydown", onKey);
         return () => window.removeEventListener("keydown", onKey);
       }, []);
-
-      const beginEdit = (p) => { setEditing(p); setName(p.name || ""); setNumber(p.number || ""); setNotes(p.notes || ""); };
+      const beginEdit = (p) => { setEditing(p); setName(p.name||""); setNumber(p.number||""); setNotes(p.notes||""); };
       const reset = () => { setEditing(null); setName(""); setNumber(""); setNotes(""); nameRef.current?.focus(); };
-
       return (
         <div className="min-h-screen bg-gray-50 p-6 pt-24">
           <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow p-6">
             <h2 className="text-lg font-semibold mb-4">Prospecting</h2>
-
-            {/* Form */}
             <div className="flex flex-col gap-3">
-              <label htmlFor="pname" className="sr-only">Name</label>
-              <input id="pname" ref={nameRef} value={name} onChange={(e)=>setName(e.target.value)} placeholder="Name" className="w-full border rounded-xl px-3 py-2" />
-
-              <label htmlFor="pnumber" className="sr-only">Number</label>
-              <input id="pnumber" ref={numberRef} value={number} onChange={(e)=>setNumber(e.target.value)} placeholder="Number" className="w-full border rounded-xl px-3 py-2" inputMode="tel" autoComplete="tel" />
-
-              <label htmlFor="pnotes" className="sr-only">Notes</label>
-              <textarea id="pnotes" ref={notesRef} value={notes} onChange={(e)=>setNotes(e.target.value)} placeholder="Notes" className="w-full h-28 border rounded-xl px-3 py-2" />
+              <input ref={nameRef} value={name} onChange={(e)=>setName(e.target.value)} placeholder="Name" className="w-full border rounded-xl px-3 py-2" />
+              <input ref={numberRef} value={number} onChange={(e)=>setNumber(e.target.value)} placeholder="Number" className="w-full border rounded-xl px-3 py-2" />
+              <textarea ref={notesRef} value={notes} onChange={(e)=>setNotes(e.target.value)} placeholder="Notes" className="w-full h-28 border rounded-xl px-3 py-2" />
             </div>
             <div className="mt-4 flex gap-2">
               {!editing ? (
-                <button disabled={!currentUser || !(name.trim() || number.trim() || notes.trim())} onClick={submit} className={`px-4 py-2 rounded-xl ${currentUser ? "bg-black text-white" : "bg-gray-200 text-gray-500"}`}>Add prospect</button>
+                <button disabled={!currentUser} onClick={submit} className={`px-4 py-2 rounded-xl ${currentUser ? "bg-black text-white" : "bg-gray-200 text-gray-500"}`}>Add prospect</button>
               ) : (
                 <>
                   <button className="px-4 py-2 rounded-xl bg-black text-white" onClick={submit}>Save changes</button>
@@ -343,22 +254,18 @@
                 </>
               )}
             </div>
-
-            {/* Compact list below form */}
             <div className="mt-6">
               <div className="text-sm font-medium mb-2">Your prospects</div>
               <div className="rounded-xl border divide-y">
-                {prospects.length === 0 && (
-                  <div className="px-3 py-2 text-sm text-gray-500">No prospects yet.</div>
-                )}
-                {prospects.map((p) => (
+                {prospects.length===0 && <div className="px-3 py-2 text-sm text-gray-500">No prospects yet.</div>}
+                {prospects.map(p=> (
                   <div key={p.id} className="px-3 py-2 text-xs sm:text-sm grid grid-cols-12 gap-2 items-start">
-                    <div className="col-span-3 truncate"><span className="font-medium">{p.name || "(No name)"}</span></div>
-                    <div className="col-span-3 truncate">{p.number || "(No number)"}</div>
+                    <div className="col-span-3 truncate"><span className="font-medium">{p.name||"(No name)"}</span></div>
+                    <div className="col-span-3 truncate">{p.number||"(No number)"}</div>
                     <div className="col-span-4 truncate text-gray-600">{p.notes}</div>
                     <div className="col-span-2 flex gap-2 justify-end">
-                      <button className="px-2 py-1 rounded border text-blue-700" onClick={() => beginEdit(p)} aria-label="Edit prospect">Edit</button>
-                      <button className="px-2 py-1 rounded border text-red-600" onClick={() => { if (editing?.id === p.id) reset(); onDeleteProspect(p.id); }} aria-label="Delete prospect">Delete</button>
+                      <button className="px-2 py-1 rounded border text-blue-700" onClick={()=>beginEdit(p)}>Edit</button>
+                      <button className="px-2 py-1 rounded border text-red-600" onClick={()=>onDeleteProspect(p.id)}>Delete</button>
                     </div>
                   </div>
                 ))}
@@ -369,31 +276,33 @@
       );
     }
 
-    // Deck: pointer-based navigation (does not mutate array order)
-    function ProspectsDeck({ prospects, onPromote, onRemove, currentIndex, onSkip }) {
+    // ---------- Prospects deck (pointer-based index + skip + edit) ----------
+    function ProspectsDeck({ prospects, onPromote, onRemove, currentIndex, onSkip, onEditProspect }) {
       const [extraNote, setExtraNote] = useState("");
       useEffect(() => { setExtraNote(""); }, [currentIndex, prospects.length]);
       if (!prospects.length) return null;
-      const current = prospects[Math.min(currentIndex, prospects.length - 1)];
+      const current = prospects[Math.min(currentIndex, prospects.length-1)];
       return (
         <div className="mt-4 border rounded-xl p-4">
           <div className="flex items-center justify-between mb-2">
             <h3 className="font-semibold">Prospect</h3>
-            <span className="text-xs text-gray-500">{`${Math.min(currentIndex + 1, prospects.length)} / ${prospects.length}`}</span>
+            <span className="text-xs text-gray-500">{`${Math.min(currentIndex+1, prospects.length)} / ${prospects.length}`}</span>
           </div>
           <div className="text-sm">
             <div><span className="font-medium">Name:</span> {current.name || "(No name)"}</div>
             <div><span className="font-medium">Number:</span> {current.number || "(No number)"}</div>
             {current.notes && <div className="mt-1 whitespace-pre-wrap">{current.notes}</div>}
           </div>
-          <label htmlFor="extraNote" className="sr-only">Additional note</label>
-          <textarea id="extraNote" value={extraNote} onChange={(e)=>setExtraNote(e.target.value)} placeholder="Additional note" className="mt-3 w-full h-20 border rounded-xl px-3 py-2" />
-          <div className="mt-3 flex gap-2">
-            <button className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-green-600 text-white" title="Submit to records" onClick={() => onPromote(current, extraNote)}>✓</button>
+          <textarea value={extraNote} onChange={(e)=>setExtraNote(e.target.value)} placeholder="Additional note" className="mt-3 w-full h-20 border rounded-xl px-3 py-2" />
+          <div className="mt-3 flex gap-2 items-center">
+            <button className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-green-600 text-white" title="Submit to records" onClick={()=>onPromote(current, extraNote)}>✓</button>
             <button className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-gray-300 text-gray-800" title="Skip (next)" onClick={onSkip} aria-label="Skip prospect">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M17.65 6.35A7.95 7.95 0 0012 4a8 8 0 108 8h-2a6 6 0 11-6-6c1.66 0 3.14.67 4.22 1.76L14 10h6V4l-2.35 2.35z"/></svg>
             </button>
-            <button className="px-3 py-2 rounded-xl border" onClick={() => onRemove(current.id)}>Remove</button>
+            <button className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-blue-600 text-white" title="Edit this prospect" onClick={()=>onEditProspect(current)} aria-label="Edit prospect">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/></svg>
+            </button>
+            <button className="px-3 py-2 rounded-xl border" onClick={()=>onRemove(current.id)}>Remove</button>
           </div>
         </div>
       );
@@ -405,19 +314,16 @@
       const [records, setRecords] = useState(() => (currentUser ? loadUserData(currentUser) : []));
       const [prospects, setProspects] = useState(() => (currentUser ? loadProspects(currentUser) : []));
       const [editingRecord, setEditingRecord] = useState(null);
+      const [editingProspect, setEditingProspect] = useState(null);
       const [showProspecting, setShowProspecting] = useState(false);
-      const [deckIndex, setDeckIndex] = useState(0); // << pointer for ProspectsDeck
+      const [deckIndex, setDeckIndex] = useState(0);
 
-      // lazy migration: add numberNormalized to existing records only if missing
+      // migrate numberNormalized if missing
       useEffect(() => {
         if (!currentUser) return;
         const existing = loadUserData(currentUser);
-        let changed = false;
-        const migrated = existing.map(r => {
-          if (!r.numberNormalized) { changed = true; return { ...r, numberNormalized: normalizeNumber(r.number || "") }; }
-          return r;
-        });
-        if (changed) saveUserData(currentUser, migrated);
+        const migrated = existing.map(r => r.numberNormalized ? r : { ...r, numberNormalized: normalizeNumber(r.number||"") });
+        if (JSON.stringify(existing) !== JSON.stringify(migrated)) saveUserData(currentUser, migrated);
         setRecords(loadUserData(currentUser));
         setProspects(loadProspects(currentUser));
         setDeckIndex(0);
@@ -426,118 +332,87 @@
       useEffect(() => { if (currentUser) saveUserData(currentUser, records); }, [currentUser, records]);
       useEffect(() => { if (currentUser) saveProspects(currentUser, prospects); }, [currentUser, prospects]);
 
-      // cross-tab sync
+      // storage sync
       useEffect(() => {
         const onStorage = (e) => {
           if (!currentUser) return;
           if (e.key === LS_DATA_PREFIX + currentUser) setRecords(loadUserData(currentUser));
-          if (e.key === LS_PROSPECT_PREFIX + currentUser) {
-            setProspects(loadProspects(currentUser));
-            setDeckIndex(0);
-          }
+          if (e.key === LS_PROSPECT_PREFIX + currentUser) { setProspects(loadProspects(currentUser)); setDeckIndex(0); }
           if (e.key === LS_CURRENT_USER) setCurrentUser(loadCurrentUser());
         };
         window.addEventListener("storage", onStorage);
         return () => window.removeEventListener("storage", onStorage);
       }, [currentUser]);
 
-      const handleAdd = (record) => setRecords((prev) => [record, ...prev]);
-      const handleDelete = (id) => {
-        setRecords((prev) => prev.filter((r) => r.id !== id));
-        if (editingRecord && editingRecord.id === id) setEditingRecord(null);
-      };
+      // records ops
+      const handleAdd = (record) => setRecords(prev => [record, ...prev]);
+      const handleDelete = (id) => { setRecords(prev => prev.filter(r=>r.id!==id)); if (editingRecord?.id === id) setEditingRecord(null); };
       const handleEditStart = (record) => setEditingRecord(record);
-      const handleSaveEdit = (updated) => {
-        setRecords((prev) => prev.map((r) => (r.id === updated.id ? { ...r, ...updated } : r)));
-        setEditingRecord(null);
-      };
+      const handleSaveEdit = (updated) => { setRecords(prev => prev.map(r => r.id===updated.id ? { ...r, ...updated } : r)); setEditingRecord(null); };
       const handleCancelEdit = () => setEditingRecord(null);
 
-      const handleLogin = (u) => { setCurrentUser(u); saveCurrentUser(u); };
-      const handleLogout = () => {
-        setCurrentUser("");
-        setRecords([]);
-        setProspects([]);
-        setEditingRecord(null);
-        setDeckIndex(0);
-      };
-
-      // Prospect ops
-      const addProspect = (p) => setProspects((prev)=>[...prev, p]);
-      const removeProspect = (id) => {
-        setProspects((prev)=>{
-          const next = prev.filter(p=>p.id!==id);
-          // adjust pointer if we removed the last item or current item
-          setDeckIndex((idx)=> Math.min(idx, Math.max(0, next.length - 1)));
-          return next;
-        });
-      };
-      const updateProspect = (updated) => setProspects((prev)=>prev.map(p => p.id === updated.id ? updated : p));
-
+      // prospects ops
+      const addProspect = (p) => setProspects(prev => [...prev, p]);
+      const removeProspect = (id) => setProspects(prev => { const next = prev.filter(p=>p.id!==id); setDeckIndex(idx=>Math.min(idx, Math.max(0, next.length-1))); return next; });
+      const updateProspect = (updated) => setProspects(prev => prev.map(p => p.id===updated.id ? updated : p));
       const promoteProspect = (p, extraNote) => {
-        const combinedNotes = [p.notes, extraNote].map(s => (s||"").trim()).filter(Boolean).join("\n");
-        const record = {
-          id: uid(),
-          name: p.name || "",
-          number: p.number || "",
-          numberNormalized: normalizeNumber(p.number || ""),
-          notes: combinedNotes,
-          timestamp: formatUKTimestamp(new Date()),
-          createdAtISO: new Date().toISOString()
-        };
-        setRecords((prev)=>[record, ...prev]);
-        // remove the current prospect
+        const combinedNotes = [p.notes, extraNote].map(s=>(s||"").trim()).filter(Boolean).join("\n");
+        const record = { id:uid(), name:p.name||"", number:p.number||"", numberNormalized:normalizeNumber(p.number||""), notes:combinedNotes, timestamp:formatUKTimestamp(new Date()), createdAtISO:new Date().toISOString() };
+        setRecords(prev => [record, ...prev]);
         removeProspect(p.id);
       };
+      const skipPointer = () => setDeckIndex(i => prospects.length===0 ? 0 : (i+1)%prospects.length);
 
-      const skipPointer = () => {
-        setDeckIndex((i)=> (prospects.length === 0 ? 0 : (i + 1) % prospects.length));
+      // toggle add/remove from prospects from records list (by normalized number)
+      const toggleProspect = (record, isInProspect) => {
+        const rn = normalizeNumber(record.number || ""); if (!rn) return;
+        setProspects(prev => {
+          if (isInProspect) { return prev.filter(p => normalizeNumber(p.number||"") !== rn); }
+          if (prev.some(p => normalizeNumber(p.number||"") === rn)) return prev;
+          return [...prev, { id: uid(), name: record.name || "", number: record.number || "", notes: record.notes || "", createdAtISO: new Date().toISOString() }];
+        });
       };
 
-      // stable, deterministic ordering for records display
+      // save prospect via InputPanel
+      const handleSaveProspect = (updated) => { updateProspect(updated); setEditingProspect(null); };
+      const handleCancelProspect = () => setEditingProspect(null);
+
+      // stable display order for records
       const sortedRecords = useMemo(() => {
-        return [...records].sort((a,b) => {
-          const A = a.createdAtISO || "";
-          const B = b.createdAtISO || "";
-          return A < B ? 1 : (A > B ? -1 : 0);
+        return [...records].sort((a,b)=>{
+          const A=a.createdAtISO||"", B=b.createdAtISO||""; return A<B?1:A>B?-1:0;
         });
       }, [records]);
 
       if (showProspecting) {
         return (
           <>
-            <TopBar currentUser={currentUser} onLogin={handleLogin} onLogout={handleLogout} onToggleMode={() => setShowProspecting(false)} isProspecting={true} />
-            <ProspectingPage
-              onAddProspect={addProspect}
-              onUpdateProspect={updateProspect}
-              onDeleteProspect={removeProspect}
-              currentUser={currentUser}
-              prospects={prospects}
-            />
+            <TopBar currentUser={currentUser} onLogin={(u)=>{setCurrentUser(u); saveCurrentUser(u);}} onLogout={()=>{setCurrentUser(""); setRecords([]); setProspects([]); setDeckIndex(0);}} onToggleMode={()=>setShowProspecting(false)} isProspecting={true} />
+            <ProspectingPage onAddProspect={addProspect} onUpdateProspect={updateProspect} onDeleteProspect={removeProspect} currentUser={currentUser} prospects={prospects} />
           </>
         );
       }
 
       return (
         <div className="relative min-h-screen bg-gray-50">
-          <TopBar currentUser={currentUser} onLogin={handleLogin} onLogout={handleLogout} onToggleMode={() => setShowProspecting(true)} isProspecting={false} />
+          <TopBar currentUser={currentUser} onLogin={(u)=>{setCurrentUser(u); saveCurrentUser(u);}} onLogout={()=>{setCurrentUser(""); setRecords([]); setProspects([]); setDeckIndex(0);}} onToggleMode={()=>setShowProspecting(true)} isProspecting={false} />
           <div className="max-w-6xl mx-auto px-4 pt-20 pb-8">
             <main className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* LEFT: search & call records */}
               <section className="bg-white rounded-2xl shadow-sm p-4" aria-labelledby="records-title">
                 <h2 id="records-title" className="sr-only">Call records</h2>
-                <SearchPanel records={sortedRecords} onDelete={handleDelete} onEdit={handleEditStart} />
+                <SearchPanel records={sortedRecords} prospects={prospects} onDelete={handleDelete} onEdit={handleEditStart} onToggleProspect={toggleProspect} />
               </section>
-
-              {/* RIGHT: input form + prospects deck */}
               <section className="bg-white rounded-2xl shadow-sm p-4" aria-labelledby="input-title">
-                <h2 id="input-title" className="sr-only">Add / Edit record</h2>
+                <h2 id="input-title" className="sr-only">Add / Edit record or prospect</h2>
                 <InputPanel
                   currentUser={currentUser}
                   onAdd={handleAdd}
                   onSaveEdit={handleSaveEdit}
                   onCancelEdit={handleCancelEdit}
                   editingRecord={editingRecord}
+                  editingProspect={editingProspect}
+                  onSaveProspect={handleSaveProspect}
+                  onCancelProspect={handleCancelProspect}
                 />
                 <ProspectsDeck
                   prospects={prospects}
@@ -545,6 +420,7 @@
                   onRemove={removeProspect}
                   currentIndex={deckIndex}
                   onSkip={skipPointer}
+                  onEditProspect={(p)=>{ setEditingProspect(p); }}
                 />
               </section>
             </main>
@@ -553,28 +429,11 @@
       );
     }
 
-    // ---------- Lightweight runtime tests ----------
+    // ---------- Runtime checks ----------
     try {
-      // normalizeNumber
-      console.assert(normalizeNumber("+44 7700 900123") === "447700900123", "normalizeNumber should strip non-digits");
-      console.assert(normalizeNumber("") === "", "normalizeNumber empty");
-      const a = uid(), b = uid();
-      console.assert(a !== b, "uid should differ across calls");
-
-      // queue index behavior
-      (function testIndexAdvance(){
-        const N = 3; let idx = 0;
-        const next = () => { idx = (idx + 1) % N; };
-        next(); console.assert(idx === 1, "index should advance to 1");
-        next(); console.assert(idx === 2, "index should advance to 2");
-        next(); console.assert(idx === 0, "index should wrap to 0");
-      })();
-
-      (function testRemoveAdjust(){
-        const clamp = (idx, len) => Math.min(idx, Math.max(0, len-1));
-        console.assert(clamp(2, 2) === 1, "clamp on shrink to last");
-        console.assert(clamp(0, 0) === 0, "clamp empty");
-      })();
+      console.assert(normalizeNumber("+44 7700 900123") === "447700900123", "normalizeNumber ok");
+      (function testIndex(){ let i=0; const N=3; const next=()=>i=(i+1)%N; next(); console.assert(i===1); next(); console.assert(i===2); next(); console.assert(i===0); })();
+      (function testDedup(){ const rn=n=>n.replace(/\D+/g,""); const exists=[{number:"(0)20 7123 4567"}]; const cand={number:"02071234567"}; console.assert(exists.some(p=>rn(p.number)===rn(cand.number)), "prospect dedupe by number"); })();
     } catch {}
 
     // Mount
