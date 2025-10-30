@@ -529,17 +529,17 @@
         <div className="relative min-h-screen bg-gray-50">
           <TopBar currentUser={currentUser} onLogin={(u)=>{setCurrentUser(u); saveCurrentUser(u);}} onLogout={()=>{setCurrentUser(""); setRecords([]); setProspects([]); setDeckIndex(0);}} onToggleMode={()=>setShowProspecting(true)} isProspecting={false} />
           <div className="max-w-6xl mx-auto px-4 pt-20 pb-8">
-            <main className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-0">
+            <main className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-0 items-start">
               <section
                 ref={leftColRef}
-                style={rightHeight ? { height: rightHeight + 'px', overflowY: 'auto' } : { overflowY: 'auto' }}
+                style={rightHeight ? { maxHeight: rightHeight + 'px', overflowY: 'auto' } : { overflowY: 'auto' }}
                 className="bg-white rounded-2xl shadow-sm p-4 min-h-0"
                 aria-labelledby="records-title"
               >
                 <h2 id="records-title" className="sr-only">Call records</h2>
                 <SearchPanel records={sortedRecords} prospects={prospects} onDelete={handleDelete} onEdit={handleEditStart} onToggleProspect={toggleProspect} onToggleConnected={toggleConnected} />
               </section>
-              <section ref={rightColRef} className="bg-white rounded-2xl shadow-sm p-4" aria-labelledby="input-title">
+              <section ref={rightColRef} className="bg-white rounded-2xl shadow-sm p-4 self-start" aria-labelledby="input-title">
                 <h2 id="input-title" className="sr-only">Add / Edit record or prospect</h2>
                 <InputPanel
                   currentUser={currentUser}
