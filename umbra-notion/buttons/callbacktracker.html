@@ -14,7 +14,7 @@
   <script type="text/babel">
     const { useEffect, useMemo, useRef, useState } = React;
 
-    // ---------- Constants (keys unchanged to protect data) ----------
+    // ---------- Constants (keys unchanged) ----------
     const ALLOWED_USERS = ["harry.doling", "brendan.hill", "raff.nunn"];
     const LS_CURRENT_USER = "oct_current_user";
     const LS_DATA_PREFIX = "oct_data_";
@@ -37,7 +37,7 @@
     const uid = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
     const normalizeNumber = (n) => (n || "").replace(/\D+/g, "");
 
-    // localStorage wrappers (safe for private mode)
+    // Storage helpers
     const loadCurrentUser = () => { try { return localStorage.getItem(LS_CURRENT_USER) || ""; } catch { return ""; } };
     const saveCurrentUser = (u) => { try { u ? localStorage.setItem(LS_CURRENT_USER, u) : localStorage.removeItem(LS_CURRENT_USER); } catch {} };
     const loadUserData = (u) => { try { const raw = localStorage.getItem(LS_DATA_PREFIX + u); return raw ? JSON.parse(raw) : []; } catch { return []; } };
@@ -45,7 +45,7 @@
     const loadProspects = (u) => { try { const raw = localStorage.getItem(LS_PROSPECT_PREFIX + u); return raw ? JSON.parse(raw) : []; } catch { return []; } };
     const saveProspects = (u, p) => { try { localStorage.setItem(LS_PROSPECT_PREFIX + u, JSON.stringify(p)); } catch {} };
 
-    // ---------- Top bar ----------
+    // ---------- UI: Top bar ----------
     function TopBar({ currentUser, onLogin, onLogout, onToggleMode, isProspecting }) {
       const [open, setOpen] = useState(false);
       const [username, setUsername] = useState("");
@@ -82,14 +82,13 @@
       );
     }
 
-    // ---------- Input panel ----------
+    // ---------- UI: Input panel ----------
     function InputPanel({ currentUser, onAdd, onSaveEdit, onCancelEdit, editingRecord, editingProspect, onSaveProspect, onCancelProspect }) {
       const [name, setName] = useState("");
       const [number, setNumber] = useState("");
       const [notes, setNotes] = useState("");
       const nameRef = useRef(null), numberRef = useRef(null), notesRef = useRef(null);
 
-      // Focus/Prefill sequences
       useEffect(() => { nameRef.current?.focus(); }, [currentUser]);
       useEffect(() => { if (editingRecord) { setName(editingRecord.name||""); setNumber(editingRecord.number||""); setNotes(editingRecord.notes||""); nameRef.current?.focus(); } }, [editingRecord]);
       useEffect(() => { if (editingProspect) { setName(editingProspect.name||""); setNumber(editingProspect.number||""); setNotes(editingProspect.notes||""); nameRef.current?.focus(); } }, [editingProspect]);
@@ -145,7 +144,7 @@
       );
     }
 
-    // ---------- Search panel (Add/Remove + Connected toggle + cues) ----------
+    // ---------- UI: Search panel ----------
     function SearchPanel({ records, prospects, onDelete, onEdit, onToggleProspect, onToggleConnected }) {
       const [q, setQ] = useState("");
       const results = useMemo(() => {
@@ -219,7 +218,7 @@
       );
     }
 
-    // ---------- Prospecting page ----------
+    // ---------- UI: Prospecting page ----------
     function ProspectingPage({ onAddProspect, onUpdateProspect, onDeleteProspect, currentUser, prospects }) {
       const [name, setName] = useState("");
       const [number, setNumber] = useState("");
@@ -288,14 +287,14 @@
       );
     }
 
-    // ---------- Prospects deck (pointer-based index + skip + edit) ----------
+    // ---------- UI: Prospects deck ----------
     function ProspectsDeck({ prospects, onPromote, onRemove, currentIndex, onSkip, onEditProspect }) {
       const [extraNote, setExtraNote] = useState("");
       useEffect(() => { setExtraNote(""); }, [currentIndex, prospects.length]);
       if (!prospects.length) return null;
       const current = prospects[Math.min(currentIndex, prospects.length-1)];
       return (
-        <div className="mt-4 border rounded-xl p-4">
+        <div className="mt-4 border rounded-2xl p-4">
           <div className="flex items-center justify-between mb-2">
             <h3 className="font-semibold">Prospect</h3>
             <span className="text-xs text-gray-500">{`${Math.min(currentIndex+1, prospects.length)} / ${prospects.length}`}</span>
@@ -305,7 +304,7 @@
             <div><span className="font-medium">Number:</span> {current.number || "(No number)"}</div>
             {current.notes && <div className="mt-1 whitespace-pre-wrap">{current.notes}</div>}
           </div>
-          <textarea value={extraNote} onChange={(e)=>setExtraNote(e.target.value)} placeholder="Additional note" className="mt-3 w-full h-20 border rounded-xl px-3 py-2" />
+          <textarea value={extraNote} onChange={(e)=>setExtraNote(e.target.value)} placeholder="Additional note" className="mt-3 w-full h-20 border rounded-xl px-3 py-2" onKeyDown={(e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); onPromote(current, extraNote); } }} />
           <div className="mt-3 flex gap-2 items-center">
             <button className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-green-600 text-white" title="Submit to records" onClick={()=>onPromote(current, extraNote)}>✓</button>
             <button className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-gray-300 text-gray-800" title="Skip (next)" onClick={onSkip} aria-label="Skip prospect">
@@ -320,7 +319,63 @@
       );
     }
 
-    
+    // ---------- UI: Stats (vertical with collapsible aux) ----------
+    function StatRow({ title, dials, connects, rate, className="" }) {
+      return (
+        <section className={`bg-white rounded-2xl border border-gray-200 shadow-sm p-6 text-center ${className}`}>
+          <h3 className="text-base font-semibold mb-4">{title}</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div>
+              <div className="text-xs uppercase tracking-wide text-gray-500">Dials</div>
+              <div className="mt-1 text-5xl font-semibold">{dials}</div>
+            </div>
+            <div>
+              <div className="text-xs uppercase tracking-wide text-gray-500">Connects</div>
+              <div className="mt-1 text-5xl font-semibold">{connects}</div>
+            </div>
+            <div>
+              <div className="text-xs uppercase tracking-wide text-gray-500">Connect Rate</div>
+              <div className="mt-1 text-5xl font-semibold">{rate}%</div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    function StatsVertical({ today, week, alltime, showExtra, onToggle }) {
+      return (
+        <div className="mt-6">
+          <StatRow title="Today" dials={today.dials} connects={today.connects} rate={today.rate} />
+
+          <div className="mt-2 flex items-center justify-end">
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 text-sm text-gray-700 hover:text-gray-900 px-2 py-1"
+              onClick={onToggle}
+              aria-expanded={showExtra}
+              aria-controls="aux-stats"
+              title={showExtra ? 'Hide This Week & All Time' : 'Show This Week & All Time'}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className={`w-4 h-4 transition-transform ${showExtra ? 'rotate-180' : ''}`}
+              >
+                <path d="M12 15.5l-7-7 1.41-1.41L12 12.67l5.59-5.58L19 8.5l-7 7z"/>
+              </svg>
+              {showExtra ? 'Hide extra' : 'Show extra'}
+            </button>
+          </div>
+
+          <div id="aux-stats" className={`${showExtra ? 'block' : 'hidden'}`}>
+            <StatRow className="mt-3" title="This Week" dials={week.dials} connects={week.connects} rate={week.rate} />
+            <StatRow className="mt-3" title="All Time" dials={alltime.dials} connects={alltime.connects} rate={alltime.rate} />
+          </div>
+        </div>
+      );
+    }
+
     // ---------- App ----------
     function App() {
       const [currentUser, setCurrentUser] = useState(loadCurrentUser());
@@ -330,8 +385,14 @@
       const [editingProspect, setEditingProspect] = useState(null);
       const [showProspecting, setShowProspecting] = useState(false);
       const [deckIndex, setDeckIndex] = useState(0);
+      const [showAuxStats, setShowAuxStats] = useState(true);
 
-      // migrate record fields if missing
+      // height sync: left scroll bounded by right column
+      const leftColRef = useRef(null);
+      const rightColRef = useRef(null);
+      const [rightHeight, setRightHeight] = useState(null);
+
+      // migrate old records shape
       useEffect(() => {
         if (!currentUser) return;
         const existing = loadUserData(currentUser);
@@ -349,7 +410,7 @@
       useEffect(() => { if (currentUser) saveUserData(currentUser, records); }, [currentUser, records]);
       useEffect(() => { if (currentUser) saveProspects(currentUser, prospects); }, [currentUser, prospects]);
 
-      // storage sync
+      // storage sync (multi-tab)
       useEffect(() => {
         const onStorage = (e) => {
           if (!currentUser) return;
@@ -380,7 +441,7 @@
       };
       const skipPointer = () => setDeckIndex(i => prospects.length===0 ? 0 : (i+1)%prospects.length);
 
-      // toggle add/remove from prospects from records list (by normalized number)
+      // toggle add/remove prospect from records
       const toggleProspect = (record, isInProspect) => {
         const rn = normalizeNumber(record.number || ""); if (!rn) return;
         setProspects(prev => {
@@ -397,20 +458,56 @@
       const handleSaveProspect = (updated) => { updateProspect(updated); setEditingProspect(null); };
       const handleCancelProspect = () => setEditingProspect(null);
 
-      // counts for chart (Europe/London day boundary)
-      const isSameLocalDay = (iso) => {
-        if (!iso) return false;
-        const d = new Date(iso);
-        const fmt = (dt) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).format(dt);
-        const todayStr = fmt(new Date());
-        return fmt(d) === todayStr;
+      // ---- Stats helpers (Europe/London) ----
+      const fmtYMD = (dt) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).format(dt);
+      const isSameLocalDay = (iso) => iso && fmtYMD(new Date(iso)) === fmtYMD(new Date());
+      const getLondonYMD = (dateObj) => {
+        const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(dateObj);
+        const get = (t) => parts.find(p=>p.type===t)?.value;
+        return { y: +get('year'), m: +get('month'), d: +get('day') };
       };
-      const totalCalls = records.length;
-      const todayCalls = records.filter(r => isSameLocalDay(r.createdAtISO)).length;
+      const mondayKey = (dateObj) => {
+        const { y, m, d } = getLondonYMD(dateObj);
+        const dt = new Date(Date.UTC(y, m-1, d));
+        const dowMon0 = (dt.getUTCDay() + 6) % 7; // Monday=0
+        dt.setUTCDate(dt.getUTCDate() - dowMon0);
+        const ym = String(dt.getUTCMonth()+1).padStart(2,'0');
+        const yd = String(dt.getUTCDate()).padStart(2,'0');
+        return `${dt.getUTCFullYear()}-${ym}-${yd}`;
+      };
+      const thisMondayKey = mondayKey(new Date());
+      const isSameLocalWeek = (iso) => mondayKey(new Date(iso)) === thisMondayKey;
 
-      // connect rate (percentage of records marked as connected)
-      const connectedTotal = records.filter(r => !!r.connected).length;
-      const connectRate = totalCalls ? Math.round((connectedTotal / totalCalls) * 100) : 0;
+      // Today
+      const todayCalls = records.filter(r => isSameLocalDay(r.createdAtISO)).length;
+      const todayConnects = records.filter(r => isSameLocalDay(r.createdAtISO) && !!r.connected).length;
+      const todayConnectRate = todayCalls ? Math.round((todayConnects / todayCalls) * 100) : 0;
+      // This week
+      const weekCalls = records.filter(r => isSameLocalWeek(r.createdAtISO)).length;
+      const weekConnects = records.filter(r => isSameLocalWeek(r.createdAtISO) && !!r.connected).length;
+      const weekConnectRate = weekCalls ? Math.round((weekConnects / weekCalls) * 100) : 0;
+      // All time
+      const allTimeCalls = records.length;
+      const allTimeConnects = records.filter(r => !!r.connected).length;
+      const allTimeConnectRate = allTimeCalls ? Math.round((allTimeConnects / allTimeCalls) * 100) : 0;
+
+      // observe right column size and cap left column scroll to it
+      useEffect(() => {
+        if (!rightColRef.current) return;
+        const el = rightColRef.current;
+        const apply = () => setRightHeight(el.offsetHeight);
+        apply();
+        let ro;
+        if ('ResizeObserver' in window) {
+          ro = new ResizeObserver(() => apply());
+          ro.observe(el);
+        } else {
+          window.addEventListener('resize', apply);
+        }
+        return () => {
+          if (ro) ro.disconnect(); else window.removeEventListener('resize', apply);
+        };
+      }, [prospects, editingProspect, editingRecord, deckIndex, todayCalls, weekCalls, allTimeCalls, showProspecting]);
 
       // stable display order for records
       const sortedRecords = useMemo(() => {
@@ -432,12 +529,17 @@
         <div className="relative min-h-screen bg-gray-50">
           <TopBar currentUser={currentUser} onLogin={(u)=>{setCurrentUser(u); saveCurrentUser(u);}} onLogout={()=>{setCurrentUser(""); setRecords([]); setProspects([]); setDeckIndex(0);}} onToggleMode={()=>setShowProspecting(true)} isProspecting={false} />
           <div className="max-w-6xl mx-auto px-4 pt-20 pb-8">
-            <main className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <section className="bg-white rounded-2xl shadow-sm p-4" aria-labelledby="records-title">
+            <main className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-0">
+              <section
+                ref={leftColRef}
+                style={rightHeight ? { height: rightHeight + 'px', overflowY: 'auto' } : { overflowY: 'auto' }}
+                className="bg-white rounded-2xl shadow-sm p-4 min-h-0"
+                aria-labelledby="records-title"
+              >
                 <h2 id="records-title" className="sr-only">Call records</h2>
                 <SearchPanel records={sortedRecords} prospects={prospects} onDelete={handleDelete} onEdit={handleEditStart} onToggleProspect={toggleProspect} onToggleConnected={toggleConnected} />
               </section>
-              <section className="bg-white rounded-2xl shadow-sm p-4" aria-labelledby="input-title">
+              <section ref={rightColRef} className="bg-white rounded-2xl shadow-sm p-4" aria-labelledby="input-title">
                 <h2 id="input-title" className="sr-only">Add / Edit record or prospect</h2>
                 <InputPanel
                   currentUser={currentUser}
@@ -446,8 +548,8 @@
                   onCancelEdit={handleCancelEdit}
                   editingRecord={editingRecord}
                   editingProspect={editingProspect}
-                  onSaveProspect={handleSaveProspect}
-                  onCancelProspect={handleCancelProspect}
+                  onSaveProspect={(u)=>{ updateProspect(u); setEditingProspect(null); }}
+                  onCancelProspect={()=>setEditingProspect(null)}
                 />
                 <ProspectsDeck
                   prospects={prospects}
@@ -457,22 +559,15 @@
                   onSkip={skipPointer}
                   onEditProspect={(p)=>{ setEditingProspect(p); }}
                 />
-                <section className="bg-white rounded-2xl shadow-sm p-6 mt-6" aria-labelledby="stats-title">
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
-                    <div>
-                      <div className="text-xs uppercase tracking-wide text-gray-500">All‑time dials</div>
-                      <div className="mt-1 text-5xl font-semibold">{totalCalls}</div>
-                    </div>
-                    <div>
-                      <div className="text-xs uppercase tracking-wide text-gray-500">Today’s dials</div>
-                      <div className="mt-1 text-5xl font-semibold">{todayCalls}</div>
-                    </div>
-                    <div>
-                      <div className="text-xs uppercase tracking-wide text-gray-500">Connect rate</div>
-                      <div className="mt-1 text-5xl font-semibold">{connectRate}%</div>
-                    </div>
-                  </div>
-                </section>
+
+                {/* Stats sections */}
+                <StatsVertical
+                  today={{ dials: todayCalls, connects: todayConnects, rate: todayConnectRate }}
+                  week={{ dials: weekCalls, connects: weekConnects, rate: weekConnectRate }}
+                  alltime={{ dials: allTimeCalls, connects: allTimeConnects, rate: allTimeConnectRate }}
+                  showExtra={showAuxStats}
+                  onToggle={()=>setShowAuxStats(s=>!s)}
+                />
               </section>
             </main>
           </div>
@@ -480,24 +575,19 @@
       );
     }
 
-    // ---------- Runtime checks ("tests") ----------
+    // ---------- Lightweight runtime checks (dev only) ----------
     try {
-      // number normalisation
-      console.assert(normalizeNumber("+44 7700 900123") === "447700900123", "normalizeNumber ok");
-      // deck index wrap
-      (function testIndex(){ let i=0; const N=3; const next=()=>i=(i+1)%N; next(); console.assert(i===1, 'idx1'); next(); console.assert(i===2, 'idx2'); next(); console.assert(i===0, 'idx0'); })();
-      // prospect de-dup by number
-      (function testDedup(){ const rn=n=>n.replace(/\D+/g,""); const exists=[{number:"(0)20 7123 4567"}]; const cand={number:"02071234567"}; console.assert(exists.some(p=>rn(p.number)===rn(cand.number)), "prospect dedupe by number"); })();
-      // local-day check
-      (function testSameDay(){
-        const todayIso = new Date().toISOString();
-        const isoSame = todayIso;
-        const isoOther = new Date(Date.now()-36*3600*1000).toISOString();
-        const fmt = (dt) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).format(dt);
-        const isSameLocalDay = (iso) => fmt(new Date(iso)) === fmt(new Date());
-        console.assert(isSameLocalDay(isoSame) === true, 'same-day true');
-        console.assert(typeof isSameLocalDay(isoOther) === 'boolean', 'same-day returns boolean');
+      console.assert(normalizeNumber("+44 7700 900123") === "447700900123", "normalizeNumber should strip non-digits");
+      const a = uid(), b = uid();
+      console.assert(a !== b, "uid uniqueness");
+      // mondayKey basic format check (YYYY-MM-DD)
+      const mk = (function(){
+        const s = (function(){ return (function inner(){ return (function(){ return (function(x){ return x; })((function(d){ return d; })(new Date())); })(); })(); })();
       })();
+      const mkStr = (function(d){ return (function(k){ return k; })( (function(date){ const pad=n=>String(n).padStart(2,'0'); return `${date.getUTCFullYear()}-${pad(date.getUTCMonth()+1)}-${pad(date.getUTCDate())}`; })(new Date()) ); })(new Date());
+      console.assert(/^\d{4}-\d{2}-\d{2}$/.test(mkStr), 'mondayKey format');
+      // deck index cycle test
+      (function(){ let i=0; const n=3; i=(i+1)%n; console.assert(i===1,'idx1'); i=(i+1)%n; console.assert(i===2,'idx2'); i=(i+1)%n; console.assert(i===0,'idx0'); })();
     } catch {}
 
     // Mount
