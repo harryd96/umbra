@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Call Tracker Legacy Export</title>
+    <style>
+      :root {
+        color: #172033;
+        background: #f5f7fa;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+      main {
+        width: min(100%, 640px);
+        border: 1px solid #d9e0ea;
+        border-radius: 8px;
+        background: #ffffff;
+        box-shadow: 0 14px 40px rgba(30, 41, 59, 0.08);
+        padding: 22px;
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: 1.35rem;
+      }
+      p {
+        color: #607089;
+        line-height: 1.5;
+      }
+      button {
+        min-height: 40px;
+        border: 0;
+        border-radius: 8px;
+        background: #0f766e;
+        color: #ffffff;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 800;
+        padding: 9px 14px;
+      }
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+      }
+      pre {
+        overflow: auto;
+        border: 1px solid #d9e0ea;
+        border-radius: 8px;
+        background: #f8fafc;
+        color: #172033;
+        padding: 12px;
+        white-space: pre-wrap;
+      }
+      .warning {
+        border: 1px solid #fed7aa;
+        border-radius: 8px;
+        background: #fff7ed;
+        color: #7c2d12;
+        padding: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Call Tracker Legacy Export</h1>
+      <p>
+        This page reads the old call tracker data saved in this browser and downloads it as a JSON file for the new Supabase app.
+      </p>
+      <p class="warning" id="origin-warning" hidden>
+        Open this from https://harryd96.github.io, not from your computer, so it can see the old tracker data.
+      </p>
+      <pre id="summary">Checking old tracker data...</pre>
+      <button id="download" type="button" disabled>Download export file</button>
+    </main>
+
+    <script>
+      const LS_CURRENT_USER = "oct_current_user";
+      const LS_DATA_PREFIX = "oct_data_";
+      const LS_PROSPECT_PREFIX = "oct_prospects_";
+
+      function safeParseList(raw) {
+        if (!raw) return [];
+        try {
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function readLegacyStorage() {
+        const users = new Set();
+        const currentUser = localStorage.getItem(LS_CURRENT_USER);
+        if (currentUser) users.add(currentUser);
+
+        for (let index = 0; index < localStorage.length; index += 1) {
+          const key = localStorage.key(index);
+          if (key && key.startsWith(LS_DATA_PREFIX)) users.add(key.slice(LS_DATA_PREFIX.length));
+          if (key && key.startsWith(LS_PROSPECT_PREFIX)) users.add(key.slice(LS_PROSPECT_PREFIX.length));
+        }
+
+        return Array.from(users)
+          .map((legacyUser) => {
+            const records = safeParseList(localStorage.getItem(LS_DATA_PREFIX + legacyUser));
+            const prospects = safeParseList(localStorage.getItem(LS_PROSPECT_PREFIX + legacyUser));
+            return {
+              legacyUser,
+              records,
+              prospects,
+              isCurrent: legacyUser === currentUser,
+            };
+          })
+          .filter((snapshot) => snapshot.records.length || snapshot.prospects.length);
+      }
+
+      const payload = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        origin: location.origin,
+        snapshots: readLegacyStorage(),
+      };
+
+      if (location.origin !== "https://harryd96.github.io") {
+        document.getElementById("origin-warning").hidden = false;
+      }
+
+      const recordCount = payload.snapshots.reduce((sum, snapshot) => sum + snapshot.records.length, 0);
+      const prospectCount = payload.snapshots.reduce((sum, snapshot) => sum + snapshot.prospects.length, 0);
+      const summary = payload.snapshots.length
+        ? payload.snapshots
+            .map((snapshot) => `${snapshot.legacyUser}: ${snapshot.records.length} records, ${snapshot.prospects.length} prospects`)
+            .join("\n")
+        : "No old tracker records found for this browser origin.";
+
+      document.getElementById("summary").textContent =
+        `Found ${recordCount} records and ${prospectCount} prospects.\n\n${summary}`;
+
+      const button = document.getElementById("download");
+      button.disabled = !payload.snapshots.length;
+      button.addEventListener("click", () => {
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `call-tracker-legacy-export-${new Date().toISOString().slice(0, 10)}.json`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+      });
+    </script>
+  </body>
+</html>
