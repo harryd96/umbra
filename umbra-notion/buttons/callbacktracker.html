@@ -5,594 +5,473 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Call Tracker + Prospecting</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
 </head>
-<body class="antialiased">
-  <div id="root"></div>
-  <script type="text/babel">
-    const { useEffect, useMemo, useRef, useState } = React;
 
-    // ---------- Constants (keys unchanged) ----------
-    const ALLOWED_USERS = ["harry.doling", "brendan.hill", "raff.nunn"];
-    const LS_CURRENT_USER = "oct_current_user";
-    const LS_DATA_PREFIX = "oct_data_";
-    const LS_PROSPECT_PREFIX = "oct_prospects_";
+<body class="antialiased bg-gray-50">
+  <div id="app"></div>
 
-    // ---------- Utils ----------
-    function formatUKTimestamp(date = new Date()) {
-      const parts = new Intl.DateTimeFormat("en-GB", {
-        timeZone: "Europe/London",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      }).formatToParts(date);
-      const get = (type) => parts.find((p) => p.type === type)?.value || "";
-      return `${get("day")} ${get("month")} ${get("year")}, ${get("hour")}:${get("minute")}${(get("dayPeriod") || "").toLowerCase()}`;
-    }
-    const uid = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
-    const normalizeNumber = (n) => (n || "").replace(/\D+/g, "");
+<script>
+const ALLOWED_USERS = ["harry.doling", "brendan.hill", "raff.nunn"];
+const LS_CURRENT_USER = "oct_current_user";
+const LS_DATA_PREFIX = "oct_data_";
+const LS_PROSPECT_PREFIX = "oct_prospects_";
 
-    // Storage helpers
-    const loadCurrentUser = () => { try { return localStorage.getItem(LS_CURRENT_USER) || ""; } catch { return ""; } };
-    const saveCurrentUser = (u) => { try { u ? localStorage.setItem(LS_CURRENT_USER, u) : localStorage.removeItem(LS_CURRENT_USER); } catch {} };
-    const loadUserData = (u) => { try { const raw = localStorage.getItem(LS_DATA_PREFIX + u); return raw ? JSON.parse(raw) : []; } catch { return []; } };
-    const saveUserData = (u, d) => { try { localStorage.setItem(LS_DATA_PREFIX + u, JSON.stringify(d)); } catch {} };
-    const loadProspects = (u) => { try { const raw = localStorage.getItem(LS_PROSPECT_PREFIX + u); return raw ? JSON.parse(raw) : []; } catch { return []; } };
-    const saveProspects = (u, p) => { try { localStorage.setItem(LS_PROSPECT_PREFIX + u, JSON.stringify(p)); } catch {} };
+let currentUser = localStorage.getItem(LS_CURRENT_USER) || "";
+let records = currentUser ? loadUserData(currentUser) : [];
+let prospects = currentUser ? loadProspects(currentUser) : [];
+let showProspecting = false;
+let editingRecordId = null;
+let editingProspectId = null;
+let deckIndex = 0;
+let showExtraStats = true;
 
-    // ---------- UI: Top bar ----------
-    function TopBar({ currentUser, onLogin, onLogout, onToggleMode, isProspecting }) {
-      const [open, setOpen] = useState(false);
-      const [username, setUsername] = useState("");
-      const [error, setError] = useState("");
-      const modeButtonLabel = isProspecting ? "Calling Mode" : "Prospecting Mode";
-      const tryLogin = () => { if (!ALLOWED_USERS.includes(username)) { setError("Unknown username"); return; } onLogin(username); setOpen(false); };
-      return (
-        <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b">
-          <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-2">
-            {currentUser ? (
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600">{currentUser}</span>
-                <button className="px-4 py-2 text-sm rounded-xl border border-gray-300 hover:bg-gray-50" onClick={onLogout}>Log out</button>
-              </div>
-            ) : (
-              <button className="px-4 py-2 text-sm rounded-xl border border-gray-300 shadow-sm hover:bg-gray-50" onClick={() => setOpen(true)}>Log in</button>
-            )}
-            <button className="ml-auto px-4 py-2 text-sm rounded-xl border border-gray-300 shadow-sm hover:bg-gray-50" onClick={onToggleMode}>{modeButtonLabel}</button>
-          </div>
-          {open && !currentUser && (
-            <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
-              <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6" role="dialog" aria-modal="true">
-                <h2 className="text-base font-semibold mb-3">Select user</h2>
-                <input id="username" autoFocus type="text" value={username} onChange={(e)=>setUsername(e.target.value.trim())} placeholder="Username" className="w-full border rounded-xl px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-black/20" onKeyDown={(e)=>{ if(e.key==="Enter") tryLogin(); if(e.key==="Escape") setOpen(false); }} />
-                {error && <div className="text-sm text-red-600 mb-3">{error}</div>}
-                <div className="flex justify-end gap-2">
-                  <button className="px-3 py-2 rounded-xl border" onClick={()=>setOpen(false)}>Cancel</button>
-                  <button className="px-4 py-2 rounded-xl bg-black text-white" onClick={tryLogin}>Submit</button>
-                </div>
-              </div>
-            </div>
-          )}
-        </header>
-      );
-    }
+function uid() {
+  return Math.random().toString(36).slice(2) + Date.now().toString(36);
+}
 
-    // ---------- UI: Input panel ----------
-    function InputPanel({ currentUser, onAdd, onSaveEdit, onCancelEdit, editingRecord, editingProspect, onSaveProspect, onCancelProspect }) {
-      const [name, setName] = useState("");
-      const [number, setNumber] = useState("");
-      const [notes, setNotes] = useState("");
-      const nameRef = useRef(null), numberRef = useRef(null), notesRef = useRef(null);
+function normalizeNumber(n) {
+  return (n || "").replace(/\D+/g, "");
+}
 
-      useEffect(() => { nameRef.current?.focus(); }, [currentUser]);
-      useEffect(() => { if (editingRecord) { setName(editingRecord.name||""); setNumber(editingRecord.number||""); setNotes(editingRecord.notes||""); nameRef.current?.focus(); } }, [editingRecord]);
-      useEffect(() => { if (editingProspect) { setName(editingProspect.name||""); setNumber(editingProspect.number||""); setNotes(editingProspect.notes||""); nameRef.current?.focus(); } }, [editingProspect]);
+function escapeHtml(str) {
+  return String(str || "").replace(/[&<>"']/g, m => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }[m]));
+}
 
-      const submit = () => {
-        if (!currentUser) return; const nameT=name.trim(), numberT=number.trim(), notesT=notes.trim(); if(!nameT && !numberT && !notesT) return;
-        if (editingRecord) { onSaveEdit({ ...editingRecord, name:nameT, number:numberT, numberNormalized:normalizeNumber(numberT), notes:notesT, updatedAtISO:new Date().toISOString() }); return; }
-        if (editingProspect) { onSaveProspect({ ...editingProspect, name:nameT, number:numberT, notes:notesT }); setName(""); setNumber(""); setNotes(""); nameRef.current?.focus(); return; }
-        onAdd({ id:uid(), name:nameT, number:numberT, numberNormalized:normalizeNumber(numberT), notes:notesT, timestamp:formatUKTimestamp(new Date()), createdAtISO:new Date().toISOString(), connected:false });
-        setName(""); setNumber(""); setNotes(""); nameRef.current?.focus();
-      };
-      const submitRef = useRef(submit); submitRef.current = submit;
-      const resetFields = () => { setName(""); setNumber(""); setNotes(""); nameRef.current?.focus(); };
-      useEffect(() => {
-        const onKey = async (e) => {
-          if (e.key === "Enter") { e.preventDefault(); submitRef.current(); }
-          if (e.key === "ArrowLeft") { e.preventDefault(); nameRef.current?.focus(); }
-          if (e.key === "ArrowDown") { e.preventDefault(); numberRef.current?.focus(); }
-          if (e.key === "ArrowRight") { e.preventDefault(); notesRef.current?.focus(); }
-          if (e.key === "ArrowUp") { e.preventDefault(); try { const clip = await navigator.clipboard.readText(); if (clip) { setNumber(clip); numberRef.current?.focus(); } } catch {} }
-        };
-        window.addEventListener("keydown", onKey);
-        return () => window.removeEventListener("keydown", onKey);
-      }, []);
+function formatUKTimestamp(date = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/London",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true
+  }).formatToParts(date);
 
-      const inProspectEdit = !!editingProspect && !editingRecord;
-      const canSubmit = currentUser && (name.trim() || number.trim() || notes.trim());
+  const get = type => parts.find(p => p.type === type)?.value || "";
+  return `${get("day")} ${get("month")} ${get("year")}, ${get("hour")}:${get("minute")}${(get("dayPeriod") || "").toLowerCase()}`;
+}
 
-      return (
-        <div className="flex flex-col">
-          <div className="flex flex-col gap-3">
-            <input ref={nameRef} value={name} onChange={(e)=>setName(e.target.value)} placeholder="Name" className="w-full border rounded-xl px-3 py-2" />
-            <input ref={numberRef} value={number} onChange={(e)=>setNumber(e.target.value)} placeholder="Number" className="w-full border rounded-xl px-3 py-2" inputMode="tel" autoComplete="tel" />
-            <textarea ref={notesRef} value={notes} onChange={(e)=>setNotes(e.target.value)} placeholder="Notes" className="w-full h-40 border rounded-xl px-3 py-2 resize-none" />
-          </div>
-          <div className="mt-4 flex gap-2">
-            {editingRecord ? (
-              <>
-                <button className="px-4 py-2 rounded-xl bg-black text-white" onClick={submit}>Save changes</button>
-                <button className="px-4 py-2 rounded-xl border border-gray-300" onClick={() => { onCancelEdit(); resetFields(); }}>Cancel</button>
-              </>
-            ) : inProspectEdit ? (
-              <>
-                <button className="px-4 py-2 rounded-xl bg-blue-600 text-white" onClick={submit}>Save prospect</button>
-                <button className="px-4 py-2 rounded-xl border border-gray-300" onClick={() => { onCancelProspect(); resetFields(); }}>Cancel</button>
-              </>
-            ) : (
-              <button disabled={!canSubmit} onClick={submit} className={`${canSubmit ? "bg-black text-white" : "bg-gray-200 text-gray-500"} px-4 py-2 rounded-xl`}>Add record</button>
-            )}
-          </div>
-          {!currentUser && <p className="text-sm text-red-600 mt-2">Log in to save entries.</p>}
-        </div>
-      );
-    }
+function loadUserData(u) {
+  try { return JSON.parse(localStorage.getItem(LS_DATA_PREFIX + u) || "[]"); }
+  catch { return []; }
+}
 
-    // ---------- UI: Search panel ----------
-    function SearchPanel({ records, prospects, onDelete, onEdit, onToggleProspect, onToggleConnected }) {
-      const [q, setQ] = useState("");
-      const results = useMemo(() => {
-        const qt=q.trim(), ql=qt.toLowerCase(), qn=normalizeNumber(qt); if(!qt) return records;
-        return records.filter(r=> (r.name||"").toLowerCase().includes(ql) || (r.notes||"").toLowerCase().includes(ql) || (r.number||"").includes(qt) || normalizeNumber(r.number||"").includes(qn));
-      }, [q, records]);
-      const isInProspects = (rec) => {
-        const rn = normalizeNumber(rec.number||"");
-        return prospects.some(p => normalizeNumber(p.number||"") === rn && rn);
-      };
-      return (
-        <div className="flex flex-col">
-          <input type="text" value={q} onChange={(e)=>setQ(e.target.value)} placeholder="Search by name, notes, or number" className="w-full border rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black/20" />
-          <div className="mt-3 border rounded-xl divide-y">
-            {results.length===0 && <div className="px-3 py-2 text-sm text-gray-500">No matches</div>}
-            {results.map((r)=>{
-              const inProspect = isInProspects(r);
-              const connected = !!r.connected;
-              const rowClass = connected ? 'bg-green-50' : (inProspect ? 'bg-sky-50' : '');
-              return (
-                <div key={r.id} className={`px-3 py-2 ${rowClass}`}>
-                  <div className="flex items-center justify-between">
-                    <div className="font-medium truncate flex items-center gap-2">
-                      {r.name || "(No name)"}
-                      {connected && <span className="text-xs text-emerald-700 font-medium">Connected</span>}
-                      {inProspect && <span className="text-xs text-sky-700 font-medium">On prospect list</span>}
-                    </div>
-                    <div className="text-sm text-gray-600 ml-2">{r.timestamp}</div>
-                  </div>
-                  <div className="text-sm text-gray-700 truncate">{r.number || "(No number)"}</div>
-                  {r.notes && <div className="text-xs text-gray-500 whitespace-pre-wrap">{r.notes}</div>}
-                  <div className="mt-2 flex items-center gap-4">
-                    <button className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-800 text-sm px-2 py-1" onClick={()=>onEdit(r)} aria-label="Edit record" title="Edit">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path d="M4 17.25V21h3.75L17.81 10.94l-3.75-3.75L4 17.25zM20.71 7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/></svg>
-                      Edit
-                    </button>
-                    <button className="inline-flex items-center gap-2 text-red-600 hover:text-red-700 text-sm px-2 py-1" onClick={()=>onDelete(r.id)} aria-label="Delete record" title="Delete">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path d="M9 3h6a1 1 0 011 1v1h4a1 1 0 110 2h-1v12a3 3 0 01-3 3H8a3 3 0 01-3-3V7H4a1 1 0 110-2h4V4a1 1 0 011-1zm1 4a1 1 0 10-2 0v10a1 1 0 102 0V7zm6 0a1 1 0 10-2 0v10a1 1 0 102 0V7zM9 4v1h6V4H9z"/></svg>
-                      Delete
-                    </button>
-                    <button
-                      className={`inline-flex items-center gap-2 text-sm px-2 py-1 ${inProspect ? 'text-red-600 hover:text-red-700' : 'text-green-700 hover:text-green-800'}`}
-                      onClick={()=> onToggleProspect(r, inProspect)}
-                      aria-label={inProspect ? 'Remove from prospecting' : 'Add to prospecting'}
-                      title={inProspect ? 'Remove from prospecting' : 'Add to prospecting'}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                        {inProspect ? (
-                          <path d="M18.3 5.71a1 1 0 00-1.41 0L12 10.59 7.11 5.7a1 1 0 10-1.41 1.42L10.59 12l-4.9 4.89a1 1 0 101.41 1.42L12 13.41l4.89 4.9a1 1 0 001.42-1.41L13.41 12l4.9-4.89a1 1 0 000-1.4z" />
-                        ) : (
-                          <path d="M12 5a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H6a1 1 0 110-2h5V6a1 1 0 011-1z" />
-                        )}
-                      </svg>
-                      {inProspect ? 'Remove' : 'Add'}
-                    </button>
-                    <button
-                      className={`inline-flex items-center gap-2 text-sm px-2 py-1 ${connected ? 'text-emerald-700 hover:text-emerald-800' : 'text-gray-700 hover:text-gray-800'}`}
-                      onClick={()=> onToggleConnected(r.id)}
-                      aria-label={connected ? 'Unmark connected' : 'Mark connected'}
-                      title={connected ? 'Unmark connected' : 'Mark connected'}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path d="M9 16.2l-3.5-3.5a1 1 0 10-1.4 1.4l4.2 4.2a1 1 0 001.4 0l9-9a1 1 0 10-1.4-1.4L9 16.2z"/></svg>
-                      {connected ? 'Connected' : 'Mark connected'}
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      );
-    }
+function saveUserData() {
+  if (currentUser) localStorage.setItem(LS_DATA_PREFIX + currentUser, JSON.stringify(records));
+}
 
-    // ---------- UI: Prospecting page ----------
-    function ProspectingPage({ onAddProspect, onUpdateProspect, onDeleteProspect, currentUser, prospects }) {
-      const [name, setName] = useState("");
-      const [number, setNumber] = useState("");
-      const [notes, setNotes] = useState("");
-      const [editing, setEditing] = useState(null);
-      const nameRef = useRef(null), numberRef = useRef(null), notesRef = useRef(null);
-      useEffect(() => { nameRef.current?.focus(); }, []);
-      useEffect(() => { if (editing) nameRef.current?.focus(); }, [editing]);
-      const submit = () => {
-        if(!currentUser) return; const nameT=name.trim(), numberT=number.trim(), notesT=notes.trim(); if(!nameT && !numberT && !notesT) return;
-        if(editing){ onUpdateProspect({ ...editing, name:nameT, number:numberT, notes:notesT }); reset(); return; }
-        onAddProspect({ id:uid(), name:nameT, number:numberT, notes:notesT, createdAtISO:new Date().toISOString() }); reset();
-      };
-      const submitRef = useRef(submit); submitRef.current = submit;
-      useEffect(() => {
-        const onKey = async (e) => {
-          if (e.key === "Enter") { e.preventDefault(); submitRef.current(); }
-          if (e.key === "ArrowLeft") { e.preventDefault(); nameRef.current?.focus(); }
-          if (e.key === "ArrowDown") { e.preventDefault(); numberRef.current?.focus(); }
-          if (e.key === "ArrowRight") { e.preventDefault(); notesRef.current?.focus(); }
-          if (e.key === "ArrowUp") { e.preventDefault(); try{ const clip=await navigator.clipboard.readText(); if(clip){ setNumber(clip); numberRef.current?.focus(); } }catch{} }
-        };
-        window.addEventListener("keydown", onKey);
-        return () => window.removeEventListener("keydown", onKey);
-      }, []);
-      const beginEdit = (p) => { setEditing(p); setName(p.name||""); setNumber(p.number||""); setNotes(p.notes||""); };
-      const reset = () => { setEditing(null); setName(""); setNumber(""); setNotes(""); nameRef.current?.focus(); };
-      return (
-        <div className="min-h-screen bg-gray-50 p-6 pt-24">
-          <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow p-6">
-            <h2 className="text-lg font-semibold mb-4">Prospecting</h2>
-            <div className="flex flex-col gap-3">
-              <input ref={nameRef} value={name} onChange={(e)=>setName(e.target.value)} placeholder="Name" className="w-full border rounded-xl px-3 py-2" />
-              <input ref={numberRef} value={number} onChange={(e)=>setNumber(e.target.value)} placeholder="Number" className="w-full border rounded-xl px-3 py-2" />
-              <textarea ref={notesRef} value={notes} onChange={(e)=>setNotes(e.target.value)} placeholder="Notes" className="w-full h-28 border rounded-xl px-3 py-2" />
-            </div>
-            <div className="mt-4 flex gap-2">
-              {!editing ? (
-                <button disabled={!currentUser} onClick={submit} className={`px-4 py-2 rounded-xl ${currentUser ? "bg-black text-white" : "bg-gray-200 text-gray-500"}`}>Add prospect</button>
-              ) : (
-                <>
-                  <button className="px-4 py-2 rounded-xl bg-black text-white" onClick={submit}>Save changes</button>
-                  <button className="px-4 py-2 rounded border" onClick={reset}>Cancel</button>
-                </>
-              )}
-            </div>
-            <div className="mt-6">
-              <div className="text-sm font-medium mb-2">Your prospects</div>
-              <div className="rounded-xl border divide-y">
-                {prospects.length===0 && <div className="px-3 py-2 text-sm text-gray-500">No prospects yet.</div>}
-                {prospects.map(p=> (
-                  <div key={p.id} className="px-3 py-2 text-xs sm:text-sm grid grid-cols-12 gap-2 items-start">
-                    <div className="col-span-3 truncate"><span className="font-medium">{p.name||"(No name)"}</span></div>
-                    <div className="col-span-3 truncate">{p.number||"(No number)"}</div>
-                    <div className="col-span-4 truncate text-gray-600">{p.notes}</div>
-                    <div className="col-span-2 flex gap-2 justify-end">
-                      <button className="px-2 py-1 rounded border text-blue-700" onClick={()=>beginEdit(p)}>Edit</button>
-                      <button className="px-2 py-1 rounded border text-red-600" onClick={()=>onDeleteProspect(p.id)}>Delete</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
+function loadProspects(u) {
+  try { return JSON.parse(localStorage.getItem(LS_PROSPECT_PREFIX + u) || "[]"); }
+  catch { return []; }
+}
 
-    // ---------- UI: Prospects deck ----------
-    function ProspectsDeck({ prospects, onPromote, onRemove, currentIndex, onSkip, onEditProspect }) {
-      const [extraNote, setExtraNote] = useState("");
-      useEffect(() => { setExtraNote(""); }, [currentIndex, prospects.length]);
-      if (!prospects.length) return null;
-      const current = prospects[Math.min(currentIndex, prospects.length-1)];
-      return (
-        <div className="mt-4 border rounded-2xl p-4">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="font-semibold">Prospect</h3>
-            <span className="text-xs text-gray-500">{`${Math.min(currentIndex+1, prospects.length)} / ${prospects.length}`}</span>
-          </div>
-          <div className="text-sm">
-            <div><span className="font-medium">Name:</span> {current.name || "(No name)"}</div>
-            <div><span className="font-medium">Number:</span> {current.number || "(No number)"}</div>
-            {current.notes && <div className="mt-1 whitespace-pre-wrap">{current.notes}</div>}
-          </div>
-          <textarea value={extraNote} onChange={(e)=>setExtraNote(e.target.value)} placeholder="Additional note" className="mt-3 w-full h-20 border rounded-xl px-3 py-2" onKeyDown={(e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); onPromote(current, extraNote); } }} />
-          <div className="mt-3 flex gap-2 items-center">
-            <button className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-green-600 text-white" title="Submit to records" onClick={()=>onPromote(current, extraNote)}>✓</button>
-            <button className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-gray-300 text-gray-800" title="Skip (next)" onClick={onSkip} aria-label="Skip prospect">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M17.65 6.35A7.95 7.95 0 0012 4a8 8 0 108 8h-2a6 6 0 11-6-6c1.66 0 3.14.67 4.22 1.76L14 10h6V4l-2.35 2.35z"/></svg>
-            </button>
-            <button className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-blue-600 text-white" title="Edit this prospect" onClick={()=>onEditProspect(current)} aria-label="Edit prospect">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/></svg>
-            </button>
-            <button className="px-3 py-2 rounded-xl border" onClick={()=>onRemove(current.id)}>Remove</button>
-          </div>
-        </div>
-      );
-    }
+function saveProspects() {
+  if (currentUser) localStorage.setItem(LS_PROSPECT_PREFIX + currentUser, JSON.stringify(prospects));
+}
 
-    // ---------- UI: Stats (vertical with collapsible aux) ----------
-    function StatRow({ title, dials, connects, rate, className="" }) {
-      return (
-        <section className={`bg-white rounded-2xl border border-gray-200 shadow-sm p-6 text-center ${className}`}>
-          <h3 className="text-base font-semibold mb-4">{title}</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div>
-              <div className="text-xs uppercase tracking-wide text-gray-500">Dials</div>
-              <div className="mt-1 text-5xl font-semibold">{dials}</div>
-            </div>
-            <div>
-              <div className="text-xs uppercase tracking-wide text-gray-500">Connects</div>
-              <div className="mt-1 text-5xl font-semibold">{connects}</div>
-            </div>
-            <div>
-              <div className="text-xs uppercase tracking-wide text-gray-500">Connect Rate</div>
-              <div className="mt-1 text-5xl font-semibold">{rate}%</div>
-            </div>
-          </div>
-        </section>
-      );
-    }
+function login(username) {
+  username = username.trim();
+  if (!ALLOWED_USERS.includes(username)) {
+    alert("Unknown username");
+    return;
+  }
+  currentUser = username;
+  localStorage.setItem(LS_CURRENT_USER, username);
+  records = loadUserData(username).map(r => ({
+    ...r,
+    numberNormalized: r.numberNormalized || normalizeNumber(r.number || ""),
+    connected: !!r.connected
+  }));
+  prospects = loadProspects(username);
+  editingRecordId = null;
+  editingProspectId = null;
+  render();
+}
 
-    function StatsVertical({ today, week, alltime, showExtra, onToggle }) {
-      return (
-        <div className="mt-6">
-          <StatRow title="Today" dials={today.dials} connects={today.connects} rate={today.rate} />
+function logout() {
+  currentUser = "";
+  localStorage.removeItem(LS_CURRENT_USER);
+  records = [];
+  prospects = [];
+  editingRecordId = null;
+  editingProspectId = null;
+  render();
+}
 
-          <div className="mt-2 flex items-center justify-end">
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 text-sm text-gray-700 hover:text-gray-900 px-2 py-1"
-              onClick={onToggle}
-              aria-expanded={showExtra}
-              aria-controls="aux-stats"
-              title={showExtra ? 'Hide This Week & All Time' : 'Show This Week & All Time'}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className={`w-4 h-4 transition-transform ${showExtra ? 'rotate-180' : ''}`}
-              >
-                <path d="M12 15.5l-7-7 1.41-1.41L12 12.67l5.59-5.58L19 8.5l-7 7z"/>
-              </svg>
-              {showExtra ? 'Hide extra' : 'Show extra'}
-            </button>
-          </div>
+function isSameLondonDay(iso) {
+  if (!iso) return false;
+  const fmt = d => new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/London",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(new Date(d));
+  return fmt(iso) === fmt(new Date());
+}
 
-          <div id="aux-stats" className={`${showExtra ? 'block' : 'hidden'}`}>
-            <StatRow className="mt-3" title="This Week" dials={week.dials} connects={week.connects} rate={week.rate} />
-            <StatRow className="mt-3" title="All Time" dials={alltime.dials} connects={alltime.connects} rate={alltime.rate} />
-          </div>
-        </div>
-      );
-    }
+function mondayKey(dateObj) {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/London",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(dateObj);
 
-    // ---------- App ----------
-    function App() {
-      const [currentUser, setCurrentUser] = useState(loadCurrentUser());
-      const [records, setRecords] = useState(() => (currentUser ? loadUserData(currentUser) : []));
-      const [prospects, setProspects] = useState(() => (currentUser ? loadProspects(currentUser) : []));
-      const [editingRecord, setEditingRecord] = useState(null);
-      const [editingProspect, setEditingProspect] = useState(null);
-      const [showProspecting, setShowProspecting] = useState(false);
-      const [deckIndex, setDeckIndex] = useState(0);
-      const [showAuxStats, setShowAuxStats] = useState(true);
+  const y = +parts.find(p => p.type === "year").value;
+  const m = +parts.find(p => p.type === "month").value;
+  const d = +parts.find(p => p.type === "day").value;
 
-      // height sync: left scroll bounded by right column
-      const leftColRef = useRef(null);
-      const rightColRef = useRef(null);
-      const [rightHeight, setRightHeight] = useState(null);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  const dowMon0 = (dt.getUTCDay() + 6) % 7;
+  dt.setUTCDate(dt.getUTCDate() - dowMon0);
 
-      // migrate old records shape
-      useEffect(() => {
-        if (!currentUser) return;
-        const existing = loadUserData(currentUser);
-        const migrated = existing.map(r => ({
-          ...r,
-          numberNormalized: r.numberNormalized || normalizeNumber(r.number||""),
-          connected: typeof r.connected === 'boolean' ? r.connected : false,
-        }));
-        if (JSON.stringify(existing) !== JSON.stringify(migrated)) saveUserData(currentUser, migrated);
-        setRecords(loadUserData(currentUser));
-        setProspects(loadProspects(currentUser));
-        setDeckIndex(0);
-      }, [currentUser]);
+  return `${dt.getUTCFullYear()}-${String(dt.getUTCMonth() + 1).padStart(2, "0")}-${String(dt.getUTCDate()).padStart(2, "0")}`;
+}
 
-      useEffect(() => { if (currentUser) saveUserData(currentUser, records); }, [currentUser, records]);
-      useEffect(() => { if (currentUser) saveProspects(currentUser, prospects); }, [currentUser, prospects]);
+function isSameLondonWeek(iso) {
+  return iso && mondayKey(new Date(iso)) === mondayKey(new Date());
+}
 
-      // storage sync (multi-tab)
-      useEffect(() => {
-        const onStorage = (e) => {
-          if (!currentUser) return;
-          if (e.key === LS_DATA_PREFIX + currentUser) setRecords(loadUserData(currentUser));
-          if (e.key === LS_PROSPECT_PREFIX + currentUser) { setProspects(loadProspects(currentUser)); setDeckIndex(0); }
-          if (e.key === LS_CURRENT_USER) setCurrentUser(loadCurrentUser());
-        };
-        window.addEventListener("storage", onStorage);
-        return () => window.removeEventListener("storage", onStorage);
-      }, [currentUser]);
+function statBlock(title, rows) {
+  const dials = rows.length;
+  const connects = rows.filter(r => r.connected).length;
+  const rate = dials ? Math.round((connects / dials) * 100) : 0;
 
-      // records ops
-      const handleAdd = (record) => setRecords(prev => [record, ...prev]);
-      const handleDelete = (id) => { setRecords(prev => prev.filter(r=>r.id!==id)); if (editingRecord?.id === id) setEditingRecord(null); };
-      const handleEditStart = (record) => setEditingRecord(record);
-      const handleSaveEdit = (updated) => { setRecords(prev => prev.map(r => r.id===updated.id ? { ...r, ...updated } : r)); setEditingRecord(null); };
-      const handleCancelEdit = () => setEditingRecord(null);
+  return `
+    <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 text-center mt-3">
+      <h3 class="text-base font-semibold mb-4">${title}</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div><div class="text-xs uppercase tracking-wide text-gray-500">Dials</div><div class="mt-1 text-5xl font-semibold">${dials}</div></div>
+        <div><div class="text-xs uppercase tracking-wide text-gray-500">Connects</div><div class="mt-1 text-5xl font-semibold">${connects}</div></div>
+        <div><div class="text-xs uppercase tracking-wide text-gray-500">Connect Rate</div><div class="mt-1 text-5xl font-semibold">${rate}%</div></div>
+      </div>
+    </section>
+  `;
+}
 
-      // prospects ops
-      const addProspect = (p) => setProspects(prev => [...prev, p]);
-      const removeProspect = (id) => setProspects(prev => { const next = prev.filter(p=>p.id!==id); setDeckIndex(idx=>Math.min(idx, Math.max(0, next.length-1))); return next; });
-      const updateProspect = (updated) => setProspects(prev => prev.map(p => p.id===updated.id ? updated : p));
-      const promoteProspect = (p, extraNote) => {
-        const combinedNotes = [p.notes, extraNote].map(s => (s||"").trim()).filter(Boolean).join("\n");
-        const record = { id:uid(), name:p.name||"", number:p.number||"", numberNormalized:normalizeNumber(p.number||""), notes:combinedNotes, timestamp:formatUKTimestamp(new Date()), createdAtISO:new Date().toISOString(), connected:false };
-        setRecords(prev => [record, ...prev]);
-        removeProspect(p.id);
-      };
-      const skipPointer = () => setDeckIndex(i => prospects.length===0 ? 0 : (i+1)%prospects.length);
-
-      // toggle add/remove prospect from records
-      const toggleProspect = (record, isInProspect) => {
-        const rn = normalizeNumber(record.number || ""); if (!rn) return;
-        setProspects(prev => {
-          if (isInProspect) { return prev.filter(p => normalizeNumber(p.number||"") !== rn); }
-          if (prev.some(p => normalizeNumber(p.number||"") === rn)) return prev;
-          return [...prev, { id: uid(), name: record.name || "", number: record.number || "", notes: record.notes || "", createdAtISO: new Date().toISOString() }];
-        });
-      };
-
-      // toggle connected flag on a record
-      const toggleConnected = (id) => setRecords(prev => prev.map(r => r.id===id ? { ...r, connected: !r.connected } : r));
-
-      // save prospect via InputPanel
-      const handleSaveProspect = (updated) => { updateProspect(updated); setEditingProspect(null); };
-      const handleCancelProspect = () => setEditingProspect(null);
-
-      // ---- Stats helpers (Europe/London) ----
-      const fmtYMD = (dt) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).format(dt);
-      const isSameLocalDay = (iso) => iso && fmtYMD(new Date(iso)) === fmtYMD(new Date());
-      const getLondonYMD = (dateObj) => {
-        const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(dateObj);
-        const get = (t) => parts.find(p=>p.type===t)?.value;
-        return { y: +get('year'), m: +get('month'), d: +get('day') };
-      };
-      const mondayKey = (dateObj) => {
-        const { y, m, d } = getLondonYMD(dateObj);
-        const dt = new Date(Date.UTC(y, m-1, d));
-        const dowMon0 = (dt.getUTCDay() + 6) % 7; // Monday=0
-        dt.setUTCDate(dt.getUTCDate() - dowMon0);
-        const ym = String(dt.getUTCMonth()+1).padStart(2,'0');
-        const yd = String(dt.getUTCDate()).padStart(2,'0');
-        return `${dt.getUTCFullYear()}-${ym}-${yd}`;
-      };
-      const thisMondayKey = mondayKey(new Date());
-      const isSameLocalWeek = (iso) => mondayKey(new Date(iso)) === thisMondayKey;
-
-      // Today
-      const todayCalls = records.filter(r => isSameLocalDay(r.createdAtISO)).length;
-      const todayConnects = records.filter(r => isSameLocalDay(r.createdAtISO) && !!r.connected).length;
-      const todayConnectRate = todayCalls ? Math.round((todayConnects / todayCalls) * 100) : 0;
-      // This week
-      const weekCalls = records.filter(r => isSameLocalWeek(r.createdAtISO)).length;
-      const weekConnects = records.filter(r => isSameLocalWeek(r.createdAtISO) && !!r.connected).length;
-      const weekConnectRate = weekCalls ? Math.round((weekConnects / weekCalls) * 100) : 0;
-      // All time
-      const allTimeCalls = records.length;
-      const allTimeConnects = records.filter(r => !!r.connected).length;
-      const allTimeConnectRate = allTimeCalls ? Math.round((allTimeConnects / allTimeCalls) * 100) : 0;
-
-      // observe right column size and cap left column scroll to it
-      useEffect(() => {
-        if (!rightColRef.current) return;
-        const el = rightColRef.current;
-        const apply = () => setRightHeight(el.offsetHeight);
-        apply();
-        let ro;
-        if ('ResizeObserver' in window) {
-          ro = new ResizeObserver(() => apply());
-          ro.observe(el);
-        } else {
-          window.addEventListener('resize', apply);
+function renderTopBar() {
+  return `
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b">
+      <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-2">
+        ${
+          currentUser
+            ? `<span class="text-sm text-gray-600">${escapeHtml(currentUser)}</span>
+               <button onclick="logout()" class="px-4 py-2 text-sm rounded-xl border border-gray-300 hover:bg-gray-50">Log out</button>`
+            : `<input id="loginName" placeholder="Username" class="border rounded-xl px-3 py-2 text-sm">
+               <button onclick="login(document.getElementById('loginName').value)" class="px-4 py-2 text-sm rounded-xl border border-gray-300 shadow-sm hover:bg-gray-50">Log in</button>`
         }
-        return () => {
-          if (ro) ro.disconnect(); else window.removeEventListener('resize', apply);
-        };
-      }, [prospects, editingProspect, editingRecord, deckIndex, todayCalls, weekCalls, allTimeCalls, showProspecting]);
+        <button onclick="showProspecting=!showProspecting; render();" class="ml-auto px-4 py-2 text-sm rounded-xl border border-gray-300 shadow-sm hover:bg-gray-50">
+          ${showProspecting ? "Calling Mode" : "Prospecting Mode"}
+        </button>
+      </div>
+    </header>
+  `;
+}
 
-      // stable display order for records
-      const sortedRecords = useMemo(() => {
-        return [...records].sort((a,b)=>{
-          const A=a.createdAtISO||"", B=b.createdAtISO||""; return A<B?1:A>B?-1:0;
-        });
-      }, [records]);
+function renderInputPanel() {
+  const editingRecord = records.find(r => r.id === editingRecordId);
+  const editingProspect = prospects.find(p => p.id === editingProspectId);
+  const item = editingRecord || editingProspect || {};
 
-      if (showProspecting) {
-        return (
-          <>
-            <TopBar currentUser={currentUser} onLogin={(u)=>{setCurrentUser(u); saveCurrentUser(u);}} onLogout={()=>{setCurrentUser(""); setRecords([]); setProspects([]); setDeckIndex(0);}} onToggleMode={()=>setShowProspecting(false)} isProspecting={true} />
-            <ProspectingPage onAddProspect={addProspect} onUpdateProspect={updateProspect} onDeleteProspect={removeProspect} currentUser={currentUser} prospects={prospects} />
-          </>
-        );
-      }
+  return `
+    <div class="flex flex-col gap-3">
+      <input id="nameInput" value="${escapeHtml(item.name)}" placeholder="Name" class="w-full border rounded-xl px-3 py-2">
+      <input id="numberInput" value="${escapeHtml(item.number)}" placeholder="Number" class="w-full border rounded-xl px-3 py-2">
+      <textarea id="notesInput" placeholder="Notes" class="w-full h-40 border rounded-xl px-3 py-2 resize-none">${escapeHtml(item.notes)}</textarea>
+      <div class="flex gap-2">
+        <button onclick="submitMainInput()" class="px-4 py-2 rounded-xl bg-black text-white">
+          ${editingRecord ? "Save changes" : editingProspect ? "Save prospect" : "Add record"}
+        </button>
+        ${(editingRecord || editingProspect) ? `<button onclick="editingRecordId=null; editingProspectId=null; render();" class="px-4 py-2 rounded-xl border">Cancel</button>` : ""}
+      </div>
+      ${!currentUser ? `<p class="text-sm text-red-600">Log in to save entries.</p>` : ""}
+    </div>
+  `;
+}
 
-      return (
-        <div className="relative min-h-screen bg-gray-50">
-          <TopBar currentUser={currentUser} onLogin={(u)=>{setCurrentUser(u); saveCurrentUser(u);}} onLogout={()=>{setCurrentUser(""); setRecords([]); setProspects([]); setDeckIndex(0);}} onToggleMode={()=>setShowProspecting(true)} isProspecting={false} />
-          <div className="max-w-6xl mx-auto px-4 pt-20 pb-8">
-            <main className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-0 items-start">
-              <section
-                ref={leftColRef}
-                style={rightHeight ? { maxHeight: rightHeight + 'px', overflowY: 'auto' } : { overflowY: 'auto' }}
-                className="bg-white rounded-2xl shadow-sm p-4 min-h-0"
-                aria-labelledby="records-title"
-              >
-                <h2 id="records-title" className="sr-only">Call records</h2>
-                <SearchPanel records={sortedRecords} prospects={prospects} onDelete={handleDelete} onEdit={handleEditStart} onToggleProspect={toggleProspect} onToggleConnected={toggleConnected} />
-              </section>
-              <section ref={rightColRef} className="bg-white rounded-2xl shadow-sm p-4 self-start" aria-labelledby="input-title">
-                <h2 id="input-title" className="sr-only">Add / Edit record or prospect</h2>
-                <InputPanel
-                  currentUser={currentUser}
-                  onAdd={handleAdd}
-                  onSaveEdit={handleSaveEdit}
-                  onCancelEdit={handleCancelEdit}
-                  editingRecord={editingRecord}
-                  editingProspect={editingProspect}
-                  onSaveProspect={(u)=>{ updateProspect(u); setEditingProspect(null); }}
-                  onCancelProspect={()=>setEditingProspect(null)}
-                />
-                <ProspectsDeck
-                  prospects={prospects}
-                  onPromote={promoteProspect}
-                  onRemove={removeProspect}
-                  currentIndex={deckIndex}
-                  onSkip={skipPointer}
-                  onEditProspect={(p)=>{ setEditingProspect(p); }}
-                />
+function submitMainInput() {
+  if (!currentUser) return alert("Log in first.");
 
-                {/* Stats sections */}
-                <StatsVertical
-                  today={{ dials: todayCalls, connects: todayConnects, rate: todayConnectRate }}
-                  week={{ dials: weekCalls, connects: weekConnects, rate: weekConnectRate }}
-                  alltime={{ dials: allTimeCalls, connects: allTimeConnects, rate: allTimeConnectRate }}
-                  showExtra={showAuxStats}
-                  onToggle={()=>setShowAuxStats(s=>!s)}
-                />
-              </section>
-            </main>
+  const name = document.getElementById("nameInput").value.trim();
+  const number = document.getElementById("numberInput").value.trim();
+  const notes = document.getElementById("notesInput").value.trim();
+
+  if (!name && !number && !notes) return;
+
+  if (editingRecordId) {
+    records = records.map(r => r.id === editingRecordId ? {
+      ...r,
+      name,
+      number,
+      notes,
+      numberNormalized: normalizeNumber(number),
+      updatedAtISO: new Date().toISOString()
+    } : r);
+    editingRecordId = null;
+    saveUserData();
+    render();
+    return;
+  }
+
+  if (editingProspectId) {
+    prospects = prospects.map(p => p.id === editingProspectId ? { ...p, name, number, notes } : p);
+    editingProspectId = null;
+    saveProspects();
+    render();
+    return;
+  }
+
+  records.unshift({
+    id: uid(),
+    name,
+    number,
+    numberNormalized: normalizeNumber(number),
+    notes,
+    timestamp: formatUKTimestamp(new Date()),
+    createdAtISO: new Date().toISOString(),
+    connected: false
+  });
+
+  saveUserData();
+  render();
+}
+
+function isInProspects(record) {
+  const rn = normalizeNumber(record.number || "");
+  return rn && prospects.some(p => normalizeNumber(p.number || "") === rn);
+}
+
+function renderRecords() {
+  const sorted = [...records].sort((a, b) => (a.createdAtISO < b.createdAtISO ? 1 : -1));
+
+  if (!sorted.length) {
+    return `<div class="px-3 py-2 text-sm text-gray-500">No records yet.</div>`;
+  }
+
+  return sorted.map(r => {
+    const inProspect = isInProspects(r);
+    const bg = r.connected ? "bg-green-50" : inProspect ? "bg-sky-50" : "";
+
+    return `
+      <div class="px-3 py-2 ${bg}">
+        <div class="flex items-center justify-between">
+          <div class="font-medium truncate">${escapeHtml(r.name || "(No name)")}</div>
+          <div class="text-sm text-gray-600 ml-2">${escapeHtml(r.timestamp || "")}</div>
+        </div>
+        <div class="text-sm text-gray-700 truncate">${escapeHtml(r.number || "(No number)")}</div>
+        ${r.notes ? `<div class="text-xs text-gray-500 whitespace-pre-wrap">${escapeHtml(r.notes)}</div>` : ""}
+        <div class="mt-2 flex flex-wrap items-center gap-3">
+          <button onclick="editingRecordId='${r.id}'; editingProspectId=null; render();" class="text-blue-700 text-sm">Edit</button>
+          <button onclick="deleteRecord('${r.id}')" class="text-red-600 text-sm">Delete</button>
+          <button onclick="toggleProspect('${r.id}')" class="text-sm ${inProspect ? "text-red-600" : "text-green-700"}">${inProspect ? "Remove" : "Add"} prospect</button>
+          <button onclick="toggleConnected('${r.id}')" class="text-sm ${r.connected ? "text-emerald-700" : "text-gray-700"}">${r.connected ? "Connected" : "Mark connected"}</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function deleteRecord(id) {
+  records = records.filter(r => r.id !== id);
+  if (editingRecordId === id) editingRecordId = null;
+  saveUserData();
+  render();
+}
+
+function toggleConnected(id) {
+  records = records.map(r => r.id === id ? { ...r, connected: !r.connected } : r);
+  saveUserData();
+  render();
+}
+
+function toggleProspect(id) {
+  const r = records.find(x => x.id === id);
+  if (!r) return;
+
+  const rn = normalizeNumber(r.number || "");
+  if (!rn) return alert("No number on this record.");
+
+  if (isInProspects(r)) {
+    prospects = prospects.filter(p => normalizeNumber(p.number || "") !== rn);
+  } else {
+    prospects.push({
+      id: uid(),
+      name: r.name || "",
+      number: r.number || "",
+      notes: r.notes || "",
+      createdAtISO: new Date().toISOString()
+    });
+  }
+
+  saveProspects();
+  render();
+}
+
+function renderProspectsDeck() {
+  if (!prospects.length) return "";
+
+  const p = prospects[Math.min(deckIndex, prospects.length - 1)];
+
+  return `
+    <div class="mt-4 border rounded-2xl p-4">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="font-semibold">Prospect</h3>
+        <span class="text-xs text-gray-500">${Math.min(deckIndex + 1, prospects.length)} / ${prospects.length}</span>
+      </div>
+      <div class="text-sm">
+        <div><strong>Name:</strong> ${escapeHtml(p.name || "(No name)")}</div>
+        <div><strong>Number:</strong> ${escapeHtml(p.number || "(No number)")}</div>
+        ${p.notes ? `<div class="mt-1 whitespace-pre-wrap">${escapeHtml(p.notes)}</div>` : ""}
+      </div>
+      <textarea id="extraNote" placeholder="Additional note" class="mt-3 w-full h-20 border rounded-xl px-3 py-2"></textarea>
+      <div class="mt-3 flex gap-2">
+        <button onclick="promoteProspect('${p.id}')" class="px-4 py-2 rounded-xl bg-green-600 text-white">✓</button>
+        <button onclick="deckIndex=(deckIndex+1)%prospects.length; render();" class="px-4 py-2 rounded-xl bg-gray-300">Skip</button>
+        <button onclick="editingProspectId='${p.id}'; editingRecordId=null; render();" class="px-4 py-2 rounded-xl bg-blue-600 text-white">Edit</button>
+        <button onclick="removeProspect('${p.id}')" class="px-4 py-2 rounded-xl border">Remove</button>
+      </div>
+    </div>
+  `;
+}
+
+function promoteProspect(id) {
+  const p = prospects.find(x => x.id === id);
+  if (!p) return;
+
+  const extra = document.getElementById("extraNote")?.value.trim() || "";
+  const notes = [p.notes, extra].filter(Boolean).join("\n");
+
+  records.unshift({
+    id: uid(),
+    name: p.name || "",
+    number: p.number || "",
+    numberNormalized: normalizeNumber(p.number || ""),
+    notes,
+    timestamp: formatUKTimestamp(new Date()),
+    createdAtISO: new Date().toISOString(),
+    connected: false
+  });
+
+  prospects = prospects.filter(x => x.id !== id);
+  deckIndex = 0;
+
+  saveUserData();
+  saveProspects();
+  render();
+}
+
+function removeProspect(id) {
+  prospects = prospects.filter(p => p.id !== id);
+  deckIndex = 0;
+  saveProspects();
+  render();
+}
+
+function renderProspectingPage() {
+  return `
+    ${renderTopBar()}
+    <div class="min-h-screen bg-gray-50 p-6 pt-24">
+      <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow p-6">
+        <h2 class="text-lg font-semibold mb-4">Prospecting</h2>
+        ${renderInputPanel()}
+        <div class="mt-6">
+          <div class="text-sm font-medium mb-2">Your prospects</div>
+          <div class="rounded-xl border divide-y">
+            ${
+              prospects.length
+              ? prospects.map(p => `
+                  <div class="px-3 py-2 text-sm grid grid-cols-12 gap-2 items-start">
+                    <div class="col-span-3 truncate font-medium">${escapeHtml(p.name || "(No name)")}</div>
+                    <div class="col-span-3 truncate">${escapeHtml(p.number || "(No number)")}</div>
+                    <div class="col-span-4 truncate text-gray-600">${escapeHtml(p.notes || "")}</div>
+                    <div class="col-span-2 flex gap-2 justify-end">
+                      <button onclick="editingProspectId='${p.id}'; render();" class="px-2 py-1 rounded border text-blue-700">Edit</button>
+                      <button onclick="removeProspect('${p.id}')" class="px-2 py-1 rounded border text-red-600">Delete</button>
+                    </div>
+                  </div>
+                `).join("")
+              : `<div class="px-3 py-2 text-sm text-gray-500">No prospects yet.</div>`
+            }
           </div>
         </div>
-      );
-    }
+      </div>
+    </div>
+  `;
+}
 
-    // ---------- Lightweight runtime checks (dev only) ----------
+function renderCallingPage() {
+  const today = records.filter(r => isSameLondonDay(r.createdAtISO));
+  const week = records.filter(r => isSameLondonWeek(r.createdAtISO));
+
+  return `
+    ${renderTopBar()}
+    <div class="relative min-h-screen bg-gray-50">
+      <div class="max-w-6xl mx-auto px-4 pt-20 pb-8">
+        <main class="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-0 items-start">
+          <section class="bg-white rounded-2xl shadow-sm p-4 min-h-0">
+            <div class="border rounded-xl divide-y max-h-[760px] overflow-y-auto">
+              ${renderRecords()}
+            </div>
+          </section>
+
+          <section class="bg-white rounded-2xl shadow-sm p-4 self-start">
+            ${renderInputPanel()}
+            ${renderProspectsDeck()}
+
+            <div class="mt-6">
+              ${statBlock("Today", today)}
+              <div class="mt-2 flex items-center justify-end">
+                <button onclick="showExtraStats=!showExtraStats; render();" class="text-sm text-gray-700 px-2 py-1">
+                  ${showExtraStats ? "Hide extra" : "Show extra"}
+                </button>
+              </div>
+              ${showExtraStats ? statBlock("This Week", week) + statBlock("All Time", records) : ""}
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+  `;
+}
+
+function render() {
+  document.getElementById("app").innerHTML = showProspecting ? renderProspectingPage() : renderCallingPage();
+
+  setTimeout(() => {
+    const input = document.getElementById("nameInput") || document.getElementById("loginName");
+    if (input) input.focus();
+  }, 0);
+}
+
+window.addEventListener("keydown", async e => {
+  if (e.key === "Enter" && ["nameInput", "numberInput", "notesInput"].includes(document.activeElement?.id)) {
+    e.preventDefault();
+    submitMainInput();
+  }
+
+  if (e.key === "ArrowLeft") document.getElementById("nameInput")?.focus();
+  if (e.key === "ArrowDown") document.getElementById("numberInput")?.focus();
+  if (e.key === "ArrowRight") document.getElementById("notesInput")?.focus();
+
+  if (e.key === "ArrowUp") {
     try {
-      console.assert(normalizeNumber("+44 7700 900123") === "447700900123", "normalizeNumber should strip non-digits");
-      const a = uid(), b = uid();
-      console.assert(a !== b, "uid uniqueness");
-      // mondayKey basic format check (YYYY-MM-DD)
-      const mk = (function(){
-        const s = (function(){ return (function inner(){ return (function(){ return (function(x){ return x; })((function(d){ return d; })(new Date())); })(); })(); })();
-      })();
-      const mkStr = (function(d){ return (function(k){ return k; })( (function(date){ const pad=n=>String(n).padStart(2,'0'); return `${date.getUTCFullYear()}-${pad(date.getUTCMonth()+1)}-${pad(date.getUTCDate())}`; })(new Date()) ); })(new Date());
-      console.assert(/^\d{4}-\d{2}-\d{2}$/.test(mkStr), 'mondayKey format');
-      // deck index cycle test
-      (function(){ let i=0; const n=3; i=(i+1)%n; console.assert(i===1,'idx1'); i=(i+1)%n; console.assert(i===2,'idx2'); i=(i+1)%n; console.assert(i===0,'idx0'); })();
+      const clip = await navigator.clipboard.readText();
+      if (clip && document.getElementById("numberInput")) {
+        document.getElementById("numberInput").value = clip;
+        document.getElementById("numberInput").focus();
+      }
     } catch {}
+  }
+});
 
-    // Mount
-    const root = ReactDOM.createRoot(document.getElementById("root"));
-    root.render(<App />);
-  </script>
+render();
+</script>
 </body>
 </html>
